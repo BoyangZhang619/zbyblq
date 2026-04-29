@@ -7,12 +7,12 @@
   right: 0;
   height: var(--size-nav-height);
   background-color: var(--color-background);
-  border-top: 1px solid var(--color-secondary);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+  transition: all .2s ease-in-out;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -51,11 +51,13 @@
 .nav-item.active {
   color: var(--color-primary);
   font-weight: 600;
+  transition: all .2s ease-in-out;
 }
 
 /* Inactive Navigation Item */
 .nav-item.inactive {
   color: var(--color-secondary);
+  transition: all .2s ease-in-out;
 }
 
 /* Icon Styling */

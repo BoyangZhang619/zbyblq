@@ -1,7 +1,7 @@
 <template>
   <div class="bg-view">
     <router-view />
-    <BottomNav v-if="showBottomNav" />
+    <BottomNav v-if="bottomNav.includes(currentRoute.name as string)" />
   </div>
 </template>
 
@@ -12,7 +12,6 @@ import { toRaw } from 'vue';
 
 const currentRoute = toRaw(router.currentRoute);
 const bottomNav = ['home', 'sort', 'profile'];
-const showBottomNav = bottomNav.includes((currentRoute as any).name as string);
 
 </script>
 
