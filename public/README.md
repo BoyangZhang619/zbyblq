@@ -1,4 +1,5 @@
-﻿# WebPage Playground
+﻿<!-- markdownlint-disable -->
+# WebPage Playground
 
 个人静态网页合集。根目录的 `index.html` 是导航主页，提供深/浅色切换；每个子目录是一份独立的小项目或工具。
 
