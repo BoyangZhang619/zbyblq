@@ -30,9 +30,9 @@
   letter-spacing: 0.5px;
 }
 
-.categories-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+.categories-flex {
+  display: flex;
+  flex-direction: column;
   gap: 20px;
 }
 
@@ -145,7 +145,7 @@
     font-size: 2rem;
   }
 
-  .categories-grid {
+  .categories-flex {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 16px;
   }
@@ -176,7 +176,7 @@
     font-size: 1.8rem;
   }
 
-  .categories-grid {
+  .categories-flex {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
   }

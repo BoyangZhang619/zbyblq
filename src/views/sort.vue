@@ -13,7 +13,7 @@
           <p class="sort-subtitle">按类别浏览所有工具</p>
         </header>
 
-        <div class="categories-grid">
+        <div class="categories-flex">
           <button
             v-for="category in categories"
             :key="category.id"
