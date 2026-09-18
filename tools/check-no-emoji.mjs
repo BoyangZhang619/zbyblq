@@ -24,6 +24,38 @@ import { join, relative } from 'node:path'
 const EMOJI_PATTERN =
   /[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{FE0F}]/u
 
+/**
+ * 范围内的非 emoji 例外
+ *
+ * \u{1F000}-\u{1FAFF} 是「第一辅助平面符号区」的大致范围，其中混有
+ * 若干**并非 emoji** 的排版子块。它们带 Emoji=No、Emoji_Presentation=No
+ * 属性，渲染为单色字形：
+ *
+ * - U+1F100-U+1F10C  带圈数字补充
+ * - U+1F110-U+1F12F  括号字母
+ * - U+1F130-U+1F149  方框字母（如 U+1F130 为 SQUARED LATIN CAPITAL LETTER A）
+ * - U+1F150-U+1F169  反白方框字母
+ *
+ * 该项目中这些字符出现于「英文字体转换」工具的方框体映射表——它是工具
+ * 的文本输出，而非界面装饰，与「不使用 emoji 实现特殊样式」的约束无关。
+ *
+ * 注意：同块内的 U+1F170-U+1F19A、U+1F1E6-U+1F1FF（区域指示符）**是**
+ * 真正的 emoji，不在例外之列，仍会被拦截。
+ */
+const NOT_EMOJI_PATTERN =
+  /[\u{1F100}-\u{1F10C}\u{1F110}-\u{1F12F}\u{1F130}-\u{1F149}\u{1F150}-\u{1F169}]/u
+
+/** 找出单行中所有实际生效的 emoji，而非仅第一个 */
+function findEmoji(line) {
+  const hits = []
+  for (const ch of line) {
+    if (!EMOJI_PATTERN.test(ch)) continue
+    if (NOT_EMOJI_PATTERN.test(ch)) continue
+    hits.push(ch)
+  }
+  return hits
+}
+
 /** 扫描的扩展名 */
 const EXTS = ['.ts', '.js', '.vue', '.html', '.css', '.json', '.md', '.svg']
 
@@ -77,12 +109,11 @@ function walk(dir, hits) {
 
     const lines = readFileSync(full, 'utf8').split('\n')
     lines.forEach((line, i) => {
-      const m = line.match(EMOJI_PATTERN)
-      if (m) {
+      for (const ch of findEmoji(line)) {
         hits.push({
           file: rel.split('\\').join('/'),
           line: i + 1,
-          code: 'U+' + m[0].codePointAt(0).toString(16).toUpperCase().padStart(4, '0'),
+          code: 'U+' + ch.codePointAt(0).toString(16).toUpperCase().padStart(4, '0'),
         })
       }
     })

@@ -1,0 +1,237 @@
+/**
+ * 英文字体转换样式
+ * 布局原则见 docs/03-design-system.md §9
+ */
+
+.eft {
+  min-height: 100%;
+  padding-top: var(--space-6);
+}
+
+.eft__header {
+  margin-bottom: var(--space-6);
+}
+
+.eft__title {
+  font-size: var(--text-2xl);
+  line-height: var(--leading-2xl);
+}
+
+.eft__subtitle {
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+.eft__section {
+  margin-bottom: var(--space-6);
+}
+
+.eft__label {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+}
+
+/* ============================================
+   输入
+   ============================================ */
+.eft__input {
+  display: block;
+  width: 100%;
+  padding: var(--space-3);
+  resize: vertical;
+
+  font-size: var(--text-md);
+  line-height: var(--leading-md);
+  color: var(--text-primary);
+
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+
+  transition: border-color var(--dur-fast) var(--ease-standard);
+}
+
+.eft__input::placeholder {
+  color: var(--text-disabled);
+}
+
+.eft__input:focus {
+  outline: none;
+  border-color: var(--accent-fg);
+}
+
+/* ============================================
+   样式列表
+   ============================================ */
+.eft__styles {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.eft__style {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: var(--space-1) var(--space-3);
+  width: 100%;
+  min-height: var(--size-touch-min);
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+
+  transition:
+    background-color var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard),
+    transform var(--dur-base) var(--ease-soft);
+}
+
+.eft__style:hover {
+  border-color: var(--border-default);
+}
+
+.eft__style:active {
+  transform: scale(0.99);
+}
+
+.eft__style.is-active {
+  background-color: var(--accent-bg);
+  border-color: transparent;
+}
+
+.eft__style-name {
+  font-size: var(--text-md);
+  line-height: var(--leading-md);
+  color: var(--text-primary);
+
+  /* 风格化字符可能超出常规字宽，允许截断 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.eft__style.is-active .eft__style-name {
+  color: var(--accent-text);
+}
+
+.eft__style-sample {
+  grid-column: 1;
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 无障碍标签：视觉上弱化，但读屏可读 */
+.eft__style-label {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+
+.eft__style.is-active .eft__style-label {
+  color: var(--accent-text);
+  opacity: 0.75;
+}
+
+/* ============================================
+   结果
+   ============================================ */
+.eft__result-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.eft__result-head .eft__label {
+  margin-bottom: 0;
+}
+
+.eft__result-style {
+  margin-left: var(--space-2);
+  padding: 1px var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-regular);
+  color: var(--accent-text);
+  background-color: var(--accent-bg);
+  border-radius: var(--radius-full);
+}
+
+.eft__copy {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 32px;
+  padding: 0 var(--space-3);
+
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+
+  transition:
+    color var(--dur-fast) var(--ease-standard),
+    background-color var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard);
+}
+
+.eft__copy:hover:not(:disabled) {
+  color: var(--accent-text);
+  border-color: var(--border-default);
+}
+
+.eft__copy:disabled {
+  opacity: 0.5;
+}
+
+.eft__copy.is-done {
+  color: var(--state-success-fg);
+  background-color: var(--state-success-bg);
+  border-color: transparent;
+}
+
+.eft__output {
+  display: block;
+  min-height: 86px;
+  padding: var(--space-3);
+
+  font-size: var(--text-md);
+  line-height: var(--leading-md);
+  color: var(--text-primary);
+  word-break: break-word;
+  white-space: pre-wrap;
+
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-md);
+}
+
+.eft__output.is-empty {
+  color: var(--text-disabled);
+}
+
+@media (min-width: 768px) {
+  .eft {
+    padding-top: var(--space-10);
+  }
+
+  /* 宽屏下样式列表双列，缩短滚动距离 */
+  .eft__styles {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+}

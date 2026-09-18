@@ -19,8 +19,8 @@ export const manifest: ToolManifest = {
   tags: ['工具'],
   badge: 'not NEW',
   status: 'active',
-  entry: 'iframe',
+  entry: 'native',
   lifecycle: {
-    updated: '2026-01-02',
+    updated: '2026-09-18',
   },
 }

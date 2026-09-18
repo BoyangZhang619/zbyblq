@@ -1,0 +1,361 @@
+/**
+ * 图像类工具的共用界面骨架
+ *
+ * pixelate、img2ascii、floyd-steinberg、photo-patina、encryption-graph
+ * 五个工具的界面结构高度一致：上传区 → 参数 → 预览/导出。
+ * 本文件承载这部分公共样式，各工具只需补充自身特有的部分。
+ *
+ * 类名统一使用 imgtool__ 前缀。不放入 design/ 层——那里只放与业务
+ * 无关的设计令牌与基础元素样式。
+ *
+ * 参见 docs/03-design-system.md §9
+ */
+
+/* ============================================
+   页面骨架
+   ============================================ */
+.imgtool {
+  min-height: 100%;
+  padding-top: var(--space-6);
+}
+
+.imgtool__header {
+  margin-bottom: var(--space-6);
+}
+
+.imgtool__title {
+  font-size: var(--text-2xl);
+  line-height: var(--leading-2xl);
+}
+
+.imgtool__subtitle {
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+.imgtool__section {
+  margin-bottom: var(--space-6);
+}
+
+.imgtool__label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+}
+
+.imgtool__value {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+
+.imgtool__hint {
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  line-height: var(--leading-xs);
+  color: var(--text-tertiary);
+}
+
+.imgtool__error {
+  margin-bottom: var(--space-4);
+  padding: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--state-danger-fg);
+  background-color: var(--state-danger-bg);
+  border-radius: var(--radius-md);
+}
+
+/* ============================================
+   上传区
+   ============================================ */
+.imgtool__drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 148px;
+  padding: var(--space-6) var(--space-4);
+  margin-bottom: var(--space-6);
+  text-align: center;
+
+  color: var(--text-tertiary);
+  background-color: var(--surface-card);
+  border: 1.5px dashed var(--border-default);
+  border-radius: var(--radius-lg);
+
+  transition:
+    border-color var(--dur-fast) var(--ease-standard),
+    background-color var(--dur-fast) var(--ease-standard),
+    transform var(--dur-base) var(--ease-soft);
+}
+
+.imgtool__drop:hover,
+.imgtool__drop.is-dragging {
+  color: var(--accent-text);
+  background-color: var(--accent-bg);
+  border-color: var(--accent-fg);
+}
+
+.imgtool__drop:active {
+  transform: scale(0.99);
+}
+
+.imgtool__drop.has-image {
+  min-height: auto;
+  padding: var(--space-4);
+  border-style: solid;
+  border-color: var(--border-subtle);
+}
+
+.imgtool__drop-title {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.imgtool__drop-meta {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================
+   参数控件
+   ============================================ */
+.imgtool__field {
+  margin-bottom: var(--space-5);
+}
+
+.imgtool__field-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.imgtool__range {
+  display: block;
+  width: 100%;
+  height: 28px;
+  margin: 0;
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.imgtool__range::-webkit-slider-runnable-track {
+  height: 4px;
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-full);
+}
+
+.imgtool__range::-moz-range-track {
+  height: 4px;
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-full);
+}
+
+.imgtool__range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: -8px;
+  background-color: var(--accent-fg);
+  border: 3px solid var(--surface-card);
+  border-radius: var(--radius-full);
+  box-shadow: var(--elev-card);
+  cursor: pointer;
+}
+
+.imgtool__range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background-color: var(--accent-fg);
+  border: 3px solid var(--surface-card);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+}
+
+/* 开关 */
+.imgtool__switch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--size-touch-min);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.imgtool__switch input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.imgtool__switch-track {
+  position: relative;
+  flex: none;
+  width: 44px;
+  height: 26px;
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-full);
+  transition: background-color var(--dur-base) var(--ease-standard);
+}
+
+.imgtool__switch-track::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  background-color: var(--surface-card);
+  border-radius: var(--radius-full);
+  box-shadow: var(--elev-card);
+  transition: transform var(--dur-base) var(--ease-soft);
+}
+
+.imgtool__switch input:checked + .imgtool__switch-track {
+  background-color: var(--accent-fg);
+}
+
+.imgtool__switch input:checked + .imgtool__switch-track::after {
+  transform: translateX(18px);
+}
+
+.imgtool__switch input:focus-visible + .imgtool__switch-track {
+  outline: 2px solid var(--accent-fg);
+  outline-offset: 2px;
+}
+
+.imgtool__switch-text {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+/* 选项组 */
+.imgtool__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.imgtool__chip {
+  min-height: 34px;
+  padding: 0 var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+
+  transition:
+    color var(--dur-fast) var(--ease-standard),
+    background-color var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard);
+}
+
+.imgtool__chip:hover {
+  border-color: var(--border-default);
+}
+
+.imgtool__chip.is-active {
+  color: var(--accent-text);
+  background-color: var(--accent-bg);
+  border-color: transparent;
+  font-weight: var(--weight-medium);
+}
+
+/* ============================================
+   操作按钮
+   ============================================ */
+.imgtool__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+}
+
+.imgtool__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: var(--size-touch-min);
+  padding: 0 var(--space-4);
+
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+
+  transition:
+    color var(--dur-fast) var(--ease-standard),
+    background-color var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard),
+    transform var(--dur-base) var(--ease-soft);
+}
+
+.imgtool__btn:hover:not(:disabled) {
+  border-color: var(--border-default);
+}
+
+.imgtool__btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.imgtool__btn:disabled {
+  opacity: 0.45;
+}
+
+.imgtool__btn--primary {
+  color: var(--text-on-accent);
+  background-color: var(--accent-fg);
+  border-color: transparent;
+}
+
+.imgtool__btn--primary:hover:not(:disabled) {
+  background-color: var(--accent-text);
+}
+
+/* ============================================
+   预览
+   ============================================ */
+.imgtool__preview-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.imgtool__canvas-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3);
+  overflow: hidden;
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-lg);
+}
+
+.imgtool__canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-sm);
+  /* 像素类输出必须关闭插值，否则放大后不是硬边 */
+  image-rendering: pixelated;
+}
+
+@media (min-width: 768px) {
+  .imgtool {
+    padding-top: var(--space-10);
+  }
+}

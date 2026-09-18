@@ -13,6 +13,7 @@
 import arrowRight from './svg/arrow-right.svg?raw'
 import bug from './svg/bug.svg?raw'
 import check from './svg/check.svg?raw'
+import clipboard from './svg/clipboard.svg?raw'
 import close from './svg/close.svg?raw'
 import externalLink from './svg/external-link.svg?raw'
 import heart from './svg/heart.svg?raw'
@@ -56,6 +57,7 @@ export const iconRegistry = {
   'arrow-right': arrowRight,
   'bug': bug,
   'check': check,
+  'clipboard': clipboard,
   'close': close,
   'external-link': externalLink,
   'heart': heart,
