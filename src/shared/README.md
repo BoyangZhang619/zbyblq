@@ -16,7 +16,6 @@ shared/
 ├── composables/          # 跨模块组合式函数：useTheme、useStorage ...
 ├── stores/               # 跨模块 Pinia store：ui（主题、语言）
 └── utils/                # 纯函数工具
-    └── notifications/    # 通知系统（自 src/utils/ 迁入）
 ```
 
 ## 准入规则
@@ -44,13 +43,22 @@ shared/
 modules/  ──依赖──>  shared/  ──依赖──>  design/
 ```
 
-## 迁移状态
+## 当前内容
 
-已完成：`notifications/`（约 2300 行）已迁入 `shared/utils/notifications/`。
+| 目录 | 状态 |
+| --- | --- |
+| `icons/` | 已投入实际使用：41 枚自制 SVG + AppIcon + 注册表 |
+| `composables/` | `useTheme.ts`（明暗与主题色板） |
+| `ui/` | 待填充，基础组件目前散在各模块内 |
+| `stores/` | 待填充，暂无跨模块共享的状态 |
+| `utils/` | 待填充，尚无跨模块复用的纯函数 |
 
-待补：`ui/`、`icons/`、`composables/`、`stores/` 已建立但内容尚少。其中
-`icons/` 已投入实际使用（自制 SVG 图标体系），其余随各阶段推进填充。
+## 已归档
 
-**注意**：`utils/notifications/` 当前**无任何生产消费者**，首页的原演示面板
-已在视觉重塑阶段被工具导航取代。该模块保留是为接入账户系统的事件反馈，
-详见其 README 的「当前状态」一节。
+原 `shared/utils/notifications/`（约 2300 行通知系统）已于 2026-09-18 移入
+`archive/notifications/`。原因：其唯一消费方是首页的通知演示面板，该面板
+已在视觉重塑中被真实工具导航取代，导致模块无人使用。
+
+它保留在本层会产生误导——「shared」的含义是被多个模块复用，而它没有被
+任何模块使用。恢复条件与计划的接入场景见其
+[归档说明](../../archive/notifications/ARCHIVE_NOTE.md)。

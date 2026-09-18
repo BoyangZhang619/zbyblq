@@ -35,6 +35,7 @@ archive/
 | 模块 | 归档日期 | 原因 |
 | --- | --- | --- |
 | [lessonTable](./lessonTable/ARCHIVE_NOTE.md) | 2026-09-18 | 功能暂停开发，数据源依赖特定教务系统导出格式 |
+| [notifications](./notifications/ARCHIVE_NOTE.md) | 2026-09-18 | 无生产消费者。原唯一消费方（首页演示面板）已在视觉重塑中被替换 |
 
 ## 维护约定
 

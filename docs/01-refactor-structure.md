@@ -159,10 +159,12 @@ src/shared/
 │   └── useAsyncState.ts
 ├── stores/
 │   └── ui.ts                       # 全局 UI 状态：主题、语言
-└── utils/
-    ├── notifications/              # 现有通知系统迁入
-    ├── date.ts
-    └── format.ts
+└── utils/                          # 纯函数工具（date、format 等）
+```
+
+> 原计划的 `utils/notifications/` 已于 2026-09-18 移入 `archive/notifications/`。
+> 该模块在首页重写后失去全部消费者，留在 `shared/` 会产生误导。
+> 详见其归档说明。
 ```
 
 ### 3.5 `src/modules/`：业务模块
