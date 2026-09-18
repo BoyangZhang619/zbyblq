@@ -176,19 +176,6 @@ export const pageRouteMap: Record<string, NavItem> = {
     status: 'active',
     updateTime: '2026-01-04',
   },
-  'lesson-table': {
-    id: 'lesson-table',
-    href: '/tools/lesson-table',
-    icon: '🗓️',
-    title: '课程表',
-    desc: '在线课程表，支持导入导出，个性化定制',
-    tags: ['工具'],
-    badge: 'NEW',
-    badgeColor: 'G',
-    status: 'active',
-    createTime: '2026-03-22',
-    updateTime: '2026-03-22',
-  },
 }
 
 /**

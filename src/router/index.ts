@@ -17,7 +17,6 @@ import FloydSteinberg from '../views/pages/tools/FloydSteinberg.vue'
 import PathfindingVisualize from '../views/pages/tools/PathfindingVisualize.vue'
 import PhotoPatina from '../views/pages/tools/PhotoPatina.vue'
 import PianoKeys from '../views/pages/tools/PianoKeys.vue'
-import LessonTable from '../views/pages/tools/LessonTable.vue'
 
 const routes = [
     {
@@ -145,14 +144,6 @@ const routes = [
         component: PianoKeys,
         meta: {
             title: '『𝑍𝐵𝑌𝐵𝐿𝑄』- Piano Keys'
-        }
-    },
-    {
-        path: '/tools/lesson-table',
-        name: 'lesson-table',
-        component: LessonTable,
-        meta: {
-            title: '『𝑍𝐵𝑌𝐵𝐿𝑄』- 课程表'
         }
     }
 ]
