@@ -25,8 +25,9 @@
 /* 3. 主题色板 */
 @import './themes/accent/index.css';
 
-/* 4. 质感层 */
+/* 4. 质感层与网格 */
 @import './texture/texture.css';
+@import './texture/grid.css';
 
 /* 5. 基础元素样式 */
 @import './base.css';

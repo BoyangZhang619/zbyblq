@@ -1,47 +1,47 @@
 /**
- * 马卡龙主题色板
- *
- * 呼应 EMMO 的「主题色卡」——界面随心情而变。
- * 通过在 <html> 上切换 accent-* 类名生效，由 useTheme 管理。
+ * 主题色板
  *
  * 每个色板只覆盖三个原始变量，语义别名（--accent-fg 等）在
  * themes/light.css 与 themes/dark.css 中已建立映射，会自动跟随。
  *
- * 参见 docs/03-design-system.md §3.3
+ * 默认色板为 sun（暖黄），取自参照对象的实测主色 #FFD84F。
+ * 其余五套为项目扩展，用于「界面随心情而变」的主题切换。
+ *
+ * 参见 docs/03-design-system.md §3.3、docs/emmo-style-reference.md §2
  */
 
+.accent-sun {
+  --accent:      var(--sun);
+  --accent-soft: var(--sun-soft);
+  --accent-deep: var(--sun-deep);
+}
+
 .accent-rose {
-  --accent:      var(--macaron-rose);
-  --accent-soft: var(--macaron-rose-soft);
-  --accent-deep: var(--macaron-rose-deep);
+  --accent:      var(--rose);
+  --accent-soft: var(--rose-soft);
+  --accent-deep: var(--rose-deep);
 }
 
 .accent-peach {
-  --accent:      var(--macaron-peach);
-  --accent-soft: var(--macaron-peach-soft);
-  --accent-deep: var(--macaron-peach-deep);
-}
-
-.accent-butter {
-  --accent:      var(--macaron-butter);
-  --accent-soft: var(--macaron-butter-soft);
-  --accent-deep: var(--macaron-butter-deep);
+  --accent:      var(--peach);
+  --accent-soft: var(--peach-soft);
+  --accent-deep: var(--peach-deep);
 }
 
 .accent-mint {
-  --accent:      var(--macaron-mint);
-  --accent-soft: var(--macaron-mint-soft);
-  --accent-deep: var(--macaron-mint-deep);
+  --accent:      var(--mint);
+  --accent-soft: var(--mint-soft);
+  --accent-deep: var(--mint-deep);
 }
 
 .accent-sky {
-  --accent:      var(--macaron-sky);
-  --accent-soft: var(--macaron-sky-soft);
-  --accent-deep: var(--macaron-sky-deep);
+  --accent:      var(--sky);
+  --accent-soft: var(--sky-soft);
+  --accent-deep: var(--sky-deep);
 }
 
 .accent-lilac {
-  --accent:      var(--macaron-lilac);
-  --accent-soft: var(--macaron-lilac-soft);
-  --accent-deep: var(--macaron-lilac-deep);
+  --accent:      var(--lilac);
+  --accent-soft: var(--lilac-soft);
+  --accent-deep: var(--lilac-deep);
 }

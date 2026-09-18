@@ -59,8 +59,20 @@ function findEmoji(line) {
 /** 扫描的扩展名 */
 const EXTS = ['.ts', '.js', '.vue', '.html', '.css', '.json', '.md', '.svg']
 
-/** 不进入的目录 */
-const SKIP_DIRS = new Set(['node_modules', '.git', 'dist', 'android', '.vscode'])
+/**
+ * 不进入的目录
+ *
+ * .shots 存放调研时抓取的第三方素材（页面 HTML、截图、站点资源），
+ * 其内容不受本项目约束，不应参与检测。已在 .gitignore 中忽略。
+ */
+const SKIP_DIRS = new Set([
+  'node_modules',
+  '.git',
+  'dist',
+  'android',
+  '.vscode',
+  '.shots',
+])
 
 /**
  * 允许清单

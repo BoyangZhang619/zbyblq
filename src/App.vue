@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-view texture-paper">
+  <div class="bg-view">
     <router-view />
     <BottomNav v-if="showBottomNav" />
   </div>

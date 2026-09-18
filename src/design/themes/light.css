@@ -4,42 +4,44 @@
  * 组件只允许引用本文件的变量。切换主题时只需重新映射这一层，
  * 组件代码无需改动。
  *
+ * 色值来源见 docs/emmo-style-reference.md §2 的实测记录。
+ *
  * 参见 docs/03-design-system.md §3.4
  */
 
 :root {
   /* 表面 */
-  --surface-page:     var(--paper-1);
-  --surface-card:     var(--paper-0);
-  --surface-sunken:   var(--paper-2);
+  --surface-page:     var(--paper-1);   /* #FBFBFA 近白（实测） */
+  --surface-card:     var(--paper-0);   /* 纯白卡片 */
+  --surface-sunken:   var(--paper-2);   /* #F5F5F5（实测） */
   --surface-overlay:  var(--paper-0);
   --surface-nav:      color-mix(in srgb, var(--paper-0) 82%, transparent);
 
   /* 文字 */
-  --text-primary:     var(--ink-1);
-  --text-secondary:   var(--ink-2);
-  --text-tertiary:    var(--ink-3);
+  --text-primary:     var(--ink-1);     /* #151515 标题（实测） */
+  --text-secondary:   var(--ink-2);     /* #3B3B3F 正文（实测） */
+  --text-tertiary:    var(--ink-3);     /* #9CA3AF 辅助（实测） */
   --text-disabled:    var(--ink-4);
-  --text-on-accent:   var(--paper-0);
+  --text-on-accent:   var(--ink-1);
 
   /* 描边 */
-  --border-subtle:    var(--ink-5);
-  --border-default:   var(--ink-4);
+  --border-subtle:    var(--ink-5);     /* #E5E7EB（实测） */
+  --border-default:   var(--paper-3);   /* #EDEAE0（实测） */
 
   /* 状态：前景 + 背景成对，对比度不低于 4.5:1 */
-  --state-success-fg: #4A6B4F;
+  --state-success-fg: #3F6B4A;
   --state-success-bg: #E8F0E8;
   --state-warning-fg: #8A6528;
   --state-warning-bg: #F8EFDC;
-  --state-danger-fg:  #8E4E48;
+  --state-danger-fg:  #96453F;
   --state-danger-bg:  #F7E4E2;
-  --state-info-fg:    #4C6479;
+  --state-info-fg:    #45607A;
   --state-info-bg:    #E6EDF3;
 
-  /* 主题色（由 accent/ 下的色板覆盖，此处为薄荷默认值） */
-  --accent:      var(--macaron-mint);
-  --accent-soft: var(--macaron-mint-soft);
-  --accent-deep: var(--macaron-mint-deep);
+  /* 主题色。默认值对应 accent-sun，会被 accent/ 下的色板覆盖 */
+  --accent:      var(--sun);
+  --accent-soft: var(--sun-soft);
+  --accent-deep: var(--sun-deep);
 
   /* 主题色在组件中的用途别名 */
   --accent-fg:   var(--accent);
@@ -47,13 +49,13 @@
   --accent-text: var(--accent-deep);
 
   /* 遮罩 */
-  --overlay-scrim: rgba(59, 52, 44, 0.32);
+  --overlay-scrim: rgba(20, 20, 24, 0.32);
 
-  /* 质感层不透明度 */
-  --texture-opacity: 0.035;
+  /* 质感与网格 */
+  --texture-opacity: 0.03;
   --texture-blend: multiply;
 
-  /* 深色模式不适用阴影，浅色下正常 */
+  /* 阴影：深色模式下不适用，浅色下正常 */
   --elev-card: var(--elev-1);
   --elev-hover: var(--elev-2);
   --elev-float: var(--elev-3);

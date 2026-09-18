@@ -15,20 +15,23 @@ import { ref, computed, watch, readonly } from 'vue'
 
 export type ThemeMode = 'light' | 'dark' | 'auto'
 
-export const ACCENT_NAMES = ['mint', 'rose', 'peach', 'butter', 'sky', 'lilac'] as const
+export const ACCENT_NAMES = ['sun', 'mint', 'rose', 'peach', 'sky', 'lilac'] as const
 export type AccentName = (typeof ACCENT_NAMES)[number]
 
 export const ACCENT_LABELS: Record<AccentName, string> = {
+  sun: '暖阳',
   mint: '薄荷',
   rose: '玫瑰',
   peach: '蜜桃',
-  butter: '奶油',
   sky: '天青',
   lilac: '丁香',
 }
 
-/** 默认使用薄荷：清透中性，与纸感底色最协调 */
-const DEFAULT_ACCENT: AccentName = 'mint'
+/**
+ * 默认色板：暖阳。取自参照对象的实测主色 #FFD84F，
+ * 见 docs/emmo-style-reference.md §2.1
+ */
+const DEFAULT_ACCENT: AccentName = 'sun'
 const STORAGE_KEY = 'zbyblq:theme'
 
 interface StoredTheme {

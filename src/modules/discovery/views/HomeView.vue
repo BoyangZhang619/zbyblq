@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home grid-bg">
     <div class="page-content">
       <header class="home__header texture-paper">
         <div class="home__heading">

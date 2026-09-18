@@ -1,0 +1,44 @@
+/**
+ * 网格背景
+ *
+ * 参照对象大面积使用「近白底 + 细网格」，是这个品牌的签名元素。
+ * 实测实现（emmo.club 样式表产物）：
+ *
+ *   background:
+ *     linear-gradient(var(--grid-line) 1px, transparent 1px),
+ *     linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
+ *     #fbfbfa;
+ *   background-size: 34px 34px;   // 移动端 22px
+ *   --grid-line: rgba(116, 153, 201, .09);
+ *
+ * 本文件沿用同一实现，仅把色值接到语义令牌上。
+ *
+ * 关于「黑色网格」：实测线色是中性偏冷的浅蓝灰，在 9% 不透明度下
+ * 渲染结果约为 #EFF2F6，视觉上是极浅的灰线。若需要更明显的网格，
+ * 调整 --grid-line 的不透明度即可，无需改动结构。
+ *
+ * 使用边界：与纸纹一致，只用于背景与装饰容器，不得覆盖表单控件与
+ * 数据表格（见 docs/03-design-system.md §6.3）。
+ */
+
+.grid-bg {
+  background-color: var(--surface-page);
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: var(--grid-size) var(--grid-size);
+  background-position: center center;
+  background-attachment: fixed;
+}
+
+/* 与纸纹叠加时的顺序：网格在下，噪点在上 */
+.grid-bg.texture-paper::before {
+  border-radius: 0;
+}
+
+/* 移动端网格加密，与实测一致（34px -> 22px） */
+@media (max-width: 768px) {
+  :root {
+    --grid-size: 22px;
+  }
+}
