@@ -6,8 +6,8 @@
 </template>
 
 <script setup lang="ts">
-import BottomNav from '@/components/base/main/bottomNav.vue'
-import router from './router';
+import BottomNav from '@/modules/shell/components/BottomNav.vue'
+import router from '@/app/router';
 import { toRaw } from 'vue';
 
 const currentRoute = toRaw(router.currentRoute);
@@ -16,5 +16,5 @@ const bottomNav = ['home', 'sort', 'profile'];
 </script>
 
 <style>
-@import '@/css/global.css';
+@import '@/design/global.css';
 </style>

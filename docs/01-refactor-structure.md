@@ -528,7 +528,7 @@ src/modules/tools/<tool>/
         │
 [4] 建立新目录骨架（app/design/shared/modules） [已完成 2026-09-18]
         │
-[5] 迁移现有代码到新骨架（等价重构，不改行为）  [待执行]
+[5] 迁移现有代码到新骨架（等价重构，不改行为）  [已完成 2026-09-18]
         │
 [6] 引入 ToolManifest，替换三写数据源          [待执行]
         │
@@ -563,6 +563,29 @@ src/modules/tools/<tool>/
 **未删除但原计划删除的文件**：`src/style.css`（原因如上）。其余删除项均已执行。
 
 **未跟踪文件的特殊处理**：`LESSON_TABLE_REWRITE.md`、`src/stores/lessonTable.ts` 等 7 项在归档前**尚未提交到 git**，删除即永久丢失，因此一律采用移动归档而非删除。
+
+### 9.2 步骤 5 执行记录（2026-09-18）
+
+| 项 | 结果 |
+| --- | --- |
+| 重命名文件 | 30 个，全部被 git 识别（R076 至 R100） |
+| 新增文件 | 1 个（`modules/tools/index.ts`） |
+| 修改文件 | 2 个（`App.vue`、`main.ts`，仅 import 行） |
+| 退役旧目录 | 6 个（`views/` `composable/` `components/` `css/` `router/` `utils/`） |
+| 构建验证 | 通过，CSS 产物体积与重构前一致 |
+
+**等价性证明**（非仅依赖构建通过）：
+
+- 5 个 CSS 文件与历史版本 SHA-256 逐字节相同
+- 通知系统 7 个文件中 6 个逐字节相同，唯一改动的 `EXAMPLES.ts` 为 import 路径
+
+**执行中的三处判断**：
+
+1. **工具目录名沿用现有 tool id，未采用 §7.2 的简化名**。§7.2 提议改为 `btree`、`piano`、`pathfinding` 等，但改 id 会同时改动路由路径与 `PagesData` 数据契约，属步骤 6 范围。现保持**目录名 = 工具 id = 路由名**三者一致，该不变量带入步骤 6 更清晰。
+2. **新增 `modules/tools/index.ts` 作为模块公开出口**。§3.6 规定「模块之间不得直接互相 import」，但 `discovery` 的 Manager 确需工具数据。若无可访问的公开出口，该规则无法执行。barrel 使 discovery 通过公开 API 访问，而不伸手进 `tools/data/` 内部。
+3. **`router/index.ts` 原样搬移，未拆出 `guards/title.ts`**。拆 guard 属「新增结构」而非「移动文件」，违背步骤 5 的等价重构纪律。该工作与步骤 6 拆分 `routes.ts` 合并进行更自然。
+
+**验证方法上的一次自纠**：首次等价性比对报告全部文件有差异，但 git 同时报告 `R100`（内容 100% 相同），二者矛盾。排查为 `core.autocrlf=true` 导致工作区为 CRLF、git 存储为 LF，是比对脚本漏做行尾规范化，非重构问题。规范化后重比方得上表结果。
 
 ---
 
