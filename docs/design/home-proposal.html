@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>主页结构方案</title>
+<style>
+  :root{
+    --bg:#FBFBFA; --card:#FFFFFF; --sun:#FFD84F; --sun-soft:#FFF8DE;
+    --ink1:#151515; --ink2:#3B3B3F; --ink3:#9CA3AF; --line:rgba(116,153,201,.09);
+    --grid:34px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#E8E8EC;display:flex;gap:32px;padding:32px;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+
+  .phone{
+    width:390px;height:844px;background:var(--bg);border-radius:44px;overflow:hidden;
+    position:relative;box-shadow:0 20px 50px rgba(0,0,0,.18);
+    background-image:
+      linear-gradient(var(--line) 1px,transparent 1px),
+      linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:var(--grid) var(--grid);
+  }
+  .scroll{position:absolute;inset:0;overflow-y:auto;padding:0 0 120px}
+  .scroll::-webkit-scrollbar{display:none}
+
+  /* ---------- 页头 ---------- */
+  .head{display:flex;align-items:center;justify-content:space-between;padding:20px 20px 0}
+  .brand{font-size:19px;font-weight:700;letter-spacing:-.4px;color:var(--ink1)}
+  .acts{display:flex;gap:10px}
+  .iconbtn{
+    width:40px;height:40px;border-radius:50%;background:#fff;border:0;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 1px 2px rgba(40,40,45,.05),0 2px 8px rgba(40,40,45,.06);
+  }
+
+  /* ---------- 主视觉 ---------- */
+  .hero{display:flex;flex-direction:column;align-items:center;padding:8px 20px 22px}
+  .hero svg{width:132px;height:132px;display:block}
+  .hero h1{font-size:21px;margin:10px 0 0;color:var(--ink1);letter-spacing:-.2px}
+  .hero p{margin:4px 0 0;font-size:13px;color:var(--ink3)}
+
+  /* ---------- 分段控件 ---------- */
+  .segwrap{padding:0 20px 18px}
+  .seg{
+    display:flex;gap:4px;background:rgba(0,0,0,.035);border-radius:999px;padding:4px;
+  }
+  .seg button{
+    flex:1;border:0;background:transparent;border-radius:999px;padding:9px 0;
+    font-size:13px;color:var(--ink2);font-family:inherit;
+  }
+  .seg button.on{
+    background:#fff;color:var(--ink1);font-weight:600;
+    box-shadow:0 1px 2px rgba(40,40,45,.06),0 2px 6px rgba(40,40,45,.07);
+  }
+
+  /* ---------- 分组 ---------- */
+  .group{padding:0 20px}
+  .group-title{font-size:13px;color:var(--ink3);margin:14px 0 10px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+  .tool{
+    background:var(--card);border-radius:24px;padding:18px 14px 16px;
+    display:flex;flex-direction:column;align-items:center;gap:10px;
+    box-shadow:0 1px 2px rgba(40,40,45,.04),0 2px 10px rgba(40,40,45,.05);
+  }
+  .tool svg{width:64px;height:64px;display:block}
+  .tool span{font-size:14px;color:var(--ink1);font-weight:500;letter-spacing:-.1px}
+
+  /* ---------- 悬浮底栏 ---------- */
+  .nav{
+    position:absolute;left:20px;right:20px;bottom:22px;height:64px;
+    background:rgba(255,255,255,.86);backdrop-filter:blur(12px);
+    border-radius:32px;display:flex;align-items:center;justify-content:space-around;
+    box-shadow:0 2px 6px rgba(40,40,45,.06),0 10px 28px rgba(40,40,45,.12);
+  }
+  .nav .it{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+  .nav .it.on{background:rgba(0,0,0,.06)}
+
+  /* ---------- 对照：现有结构 ---------- */
+  .old .tool{
+    flex-direction:row;align-items:flex-start;gap:12px;padding:14px;border-radius:20px;
+  }
+  .old .tool .txt{flex:1;min-width:0;text-align:left}
+  .old .tool h3{margin:0;font-size:15px;color:var(--ink1)}
+  .old .tool .d{margin:3px 0 0;font-size:12.5px;color:var(--ink2);line-height:1.5}
+  .old .tool .m{display:flex;gap:6px;margin-top:7px;font-size:11px;color:var(--ink3)}
+  .old .tool .m i{font-style:normal;background:#F2F2F4;border-radius:6px;padding:2px 7px}
+  .old .ic{width:44px;height:44px;border-radius:14px;background:var(--sun-soft);flex:none;
+    display:flex;align-items:center;justify-content:center}
+  .old .ic svg{width:26px;height:26px}
+  .label{text-align:center;font-size:12px;color:#6b6b73;margin:8px 0 0;letter-spacing:.3px}
+</style>
+</head>
+<body>
+
+<!-- 角色符号定义：4 种轮廓 × 同一套五官 -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <!-- 圆润型 -->
+    <symbol id="c-round" viewBox="0 0 300 300">
+      <path d="M148 30C180 24 214 40 236 68C254 91 272 108 271 136C270 162 248 180 240 206C230 238 208 262 176 269C146 276 114 264 92 243C66 219 32 202 28 170C24 137 44 108 60 84C78 57 116 36 148 30Z"
+            fill="currentColor" stroke="#2B2B2B" stroke-width="6" stroke-linejoin="round"/>
+      <path d="M186 104C192 104 196 109 196 115C196 121 191 126 185 125C179 124 176 119 177 113C178 108 181 104 186 104Z" fill="#2B2B2B"/>
+      <path d="M112 112C122 103 138 104 145 114C152 124 149 139 139 145C129 151 114 148 108 138C102 128 103 120 112 112Z" fill="#2B2B2B"/>
+      <path d="M120 117C125 114 130 117 130 122C130 127 126 130 122 130C118 130 115 126 115 122C115 119 117 117 120 117Z" fill="currentColor"/>
+      <path d="M128 156C140 176 172 176 184 156" fill="none" stroke="#2B2B2B" stroke-width="7" stroke-linecap="round"/>
+      <ellipse cx="100" cy="152" rx="13" ry="7" fill="#F0A868" opacity=".5"/>
+      <ellipse cx="212" cy="150" rx="13" ry="7" fill="#F0A868" opacity=".5"/>
+    </symbol>
+
+    <!-- 高瘦型 -->
+    <symbol id="c-tall" viewBox="0 0 300 300">
+      <path d="M154 22C190 20 222 44 238 78C250 104 262 124 258 154C253 190 236 214 220 240C204 266 176 280 146 277C114 274 88 258 72 230C54 198 38 176 40 144C42 108 62 78 86 56C108 36 126 24 154 22Z"
+            fill="currentColor" stroke="#2B2B2B" stroke-width="6" stroke-linejoin="round"/>
+      <path d="M182 108C188 108 192 113 192 119C192 125 187 130 181 129C175 128 172 123 173 117C174 112 177 108 182 108Z" fill="#2B2B2B"/>
+      <path d="M112 116C122 107 138 108 145 118C152 128 149 143 139 149C129 155 114 152 108 142C102 132 103 124 112 116Z" fill="#2B2B2B"/>
+      <path d="M120 121C125 118 130 121 130 126C130 131 126 134 122 134C118 134 115 130 115 126C115 123 117 121 120 121Z" fill="currentColor"/>
+      <path d="M130 158C142 178 174 178 186 158" fill="none" stroke="#2B2B2B" stroke-width="7" stroke-linecap="round"/>
+      <ellipse cx="102" cy="154" rx="12" ry="7" fill="#F0A868" opacity=".5"/>
+      <ellipse cx="210" cy="152" rx="12" ry="7" fill="#F0A868" opacity=".5"/>
+    </symbol>
+
+    <!-- 花瓣型 -->
+    <symbol id="c-petal" viewBox="0 0 300 300">
+      <path d="M150 18C168 34 190 30 208 40C228 52 236 74 248 92C262 114 276 134 268 156C260 178 250 190 244 212C234 246 210 268 176 274C144 280 112 272 88 250C64 228 44 212 38 182C32 152 46 128 58 104C72 76 88 58 108 44C124 32 134 4 150 18Z"
+            fill="currentColor" stroke="#2B2B2B" stroke-width="6" stroke-linejoin="round"/>
+      <path d="M186 108C192 108 196 113 196 119C196 125 191 130 185 129C179 128 176 123 177 117C178 112 181 108 186 108Z" fill="#2B2B2B"/>
+      <path d="M112 116C122 107 138 108 145 118C152 128 149 143 139 149C129 155 114 152 108 142C102 132 103 124 112 116Z" fill="#2B2B2B"/>
+      <path d="M120 121C125 118 130 121 130 126C130 131 126 134 122 134C118 134 115 130 115 126C115 123 117 121 120 121Z" fill="currentColor"/>
+      <path d="M130 158C142 178 174 178 186 158" fill="none" stroke="#2B2B2B" stroke-width="7" stroke-linecap="round"/>
+      <ellipse cx="102" cy="154" rx="12" ry="7" fill="#F0A868" opacity=".5"/>
+      <ellipse cx="210" cy="152" rx="12" ry="7" fill="#F0A868" opacity=".5"/>
+    </symbol>
+
+    <!-- 方块型 -->
+    <symbol id="c-square" viewBox="0 0 300 300">
+      <path d="M96 34C126 20 158 28 186 34C216 40 246 50 262 74C278 98 274 130 272 160C270 192 266 222 244 244C222 266 190 272 158 274C126 276 96 272 72 254C48 236 34 208 30 178C26 148 26 116 42 92C58 68 72 46 96 34Z"
+            fill="currentColor" stroke="#2B2B2B" stroke-width="6" stroke-linejoin="round"/>
+      <path d="M188 106C194 106 198 111 198 117C198 123 193 128 187 127C181 126 178 121 179 115C180 110 183 106 188 106Z" fill="#2B2B2B"/>
+      <path d="M114 114C124 105 140 106 147 116C154 126 151 141 141 147C131 153 116 150 110 140C104 130 105 122 114 114Z" fill="#2B2B2B"/>
+      <path d="M122 119C127 116 132 119 132 124C132 129 128 132 124 132C120 132 117 128 117 124C117 121 119 119 122 119Z" fill="currentColor"/>
+      <path d="M132 156C144 176 176 176 188 156" fill="none" stroke="#2B2B2B" stroke-width="7" stroke-linecap="round"/>
+      <ellipse cx="104" cy="152" rx="12" ry="7" fill="#F0A868" opacity=".5"/>
+      <ellipse cx="212" cy="150" rx="12" ry="7" fill="#F0A868" opacity=".5"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ========== 方案 ========== -->
+<div>
+<div class="phone">
+  <div class="scroll">
+    <div class="head">
+      <div class="brand">『ZBYBLQ』</div>
+      <div class="acts">
+        <button class="iconbtn">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#3B3B3F" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.2 14.4A8.6 8.6 0 0 1 9.6 3.8a8.6 8.6 0 1 0 10.6 10.6Z"/>
+          </svg>
+        </button>
+        <button class="iconbtn">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#3B3B3F" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="3.6"/><path d="M5 20.5c0-3.7 3.1-6.6 7-6.6s7 2.9 7 6.6"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="hero">
+      <svg style="color:#FFD84F"><use href="#c-round"/></svg>
+      <h1>个人工具合集</h1>
+      <p>12 个自用的小工具</p>
+    </div>
+
+    <div class="segwrap">
+      <div class="seg">
+        <button class="on">全部</button>
+        <button>算法</button>
+        <button>图像</button>
+        <button>音乐</button>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-title">算法</div>
+      <div class="grid">
+        <div class="tool"><svg style="color:#FFD84F"><use href="#c-round"/></svg><span>二叉树可视化</span></div>
+        <div class="tool"><svg style="color:#8DC3A7"><use href="#c-tall"/></svg><span>排序算法</span></div>
+        <div class="tool"><svg style="color:#8FB4D9"><use href="#c-petal"/></svg><span>路径寻找</span></div>
+        <div class="tool"><svg style="color:#E9A87C"><use href="#c-square"/></svg><span>字体转换</span></div>
+      </div>
+
+      <div class="group-title">图像</div>
+      <div class="grid">
+        <div class="tool"><svg style="color:#AD9BD4"><use href="#c-tall"/></svg><span>图片像素化</span></div>
+        <div class="tool"><svg style="color:#E8909F"><use href="#c-petal"/></svg><span>图片混淆</span></div>
+        <div class="tool"><svg style="color:#8FB4D9"><use href="#c-square"/></svg><span>转 ASCII</span></div>
+        <div class="tool"><svg style="color:#8DC3A7"><use href="#c-round"/></svg><span>电子包浆</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav">
+    <div class="it on">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#151515" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 10.2 12 4l8 6.2V19a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19z"/><path d="M9.5 20.5v-6h5v6"/>
+      </svg>
+    </div>
+    <div class="it">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="4" y="4" width="6.6" height="6.6" rx="2.2"/><rect x="13.4" y="4" width="6.6" height="6.6" rx="2.2"/>
+        <rect x="4" y="13.4" width="6.6" height="6.6" rx="2.2"/><rect x="13.4" y="13.4" width="6.6" height="6.6" rx="2.2"/>
+      </svg>
+    </div>
+    <div class="it">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="8" r="3.6"/><path d="M5 20.5c0-3.7 3.1-6.6 7-6.6s7 2.9 7 6.6"/>
+      </svg>
+    </div>
+  </div>
+</div>
+<div class="label">方案</div>
+</div>
+
+<!-- ========== 对照：现有 ========== -->
+<div>
+<div class="phone old" style="background-image:none;background:#FBFBFA">
+  <div class="scroll">
+    <div class="head" style="padding-top:26px">
+      <div class="brand" style="font-size:26px">『ZBYBLQ』</div>
+      <div class="acts">
+        <button class="iconbtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3B3B3F" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.2 14.4A8.6 8.6 0 0 1 9.6 3.8a8.6 8.6 0 1 0 10.6 10.6Z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div style="padding:6px 20px 14px;font-size:13px;color:var(--ink3)">个人工具合集</div>
+    <div style="display:flex;gap:8px;padding:0 20px 16px;overflow:hidden">
+      <span style="background:#E9F7EF;color:#2f6b4a;border-radius:999px;padding:7px 14px;font-size:13px;white-space:nowrap">全部 12</span>
+      <span style="background:#fff;border:1px solid #E5E7EB;border-radius:999px;padding:7px 14px;font-size:13px;color:#3B3B3F;white-space:nowrap">工具 9</span>
+      <span style="background:#fff;border:1px solid #E5E7EB;border-radius:999px;padding:7px 14px;font-size:13px;color:#3B3B3F;white-space:nowrap">图像 5</span>
+    </div>
+    <div style="padding:0 20px;display:flex;flex-direction:column;gap:12px">
+      <div class="tool"><div class="ic"><svg style="color:#8DC3A7" viewBox="0 0 300 300"><use href="#c-round"/></svg></div>
+        <div class="txt"><h3>二叉树可视化 <span style="font-size:11px;background:#FFF8DE;color:#7F6B2F;border-radius:999px;padding:1px 8px">USELESS</span></h3>
+        <p class="d">输入层序遍历数组，自动生成可视化二叉树，支持保存为图片</p>
+        <div class="m"><i>算法</i><i>工具</i><span style="margin-left:auto">01-03</span></div></div></div>
+      <div class="tool"><div class="ic"><svg style="color:#8FB4D9" viewBox="0 0 300 300"><use href="#c-tall"/></svg></div>
+        <div class="txt"><h3>英文字体转换 <span style="font-size:11px;background:#FFF8DE;color:#7F6B2F;border-radius:999px;padding:1px 8px">not NEW</span></h3>
+        <p class="d">输入英文，点击样式即可一键转换特殊字体，支持多种花体/粗体/斜体等 Unicode 样式</p>
+        <div class="m"><i>工具</i><span style="margin-left:auto">09-18</span></div></div></div>
+      <div class="tool"><div class="ic"><svg style="color:#AD9BD4" viewBox="0 0 300 300"><use href="#c-petal"/></svg></div>
+        <div class="txt"><h3>小番茄图片混淆 <span style="font-size:11px;background:#FFF8DE;color:#7F6B2F;border-radius:999px;padding:1px 8px">XIXI</span></h3>
+        <p class="d">基于空间填充曲线的图片混淆工具，混淆后压缩仍保持色彩，支持混淆/解混淆/还原操作</p>
+        <div class="m"><i>图像</i><i>工具</i><span style="margin-left:auto">01-02</span></div></div></div>
+    </div>
+  </div>
+</div>
+<div class="label">现有结构</div>
+</div>
+
+</body>
+</html>
