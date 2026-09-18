@@ -1,0 +1,62 @@
+/**
+ * 第二层：语义令牌（浅色主题）
+ *
+ * 组件只允许引用本文件的变量。切换主题时只需重新映射这一层，
+ * 组件代码无需改动。
+ *
+ * 参见 docs/03-design-system.md §3.4
+ */
+
+:root {
+  /* 表面 */
+  --surface-page:     var(--paper-1);
+  --surface-card:     var(--paper-0);
+  --surface-sunken:   var(--paper-2);
+  --surface-overlay:  var(--paper-0);
+  --surface-nav:      color-mix(in srgb, var(--paper-0) 82%, transparent);
+
+  /* 文字 */
+  --text-primary:     var(--ink-1);
+  --text-secondary:   var(--ink-2);
+  --text-tertiary:    var(--ink-3);
+  --text-disabled:    var(--ink-4);
+  --text-on-accent:   var(--paper-0);
+
+  /* 描边 */
+  --border-subtle:    var(--ink-5);
+  --border-default:   var(--ink-4);
+
+  /* 状态：前景 + 背景成对，对比度不低于 4.5:1 */
+  --state-success-fg: #4A6B4F;
+  --state-success-bg: #E8F0E8;
+  --state-warning-fg: #8A6528;
+  --state-warning-bg: #F8EFDC;
+  --state-danger-fg:  #8E4E48;
+  --state-danger-bg:  #F7E4E2;
+  --state-info-fg:    #4C6479;
+  --state-info-bg:    #E6EDF3;
+
+  /* 主题色（由 accent/ 下的色板覆盖，此处为薄荷默认值） */
+  --accent:      var(--macaron-mint);
+  --accent-soft: var(--macaron-mint-soft);
+  --accent-deep: var(--macaron-mint-deep);
+
+  /* 主题色在组件中的用途别名 */
+  --accent-fg:   var(--accent);
+  --accent-bg:   var(--accent-soft);
+  --accent-text: var(--accent-deep);
+
+  /* 遮罩 */
+  --overlay-scrim: rgba(59, 52, 44, 0.32);
+
+  /* 质感层不透明度 */
+  --texture-opacity: 0.035;
+  --texture-blend: multiply;
+
+  /* 深色模式不适用阴影，浅色下正常 */
+  --elev-card: var(--elev-1);
+  --elev-hover: var(--elev-2);
+  --elev-float: var(--elev-3);
+
+  color-scheme: light;
+}

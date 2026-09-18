@@ -1,0 +1,44 @@
+/**
+ * 质感层
+ *
+ * EMMO 的「手帐」「油画棒」质感是本项目此前完全缺失的维度，
+ * 也是拉开与普通工具站差距的关键。
+ *
+ * 使用边界（见 docs/03-design-system.md §6.3）：
+ *   允许：页面背景、卡片外框、空状态插图
+ *   禁止：正文文本容器背景、表单控件内部、数据表格与图表区
+ */
+
+/* 纸纹叠加层。用法：
+ *   <div class="texture-paper"> ... </div>
+ * 需要宿主元素为 position: relative 或 absolute。
+ */
+.texture-paper {
+  position: relative;
+}
+
+.texture-paper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* 必须：质感层不参与交互 */
+  pointer-events: none;
+  z-index: 0;
+  border-radius: inherit;
+  opacity: var(--texture-opacity);
+  mix-blend-mode: var(--texture-blend);
+  background-image: url('./grain.svg');
+  background-repeat: repeat;
+  background-size: 140px 140px;
+}
+
+/* 保证宿主内容浮在质感层之上 */
+.texture-paper > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* 整页质感的便捷写法：直接加在 .bg-view 上 */
+.bg-view.texture-paper::before {
+  border-radius: 0;
+}

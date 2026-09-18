@@ -1,12 +1,17 @@
 /**
- * 页面数据管理
- * 基于navItems.json的数据结构
+ * 工具元数据
+ *
+ * icon 字段为图标名，对应 @/shared/icons 的 registry。
+ * 全站禁用 emoji，图标一律通过 AppIcon 渲染。
+ * 参见 docs/04-icon-system.md §5.1
  */
+
+import type { IconName } from '@/shared/icons'
 
 export interface NavItem {
   id: string
   href: string
-  icon: string
+  icon: IconName
   title: string
   desc: string
   tags: string[]
@@ -35,7 +40,7 @@ export const pageRouteMap: Record<string, NavItem> = {
   'btree-visual': {
     id: 'btree-visual',
     href: '/tools/btree-visual',
-    icon: '🌳',
+    icon: 'tool-btree',
     title: '二叉树可视化',
     desc: '输入层序遍历数组，自动生成可视化二叉树，支持保存为图片',
     tags: ['算法', '工具'],
@@ -47,7 +52,7 @@ export const pageRouteMap: Record<string, NavItem> = {
   'eft-tool': {
     id: 'eft-tool',
     href: '/tools/eft-tool',
-    icon: '🔤',
+    icon: 'tool-font',
     title: '英文字体转换工具',
     desc: '输入英文，点击样式即可一键转换特殊字体，支持多种花体/粗体/斜体等Unicode样式。',
     tags: ['工具'],
@@ -59,7 +64,7 @@ export const pageRouteMap: Record<string, NavItem> = {
   'encryption-graph': {
     id: 'encryption-graph',
     href: '/tools/encryption-graph',
-    icon: '🍅',
+    icon: 'tool-scramble',
     title: '小番茄图片混淆',
     desc: '基于空间填充曲线的图片混淆工具，混淆后压缩仍保持色彩，支持混淆/解混淆/还原操作',
     tags: ['图像', '工具'],
@@ -71,7 +76,7 @@ export const pageRouteMap: Record<string, NavItem> = {
   'drum-pad': {
     id: 'drum-pad',
     href: '/tools/drum-pad',
-    icon: '🥁',
+    icon: 'tool-drum',
     title: 'Drum Pad 鼓机',
     desc: '纯 WebAudio 合成鼓垫：Kick/Snare/Hat/Clap，支持键盘演奏与 16 步编排循环',
     tags: ['音乐'],
@@ -83,7 +88,7 @@ export const pageRouteMap: Record<string, NavItem> = {
   'kalimba': {
     id: 'kalimba',
     href: '/tools/kalimba',
-    icon: '🎶',
+    icon: 'tool-kalimba',
     title: 'Kalimba 拇指琴',
     desc: '纯 WebAudio 合成拇指琴：点击/键盘演奏，支持调式选择与录制循环，音色治愈',
     tags: ['音乐'],
@@ -95,7 +100,7 @@ export const pageRouteMap: Record<string, NavItem> = {
   'sort-viz': {
     id: 'sort-viz',
     href: '/tools/sort-viz',
-    icon: '📊',
+    icon: 'tool-sort',
     title: '排序算法可视化',
     desc: '支持冒泡/选择/插入/归并/快速，观察比较与交换过程，支持调速与单步执行',
     tags: ['算法', '工具'],
@@ -107,7 +112,7 @@ export const pageRouteMap: Record<string, NavItem> = {
   'img2ascii': {
     id: 'img2ascii',
     href: '/tools/img2ascii',
-    icon: '🧩',
+    icon: 'tool-ascii',
     title: '图片转 ASCII',
     desc: '上传图片生成字符画，支持亮度/对比度/反相，彩色 ASCII，可导出 TXT/PNG',
     tags: ['图像', '工具', '实验'],
@@ -119,7 +124,7 @@ export const pageRouteMap: Record<string, NavItem> = {
   'pixelate': {
     id: 'pixelate',
     href: '/tools/pixelate',
-    icon: '🟦',
+    icon: 'tool-pixelate',
     title: 'Pixelate · 图片像素化',
     desc: '上传图片 → 调像素块大小 → 导出PNG（可选限制色板 8/16/32 色）',
     tags: ['图像', '工具'],
@@ -131,7 +136,7 @@ export const pageRouteMap: Record<string, NavItem> = {
   'floyd-steinberg': {
     id: 'floyd-steinberg',
     href: '/tools/floyd-steinberg',
-    icon: '⬛️',
+    icon: 'tool-dither',
     title: 'Dithering · Floyd–Steinberg',
     desc: '黑白/限定色 Floyd–Steinberg 误差扩散抖动：复古报纸风、GameBoy 风',
     tags: ['图像', '工具'],
@@ -143,7 +148,7 @@ export const pageRouteMap: Record<string, NavItem> = {
   'pathfinding-visualize': {
     id: 'pathfinding-visualize',
     href: '/tools/pathfinding-visualize',
-    icon: '🧩',
+    icon: 'tool-path',
     title: '路径寻找可视化',
     desc: '可视化不同路径寻找算法的过程，支持多种算法与参数设置',
     tags: ['算法', '工具'],
@@ -155,7 +160,7 @@ export const pageRouteMap: Record<string, NavItem> = {
   'photo-patina': {
     id: 'photo-patina',
     href: '/tools/photo-patina',
-    icon: '🖼️',
+    icon: 'tool-patina',
     title: '电子包浆 · JPEG 二次压缩',
     desc: '上传照片，选择包浆风格与强度，生成具有复古包浆效果的图片',
     tags: ['图像', '工具', '实验'],
@@ -167,7 +172,7 @@ export const pageRouteMap: Record<string, NavItem> = {
   'piano-keys': {
     id: 'piano-keys',
     href: '/tools/piano-keys',
-    icon: '🎹',
+    icon: 'tool-piano',
     title: 'Piano Keys',
     desc: '基于 Web Audio API 的在线钢琴，支持键盘演奏、多种音色切换、预设曲目播放',
     tags: ['音乐'],

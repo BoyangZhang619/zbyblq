@@ -1,0 +1,39 @@
+/**
+ * 第一层：动效令牌
+ *
+ * --ease-soft 是「可爱」调性的关键：在位移、缩放类动画结尾加入
+ * 轻微过冲，产生 Q 弹的物理感。仅用于小尺寸元素的进入动画，
+ * 大面板使用 --ease-out。
+ *
+ * 参见 docs/03-design-system.md §7
+ */
+
+:root {
+  /* 时长 */
+  --dur-instant: 80ms;
+  --dur-fast:    140ms;
+  --dur-base:    220ms;
+  --dur-slow:    340ms;
+
+  /* 缓动 */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out:      cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:   cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-soft:     cubic-bezier(0.34, 1.45, 0.64, 1);
+
+  /* 兼容旧代码的过渡简写（阶段一前遗留的 global.css 使用） */
+  --transition-duration: var(--dur-base);
+  --transition-timing: var(--ease-standard);
+}
+
+/* 尊重系统的减弱动效设置，必须保留 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,134 +1,81 @@
-/* Bottom Navigation Component Styles */
+/**
+ * 底部导航样式
+ *
+ * 视觉规范见 docs/03-design-system.md §8.2
+ * 全部使用语义令牌，无裸色值、无裸间距。
+ */
 
 .bottom-nav {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  height: var(--size-nav-height);
-  background-color: var(--color-background);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
+  /* 高度含安全区，Capacitor 打包后在带横条的设备上不被遮挡 */
+  height: calc(var(--size-nav-height) + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+
+  /* 半透明 + 背景模糊，呼应系统的毛玻璃观感 */
+  background-color: var(--surface-nav);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  /* 深色模式下阴影不可见，改用描边表达层级 */
+  border-top: 1px solid var(--border-subtle);
+  box-shadow: var(--elev-card);
+
   z-index: 1000;
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
-  transition: all .2s ease-in-out;
 }
 
-@media (prefers-color-scheme: dark) {
-  .bottom-nav {
-    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.3);
-  }
-}
-
-/* Navigation Items Container */
 .nav-items {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  height: 100%;
+  height: var(--size-nav-height);
   width: 100%;
+  max-width: var(--width-content-max);
+  margin: 0 auto;
 }
 
-/* Single Navigation Item */
 .nav-item {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  cursor: pointer;
-  text-decoration: none;
-  color: var(--color-text);
-  padding: 8px 0;
-  position: relative;
-  user-select: none;
+
+  /* 触控目标不小于 44x44 */
+  min-width: var(--size-touch-min);
+  min-height: var(--size-touch-min);
   flex: 1;
   height: 100%;
+
+  color: var(--text-tertiary);
+  user-select: none;
+  -webkit-user-select: none;
+
+  transition:
+    color var(--dur-fast) var(--ease-standard),
+    transform var(--dur-base) var(--ease-soft);
 }
 
-/* Active Navigation Item */
 .nav-item.active {
-  color: var(--color-primary);
-  font-weight: 600;
-  transition: all .2s ease-in-out;
+  color: var(--accent-fg);
+
+  /* 轻微上移，配合 --ease-soft 的过冲产生 Q 弹感 */
+  transform: translateY(-2px);
 }
 
-/* Inactive Navigation Item */
-.nav-item.inactive {
-  color: var(--color-secondary);
-  transition: all .2s ease-in-out;
+.nav-item:active {
+  transform: scale(0.94);
 }
 
-/* Icon Styling */
 .nav-icon {
-  width: var(--size-nav-icon);
-  height: var(--size-nav-icon);
-  stroke-width: 2.5;
-  flex-shrink: 0;
+  /* 尺寸由 AppIcon 的 size 属性控制 */
+  pointer-events: none;
 }
 
-/* Label Styling */
-.nav-label {
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.3px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 60px;
-}
-
-/* Responsive Design */
-@media (max-width: 480px) {
-  .bottom-nav {
-    height: 56px;
-    --size-nav-height: 56px;
-  }
-
-  .nav-item {
-    padding: 6px 0;
-  }
-
-  .nav-icon {
-    --size-nav-icon: 32px;
-  }
-
-  .nav-label {
-    font-size: 11px;
-  }
-}
-
-@media (max-width: 320px) {
-  .bottom-nav {
-    height: 52px;
-    --size-nav-height: 52px;
-  }
-
-  .nav-item {
-    padding: 4px 0;
-  }
-
-  .nav-icon {
-    --size-nav-icon: 18px;
-  }
-
-  .nav-label {
-    font-size: 10px;
-  }
-}
-
-/* Dark Mode Adjustments */
-@media (prefers-color-scheme: dark) {
-  .nav-item.active {
-    color: var(--color-light-background);
-  }
-
-  .nav-item.inactive {
-    color: var(--color-secondary);
-  }
-
-  .nav-item.inactive:hover {
-    color: var(--color-text);
+/* 宽屏下收窄，避免图标间距过大 */
+@media (min-width: 768px) {
+  .nav-items {
+    max-width: 420px;
   }
 }

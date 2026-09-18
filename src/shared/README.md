@@ -46,4 +46,11 @@ modules/  ──依赖──>  shared/  ──依赖──>  design/
 
 ## 迁移状态
 
-当前 `src/utils/notifications/`（约 2300 行）将迁入 `shared/utils/notifications/`。迁入前需按 `docs/04-icon-system.md` 处理其文档中的 emoji。
+已完成：`notifications/`（约 2300 行）已迁入 `shared/utils/notifications/`。
+
+待补：`ui/`、`icons/`、`composables/`、`stores/` 已建立但内容尚少。其中
+`icons/` 已投入实际使用（自制 SVG 图标体系），其余随各阶段推进填充。
+
+**注意**：`utils/notifications/` 当前**无任何生产消费者**，首页的原演示面板
+已在视觉重塑阶段被工具导航取代。该模块保留是为接入账户系统的事件反馈，
+详见其 README 的「当前状态」一节。

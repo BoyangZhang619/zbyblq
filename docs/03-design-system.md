@@ -524,3 +524,43 @@ EMMO 风格的容器组件，用于工具参数面板、课程详情等场景。
 - [ ] 底部导航在带刘海/横条的设备上不被遮挡
 - [ ] 纸纹质感层不拦截任何点击事件
 - [ ] `src/style.css` 与 `src/css/global.css` 已退役
+
+---
+
+## 12. 执行记录
+
+### 12.1 已完成（2026-09-18）
+
+| 项 | 结果 |
+| --- | --- |
+| 令牌层 | `design/tokens/`：palette、scale、motion 三个文件 |
+| 主题层 | `design/themes/`：light、dark、accent（六套色板） |
+| 基础样式 | `design/base.css`，接管原 `style.css` 与 `css/global.css` 的职责 |
+| 质感层 | `design/texture/`：纸纹 SVG + 工具类 |
+| 汇总入口 | `design/index.css`，由 `main.ts` 引入 |
+| 主题切换 | `shared/composables/useTheme.ts` |
+| 组件改造 | BottomNav、HomeView、CategoryView、ProfileView、ToolCard |
+| 退役文件 | `src/style.css`、`src/design/global.css` |
+
+### 12.2 与计划的三处偏差
+
+1. **组件样式未进 `design/`，而是与组件同目录**
+   §2 的分层中 `design/` 只放令牌、基础样式与质感，具体组件的样式随组件走。
+   理由：`design/` 应当保持「纯 CSS 且无业务语义」，而 `.tool-card__title`
+   这类选择器带有明确的业务含义。这也与 `modules/README.md` 中
+   「模块自包含」的约定一致。
+
+2. **`.texture-paper` 采用工具类而非自动应用**
+   §6.1 示例中使用伪元素叠加。实际实现为可选工具类，由组件显式声明，
+   避免质感层意外覆盖表单控件与数据区（§6.3 的禁止项）。
+
+3. **`src/style.css` 的退役时机**
+   该文件在 01 文档中曾被误列为死代码，核实后确认它承载基线样式。
+   本次随令牌体系就位一并退役，属计划内动作，但执行顺序上与
+   §10 的步骤 2 合并完成。
+
+### 12.3 待办
+
+- §11 中的「六套色板切换后均可读」需人工目视确认，构建无法验证
+- 圆体字体（§4.1）维持系统字体栈，未引入 Web 字体
+- 深色模式下的实际观感需在真机确认（阴影已按 §5.3 改为描边）

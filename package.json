@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
+    "build": "npm run lint:emoji && vue-tsc -b && vite build",
+    "preview": "vite preview",
+    "lint:emoji": "node tools/check-no-emoji.mjs"
   },
   "dependencies": {
     "@capacitor/android": "^8.3.1",

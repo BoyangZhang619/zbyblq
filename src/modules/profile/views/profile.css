@@ -1,0 +1,171 @@
+/**
+ * 个人中心样式
+ * 见 docs/03-design-system.md §3.3 §9
+ */
+
+.profile {
+  min-height: 100%;
+  padding-top: var(--space-6);
+}
+
+.profile__header {
+  margin-bottom: var(--space-6);
+}
+
+.profile__title {
+  font-size: var(--text-2xl);
+  line-height: var(--leading-2xl);
+}
+
+.profile__subtitle {
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+/* ============================================
+   设置分组
+   ============================================ */
+.profile__section {
+  margin-bottom: var(--space-6);
+}
+
+.profile__section-title {
+  margin-bottom: var(--space-3);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+}
+
+/* ============================================
+   明暗模式
+   ============================================ */
+.profile__modes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.profile__mode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 72px;
+  padding: var(--space-3);
+
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+
+  transition:
+    color var(--dur-fast) var(--ease-standard),
+    background-color var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard),
+    transform var(--dur-base) var(--ease-soft);
+}
+
+.profile__mode:hover {
+  border-color: var(--border-default);
+}
+
+.profile__mode:active {
+  transform: scale(0.97);
+}
+
+.profile__mode.is-active {
+  color: var(--accent-text);
+  background-color: var(--accent-bg);
+  border-color: transparent;
+  font-weight: var(--weight-medium);
+}
+
+/* ============================================
+   主题色板
+   每个按钮自带 accent-* 类，因此按钮内的
+   var(--accent) 即该色板自身的主色
+   ============================================ */
+.profile__swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: var(--space-2);
+}
+
+.profile__swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 68px;
+  padding: var(--space-3);
+
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+
+  transition:
+    border-color var(--dur-fast) var(--ease-standard),
+    background-color var(--dur-fast) var(--ease-standard),
+    transform var(--dur-base) var(--ease-soft);
+}
+
+.profile__swatch:hover {
+  border-color: var(--border-default);
+}
+
+.profile__swatch:active {
+  transform: scale(0.97);
+}
+
+.profile__swatch.is-active {
+  background-color: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent-deep);
+  font-weight: var(--weight-medium);
+}
+
+.profile__swatch-dot {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-full);
+  background-color: var(--accent);
+}
+
+.profile__swatch.is-active .profile__swatch-dot {
+  /* 选中态加一圈留白环，呼应贴纸描边 */
+  box-shadow: 0 0 0 3px var(--surface-card), 0 0 0 5px var(--accent);
+}
+
+.profile__swatch-name {
+  white-space: nowrap;
+}
+
+/* ============================================
+   账户占位
+   ============================================ */
+.profile__placeholder {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+
+  color: var(--text-tertiary);
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-md);
+}
+
+.profile__placeholder-text {
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+}
+
+@media (min-width: 768px) {
+  .profile {
+    padding-top: var(--space-10);
+  }
+}

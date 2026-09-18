@@ -1,0 +1,60 @@
+/**
+ * 第二层：语义令牌（深色主题）
+ *
+ * 与浅色主题的差异要点：
+ * 1. 深色下墨与纸互换角色，使用独立的 night-* / moon-* 色阶而非
+ *    简单反转，以保证暖调不丢失
+ * 2. 主色需按比例提亮——低饱和的莫兰迪色在深底上对比不足
+ * 3. 阴影在深色下几乎不可见，层级改用描边表达
+ *
+ * 参见 docs/03-design-system.md §3.4
+ */
+
+:root[data-theme='dark'] {
+  /* 表面 */
+  --surface-page:     var(--night-0);
+  --surface-card:     var(--night-1);
+  --surface-sunken:   var(--night-2);
+  --surface-overlay:  var(--night-3);
+  --surface-nav:      color-mix(in srgb, var(--night-1) 82%, transparent);
+
+  /* 文字 */
+  --text-primary:     var(--moon-1);
+  --text-secondary:   var(--moon-2);
+  --text-tertiary:    var(--moon-3);
+  --text-disabled:    var(--moon-4);
+  --text-on-accent:   var(--night-0);
+
+  /* 描边：深色下层级主要靠它表达 */
+  --border-subtle:    var(--night-4);
+  --border-default:   var(--night-5);
+
+  /* 状态：深色下改用暗底 + 提亮文字 */
+  --state-success-fg: #A8C9AC;
+  --state-success-bg: #24312A;
+  --state-warning-fg: #DCC08A;
+  --state-warning-bg: #33291A;
+  --state-danger-fg:  #DBA8A3;
+  --state-danger-bg:  #33211F;
+  --state-info-fg:    #A2BACD;
+  --state-info-bg:    #1F2A33;
+
+  /* 主题色在深色下提亮，保证对比度 */
+  --accent-fg:   color-mix(in srgb, var(--accent) 85%, white);
+  --accent-bg:   color-mix(in srgb, var(--accent) 18%, var(--night-1));
+  --accent-text: color-mix(in srgb, var(--accent) 70%, white);
+
+  /* 遮罩：深色下更重 */
+  --overlay-scrim: rgba(0, 0, 0, 0.56);
+
+  /* 质感层：深色下改用 screen 混合，或可置 0 关闭 */
+  --texture-opacity: 0.025;
+  --texture-blend: screen;
+
+  /* 阴影在深色下几乎不可见，改用描边层级 */
+  --elev-card: none;
+  --elev-hover: none;
+  --elev-float: none;
+
+  color-scheme: dark;
+}

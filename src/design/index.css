@@ -1,0 +1,32 @@
+/**
+ * 设计系统汇总入口
+ *
+ * 引入顺序即层叠顺序，不可随意调整：
+ *   1. 原始令牌      —— 色值、刻度、动效的唯一定义处
+ *   2. 语义主题      —— 把原始令牌映射为组件可用的语义名
+ *   3. 主题色板      —— 覆盖 --accent 三档
+ *   4. 质感层        —— 纸纹工具类
+ *   5. 基础元素样式  —— reset 与标签默认值
+ *
+ * 本文件由 src/main.ts 引入，是全站样式的唯一入口。
+ *
+ * 参见 docs/03-design-system.md §2
+ */
+
+/* 1. 原始令牌 */
+@import './tokens/palette.css';
+@import './tokens/scale.css';
+@import './tokens/motion.css';
+
+/* 2. 语义主题 */
+@import './themes/light.css';
+@import './themes/dark.css';
+
+/* 3. 主题色板 */
+@import './themes/accent/index.css';
+
+/* 4. 质感层 */
+@import './texture/texture.css';
+
+/* 5. 基础元素样式 */
+@import './base.css';

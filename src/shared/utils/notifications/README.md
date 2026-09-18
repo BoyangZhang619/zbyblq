@@ -1,21 +1,21 @@
 # 通知系统使用指南
 
-## 📋 概述
+## 概述
 
 这是一个功能强大、高度可扩展的 Capacitor 本地通知系统，支持：
 
-- ✅ 简单通知和复杂通知
-- ✅ 模板系统（预定义和自定义）
-- ✅ 流式构建器 API
-- ✅ 定时和重复通知
-- ✅ 通知队列和批处理
-- ✅ 拦截器中间件系统
-- ✅ 通知群组管理
-- ✅ 历史记录和统计
-- ✅ 事件监听系统
-- ✅ 频率限制、去重、内容增强等
+- [OK] 简单通知和复杂通知
+- [OK] 模板系统（预定义和自定义）
+- [OK] 流式构建器 API
+- [OK] 定时和重复通知
+- [OK] 通知队列和批处理
+- [OK] 拦截器中间件系统
+- [OK] 通知群组管理
+- [OK] 历史记录和统计
+- [OK] 事件监听系统
+- [OK] 频率限制、去重、内容增强等
 
-## 🚀 快速开始
+## 快速开始
 
 ### 1. 基础使用
 
@@ -82,7 +82,7 @@ await manager.schedule({
 })
 ```
 
-## 🔧 核心功能
+## 核心功能
 
 ### NotificationManager 类
 
@@ -140,7 +140,7 @@ manager.once('click', (data) => {
 manager.off('click', callback)
 ```
 
-## 📦 拦截器系统
+## 拦截器系统
 
 ### 内置拦截器
 
@@ -218,7 +218,7 @@ InterceptorFactory.createSafeInterceptors()
 InterceptorFactory.createMinimalInterceptors()
 ```
 
-## 📝 模板系统
+## 模板系统
 
 ### 内置模板
 
@@ -262,7 +262,7 @@ await manager.sendWithTemplate('my-template', {
 })
 ```
 
-## 👥 通知群组
+## 通知群组
 
 ```typescript
 // 创建群组
@@ -285,7 +285,7 @@ await manager.sendGroupNotification('order-group', {
 })
 ```
 
-## 📊 历史和统计
+## 历史和统计
 
 ```typescript
 // 获取历史记录
@@ -310,7 +310,7 @@ manager.clearHistory()
 manager.resetStats()
 ```
 
-## 🎨 高级用法
+## 高级用法
 
 ### 加载状态流程
 
@@ -378,25 +378,24 @@ const manager = getNotificationManager({
 })
 ```
 
-## 🏠 Home 页面测试
+## 当前状态：暂无消费者
 
-访问应用的主页面（`/home`）可以看到完整的通知系统演示面板，包含：
+**本模块目前处于待接入状态。**
 
-- ✅ 基础功能测试按钮
-- ✅ 模板功能测试
-- ✅ 高级功能（构建器、定时、批量等）
-- ✅ 拦截器和群组测试
-- ✅ 加载状态和统计展示
-- ✅ 实时统计信息面板
-- ✅ 通知历史记录展示
+首页原先承载的通知系统演示面板已在视觉重塑阶段被真实的工具导航取代
+（见 `docs/03-design-system.md`）。因此本模块当前**没有任何生产代码引用它**，
+仅有 `EXAMPLES.ts` 作为用法示例。
 
-### 实时统计面板
+它被保留而非删除的理由：本模块是完整可用的实现，且已规划了明确的接入点。
 
-显示以下数据：
-- 已发送的通知总数
-- 失败的通知数
-- 用户点击的次数
-- 用户关闭的通知数
+计划中的接入场景（见 `docs/05-account-system.md` §7.6）：
+
+- 登录成功 / 失败 / 会话过期的反馈
+- 云端同步冲突提示
+- Capacitor 本地通知（应用在后台时的定时提醒）
+
+在账户系统落地前，本模块不参与任何界面呈现。若长期不接入，应考虑移入
+`archive/`，避免 `shared/` 层级暗示它正在被使用。
 
 ### 历史记录
 
@@ -406,19 +405,20 @@ const manager = getNotificationManager({
 - 发送状态（已发送/失败/待发送）
 - 发送时间
 
-## 📁 项目结构
+## 项目结构
 
 ```
-src/utils/notifications/
+src/shared/utils/notifications/
 ├── index.ts                 # 导出入口
-├── types.ts                # 类型定义
-├── NotificationManager.ts  # 核心管理类
-├── Interceptors.ts         # 拦截器实现
-├── helpers.ts              # 模板、构建器、工具函数
-└── EXAMPLES.ts            # 使用示例
+├── types.ts                 # 类型定义
+├── NotificationManager.ts   # 核心管理类
+├── Interceptors.ts          # 拦截器实现
+├── helpers.ts               # 模板、构建器、工具函数
+├── EXAMPLES.ts              # 使用示例（无生产消费者）
+└── README.md                # 本文件
 ```
 
-## ⚙️ 配置示例
+## 配置示例
 
 ```typescript
 import { createNotificationManager, InterceptorFactory } from '@/utils/notifications'
@@ -458,7 +458,7 @@ const manager = createNotificationManager({
 })
 ```
 
-## 🔗 单例模式
+## 单例模式
 
 系统使用单例模式管理全局通知管理器：
 
@@ -476,7 +476,7 @@ const manager3 = createNotificationManager()
 console.log(manager3 === manager1) // false
 ```
 
-## 💡 最佳实践
+## 最佳实践
 
 1. **使用单例模式** - 在应用启动时初始化一次
 2. **合理配置拦截器** - 使用预设组合而不是手动配置
@@ -485,7 +485,7 @@ console.log(manager3 === manager1) // false
 5. **查看统计** - 定期分析通知发送情况
 6. **适当清理** - 定期清除历史记录释放内存
 
-## 🐛 常见问题
+## 常见问题
 
 ### Q: 通知没有显示？
 A: 检查权限配置和通道设置，确保通道ID正确。
@@ -499,7 +499,7 @@ A: 使用队列系统和批处理，配合频率限制拦截器。
 ### Q: 如何自定义通知样式？
 A: 使用 `NotificationStyle` 接口配置，或创建模板预设。
 
-## 📚 相关文档
+## 相关文档
 
 - [Capacitor 本地通知文档](https://capacitorjs.com/docs/apis/local-notifications)
 - [Vue 3 Composition API](https://vuejs.org/guide/extras/composition-api-faq.html)
