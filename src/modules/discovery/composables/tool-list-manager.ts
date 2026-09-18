@@ -1,68 +1,40 @@
 /**
- * 工具列表数据管理器
- * 负责工具的显示、筛选和导向
+ * 工具列表管理器
+ *
+ * 负责工具的筛选与排序。数据源为各工具的 manifest，见
+ * docs/01-refactor-structure.md §6
  */
 
-import { getPagesByTag, getAllToolPages, getPageInfo } from '@/modules/tools'
-import type { NavItem } from '@/modules/tools'
+import { getTools, getToolsByTag } from '@/modules/tools'
+import type { ToolManifest } from '@/modules/tools'
+
+export type SortBy = 'default' | 'name' | 'updated'
 
 export interface ToolListOptions {
+  /** 按标签筛选 */
   category?: string
-  sortBy?: 'name' | 'date' | 'default'
-  filterInactive?: boolean
+  sortBy?: SortBy
 }
 
 export class ToolListManager {
-  /**
-   * 获取工具列表
-   */
-  public getToolList(options?: ToolListOptions): NavItem[] {
-    let tools: NavItem[] = []
+  public getToolList(options: ToolListOptions = {}): ToolManifest[] {
+    const { category, sortBy = 'default' } = options
 
-    // 按分类获取或获取全部
-    if (options?.category) {
-      tools = getPagesByTag(options.category)
-    } else {
-      tools = getAllToolPages()
+    const tools = category ? getToolsByTag(category) : [...getTools()]
+
+    switch (sortBy) {
+      case 'name':
+        return tools.sort((a, b) => a.title.localeCompare(b.title, 'zh-Hans-CN'))
+      case 'updated':
+        return tools.sort((a, b) =>
+          (b.lifecycle.updated ?? '').localeCompare(a.lifecycle.updated ?? ''),
+        )
+      default:
+        return tools
     }
-
-    // 筛选活跃工具
-    if (options?.filterInactive !== false) {
-      tools = tools.filter(t => t.status === 'active')
-    }
-
-    // 排序
-    if (options?.sortBy === 'name') {
-      tools = [...tools].sort((a, b) => a.title.localeCompare(b.title, 'zh'))
-    } else if (options?.sortBy === 'date') {
-      tools = [...tools].sort((a, b) => {
-        const dateA = new Date(b.updateTime || b.createTime || '').getTime()
-        const dateB = new Date(a.updateTime || a.createTime || '').getTime()
-        return dateA - dateB
-      })
-    }
-
-    return tools
   }
 
-  /**
-   * 按ID获取单个工具
-   */
-  public getToolById(toolId: string): NavItem | undefined {
-    return getPageInfo(toolId)
-  }
-
-  /**
-   * 获取工具的路由路径
-   */
-  public getToolPath(tool: NavItem): string {
-    return tool.href || `/tools/${tool.id}`
-  }
-
-  /**
-   * 验证工具是否存在
-   */
-  public isToolExists(toolId: string): boolean {
-    return getPageInfo(toolId) !== undefined
+  public getTool(id: string): ToolManifest | undefined {
+    return getTools().find(t => t.id === id)
   }
 }

@@ -1,167 +1,87 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import type { RouteRecordRaw } from 'vue-router'
+import { getTools } from '@/modules/tools'
 
 // 主页面
 import HomeView from '@/modules/discovery/views/HomeView.vue'
 import CategoryView from '@/modules/discovery/views/CategoryView.vue'
 import ProfileView from '@/modules/profile/views/ProfileView.vue'
 
-// 工具页
-import BTreeVisual from '@/modules/tools/btree-visual/index.vue'
-import EftTool from '@/modules/tools/eft-tool/index.vue'
-import EncryptionGraph from '@/modules/tools/encryption-graph/index.vue'
-import DrumPad from '@/modules/tools/drum-pad/index.vue'
-import Kalimba from '@/modules/tools/kalimba/index.vue'
-import SortViz from '@/modules/tools/sort-viz/index.vue'
-import Img2Ascii from '@/modules/tools/img2ascii/index.vue'
-import Pixelate from '@/modules/tools/pixelate/index.vue'
-import FloydSteinberg from '@/modules/tools/floyd-steinberg/index.vue'
-import PathfindingVisualize from '@/modules/tools/pathfinding-visualize/index.vue'
-import PhotoPatina from '@/modules/tools/photo-patina/index.vue'
-import PianoKeys from '@/modules/tools/piano-keys/index.vue'
+/**
+ * 站点标题前缀。使用数学斜体字符而非 emoji，符合全站禁用 emoji 的约束
+ */
+const BRAND = '『𝑍𝐵𝑌𝐵𝐿𝑄』'
 
-const routes = [
-    {
-        path: '/',
-        redirect: () => {
-            return '/home'
-        }
-    },
-    {
-        path: '/home',
-        name: 'home',
-        component: HomeView,
-        meta: {
-            title: '『𝑍𝐵𝑌𝐵𝐿𝑄』- 主页'
-        }
-    },
-    {
-        path: '/sort',
-        name: 'sort',
-        component: CategoryView,
-        meta: {
-            title: '『𝑍𝐵𝑌𝐵𝐿𝑄』- 分类'
-        }
-    },
-    {
-        path: '/profile',
-        name: 'profile',
-        component: ProfileView,
-        meta: {
-            title: '『𝑍𝐵𝑌𝐵𝐿𝑄』- 个人中心'
-        }
-    },
-    // Tools Routes
-    {
-        path: '/tools/btree-visual',
-        name: 'btree-visual',
-        component: BTreeVisual,
-        meta: {
-            title: '『𝑍𝐵𝑌𝐵𝐿𝑄』- 二叉树可视化'
-        }
-    },
-    {
-        path: '/tools/eft-tool',
-        name: 'eft-tool',
-        component: EftTool,
-        meta: {
-            title: '『𝑍𝐵𝑌𝐵𝐿𝑄』- 英文字体转换'
-        }
-    },
-    {
-        path: '/tools/encryption-graph',
-        name: 'encryption-graph',
-        component: EncryptionGraph,
-        meta: {
-            title: '『𝑍𝐵𝑌𝐵𝐿𝑄』- 图片混淆'
-        }
-    },
-    {
-        path: '/tools/drum-pad',
-        name: 'drum-pad',
-        component: DrumPad,
-        meta: {
-            title: '『𝑍𝐵𝑌𝐵𝐿𝑄』- Drum Pad 鼓机'
-        }
-    },
-    {
-        path: '/tools/kalimba',
-        name: 'kalimba',
-        component: Kalimba,
-        meta: {
-            title: '『𝑍𝐵𝑌𝐵𝐿𝑄』- Kalimba 拇指琴'
-        }
-    },
-    {
-        path: '/tools/sort-viz',
-        name: 'sort-viz',
-        component: SortViz,
-        meta: {
-            title: '『𝑍𝐵𝑌𝐵𝐿𝑄』- 排序算法可视化'
-        }
-    },
-    {
-        path: '/tools/img2ascii',
-        name: 'img2ascii',
-        component: Img2Ascii,
-        meta: {
-            title: '『𝑍𝐵𝑌𝐵𝐿𝑄』- 图片转 ASCII'
-        }
-    },
-    {
-        path: '/tools/pixelate',
-        name: 'pixelate',
-        component: Pixelate,
-        meta: {
-            title: '『𝑍𝐵𝑌𝐵𝐿𝑄』- Pixelate · 图片像素化'
-        }
-    },
-    {
-        path: '/tools/floyd-steinberg',
-        name: 'floyd-steinberg',
-        component: FloydSteinberg,
-        meta: {
-            title: '『𝑍𝐵𝑌𝐵𝐿𝑄』- Dithering · Floyd–Steinberg'
-        }
-    },
-    {
-        path: '/tools/pathfinding-visualize',
-        name: 'pathfinding-visualize',
-        component: PathfindingVisualize,
-        meta: {
-            title: '『𝑍𝐵𝑌𝐵𝐿𝑄』- 路径寻找可视化'
-        }
-    },
-    {
-        path: '/tools/photo-patina',
-        name: 'photo-patina',
-        component: PhotoPatina,
-        meta: {
-            title: '『𝑍𝐵𝑌𝐵𝐿𝑄』- 电子包浆 · JPEG 二次压缩'
-        }
-    },
-    {
-        path: '/tools/piano-keys',
-        name: 'piano-keys',
-        component: PianoKeys,
-        meta: {
-            title: '『𝑍𝐵𝑌𝐵𝐿𝑄』- Piano Keys'
-        }
-    }
+/* ============================================
+   工具路由
+
+   由工具注册表派生，不手写。新增工具只需创建模块目录与 manifest，
+   路由自动生成。组件用 import.meta.glob 懒加载，每个工具打包为
+   独立 chunk，首屏不必加载全部 12 个工具。
+   ============================================ */
+const toolViews = import.meta.glob('../../modules/tools/*/index.vue')
+
+const toolRoutes: RouteRecordRaw[] = getTools().map((tool) => {
+  const key = `../../modules/tools/${tool.id}/index.vue`
+  const component = toolViews[key]
+
+  if (!component) {
+    // 构建期即可发现：manifest 登记了工具但缺少 index.vue
+    console.error(`[router] 工具 ${tool.id} 缺少入口组件，期望路径 ${key}`)
+  }
+
+  return {
+    path: tool.route.path,
+    name: tool.route.name,
+    // 兜底的静态引用：manifest 登记错误时回退到首页，而非白屏
+    component: component ?? HomeView,
+    meta: { title: `${BRAND}- ${tool.title}` },
+  }
+})
+
+/* ============================================
+   路由表
+   ============================================ */
+const routes: RouteRecordRaw[] = [
+  {
+    path: '/',
+    redirect: '/home',
+  },
+  {
+    path: '/home',
+    name: 'home',
+    component: HomeView,
+    meta: { title: `${BRAND}- 主页` },
+  },
+  {
+    path: '/sort',
+    name: 'sort',
+    component: CategoryView,
+    meta: { title: `${BRAND}- 分类` },
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: ProfileView,
+    meta: { title: `${BRAND}- 个人中心` },
+  },
+  ...toolRoutes,
 ]
 
 const router = createRouter({
-    history: createWebHistory(),
-    routes
+  history: createWebHistory(),
+  routes,
 })
 
-// 路由守卫，设置页面标题
-// TODO: 在认证写好后添加路由守卫，检查用户是否已登录，未登录则重定向到登录页面
-router.beforeEach((to, _) => {
-    if (to.meta.title) {
-        document.title = to.meta.title as string
-    } else {
-        document.title = '『𝑍𝐵𝑌𝐵𝐿𝑄』'
-    }
+/* ============================================
+   路由守卫
+   ============================================ */
+// 返回 undefined 即放行。vue-router 5 已弃用 next() 回调写法
+router.beforeEach((to) => {
+  document.title = (to.meta.title as string) ?? BRAND
+
+  // TODO: 账户系统接入后在此处增加登录态检查，
+  // 见 docs/05-account-system.md §7.4
 })
 
 export default router

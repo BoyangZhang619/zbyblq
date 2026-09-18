@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="item.href" class="tool-card texture-paper">
+  <router-link :to="item.route.path" class="tool-card texture-paper">
     <div class="tool-card__icon">
       <AppIcon :name="item.icon" :size="26" decorative />
     </div>
@@ -10,7 +10,7 @@
         <span v-if="item.badge" class="tool-card__badge">{{ item.badge }}</span>
       </div>
 
-      <p class="tool-card__desc">{{ item.desc }}</p>
+      <p class="tool-card__desc">{{ item.description }}</p>
 
       <div class="tool-card__foot">
         <ul class="tool-card__tags">
@@ -18,8 +18,8 @@
             {{ tag }}
           </li>
         </ul>
-        <time v-if="item.updateTime" class="tool-card__time">
-          {{ shortDate(item.updateTime) }}
+        <time v-if="item.lifecycle.updated" class="tool-card__time">
+          {{ shortDate(item.lifecycle.updated) }}
         </time>
       </div>
     </div>
@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { AppIcon } from '@/shared/icons'
-import type { NavItem } from '@/modules/tools'
+import type { ToolManifest } from '@/modules/tools'
 
 /**
  * 工具卡片
@@ -41,7 +41,7 @@ import type { NavItem } from '@/modules/tools'
  */
 
 const props = withDefaults(defineProps<{
-  item: NavItem
+  item: ToolManifest
   /** 最多显示几个标签 */
   maxTags?: number
 }>(), {

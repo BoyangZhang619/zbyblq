@@ -1,10 +1,14 @@
 /**
  * 分类管理器
- * 负责工具分类的组织和筛选
+ *
+ * 按标签聚合工具。分类不由中心配置定义，而是从各工具 manifest 的
+ * tags 字段派生——新增工具时分类自动收敛。
+ *
+ * 参见 docs/01-refactor-structure.md §6
  */
 
-import { getAllToolPages, getPagesByTag, getAllTags } from '@/modules/tools'
-import type { NavItem } from '@/modules/tools'
+import { getTools, getToolsByTag, getAllTags } from '@/modules/tools'
+import type { ToolManifest } from '@/modules/tools'
 
 export interface Category {
   id: string
@@ -13,95 +17,59 @@ export interface Category {
   description: string
 }
 
+/** 已知分类的说明文案。未在此登记的标签回退为通用描述 */
+const CATEGORY_DESCRIPTIONS: Record<string, string> = {
+  工具: '实用工具集合',
+  算法: '算法可视化与演示',
+  图像: '图像处理与转换',
+  音乐: '音乐创作与演奏',
+  实验: '试验性质的功能',
+}
+
 export class CategoryManager {
   private categories: Map<string, Category> = new Map()
-  private tools: NavItem[] = []
+  private tools: ToolManifest[] = []
 
   constructor() {
     this.initialize()
   }
 
-  /**
-   * 初始化分类系统
-   */
   private initialize(): void {
-    this.tools = getAllToolPages()
-    const tags = getAllTags()
+    this.tools = getTools()
 
-    tags.forEach(tag => {
-      const toolsInTag = getPagesByTag(tag)
+    for (const tag of getAllTags()) {
+      const toolsInTag = getToolsByTag(tag)
       this.categories.set(tag, {
         id: tag,
         name: tag,
         count: toolsInTag.length,
-        description: this.getTagDescription(tag),
+        description: CATEGORY_DESCRIPTIONS[tag] ?? `${tag}相关工具`,
       })
-    })
-  }
-
-  /**
-   * 获取标签描述
-   */
-  private getTagDescription(tag: string): string {
-    const descriptions: Record<string, string> = {
-      '工具': '实用工具集合',
-      '算法': '算法可视化和演示',
-      '图像': '图像处理工具',
-      '音乐': '音乐创作和播放工具',
-      '实验': '实验性功能',
     }
-    return descriptions[tag] || `${tag}相关工具`
   }
 
-  /**
-   * 获取所有分类
-   */
+  /** 全部分类，按工具数量降序 */
   public getCategories(): Category[] {
     return Array.from(this.categories.values()).sort((a, b) => b.count - a.count)
   }
 
-  /**
-   * 按分类ID获取分类
-   */
   public getCategoryById(id: string): Category | undefined {
     return this.categories.get(id)
   }
 
-  /**
-   * 获取指定分类下的工具
-   */
-  public getToolsByCategory(categoryId: string): NavItem[] {
-    return getPagesByTag(categoryId)
+  public getToolsByCategory(categoryId: string): ToolManifest[] {
+    return getToolsByTag(categoryId)
   }
 
-  /**
-   * 获取所有工具
-   */
-  public getAllTools(): NavItem[] {
+  public getAllTools(): ToolManifest[] {
     return this.tools
   }
 
-  /**
-   * 获取分类总数
-   */
   public getCategoryCount(): number {
     return this.categories.size
   }
 
-  /**
-   * 判断分类是否存在
-   */
   public isCategoryExists(categoryId: string): boolean {
     return this.categories.has(categoryId)
-  }
-
-  /**
-   * 获取分类的工具并返回带有导向信息的数据
-   */
-  public getCategoryToolsWithNav(categoryId: string): NavItem[] {
-    if (!this.isCategoryExists(categoryId)) {
-      return []
-    }
-    return getPagesByTag(categoryId)
   }
 }
