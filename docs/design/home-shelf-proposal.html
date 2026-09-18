@@ -26,10 +26,10 @@
     display:flex;align-items:center;justify-content:center;
     box-shadow:0 1px 2px rgba(40,40,45,.05),0 2px 8px rgba(40,40,45,.06)}
 
-  .intro{text-align:center;padding:10px 24px 2px}
-  .intro svg{width:112px;height:112px;display:block;margin:0 auto}
-  .intro h1{font-size:20px;margin:4px 0 0;color:var(--ink1);letter-spacing:-.2px}
-  .intro p{margin:3px 0 0;font-size:12.5px;color:var(--ink3)}
+  .intro{display:flex;align-items:center;justify-content:center;gap:2px;padding:16px 24px 8px}
+  .intro svg{width:104px;height:104px;flex:none}
+  .hi{font-size:27px;font-weight:600;color:var(--ink1);letter-spacing:2px;
+      /* 视觉基线略低于植物中心，避免读作「植物+标签」 */margin-top:10px}
 
   .shelfblock{padding:26px 0 0}
   .shelfname{font-size:12.5px;color:var(--ink3);letter-spacing:.6px;padding:0 32px 6px}
@@ -47,6 +47,15 @@
     border-radius:4px;box-shadow:0 3px 7px rgba(120,105,84,.22)}
   .board::before{content:'';position:absolute;left:4px;right:4px;top:-3px;height:3px;
     background:#D8CBB4;border-radius:3px}
+
+  /* 「更多」箭头：坐在板上，与花盆同一基线高度 */
+  .row .more{align-self:center}
+  .more{display:flex;align-items:center;justify-content:center;
+    width:38px;height:38px;border-radius:50%;background:#fff;
+    box-shadow:0 1px 2px rgba(40,40,45,.06),0 2px 8px rgba(40,40,45,.10);
+    transition:transform .18s cubic-bezier(.34,1.45,.64,1)}
+  .more svg{width:17px;height:17px}
+  .more:hover{transform:translateX(2px)}
 
   .names{padding-top:7px}
   .names span{font-size:11.5px;color:var(--ink2);white-space:nowrap}
@@ -69,105 +78,129 @@
 <body>
 
 <svg width="0" height="0" style="position:absolute"><defs>
-  <!-- 通用花盆：梯形 + 盆沿 -->
-  <symbol id="pot" viewBox="0 0 60 34">
-    <path d="M8 8 H52 L47 30 C46.6 32 45 33 43 33 H17 C15 33 13.4 32 13 30 Z"
-          fill="#D9A87C" stroke="#2E3B2A" stroke-width="4" stroke-linejoin="round"/>
-    <path d="M5 8 H55 V11.5 H5 Z" fill="#C48F63" stroke="#2E3B2A" stroke-width="4" stroke-linejoin="round"/>
+  <!-- 花盆：盆沿 + 梯形盆身。土壤面在 y=6 -->
+  <symbol id="pot" viewBox="0 0 64 32">
+    <path d="M10 9 H54 L48.5 29 C48.2 30.6 47 31.6 45.4 31.6 H18.6 C17 31.6 15.8 30.6 15.5 29 Z"
+          fill="#D9A87C" stroke="#2E3B2A" stroke-width="3.6" stroke-linejoin="round"/>
+    <path d="M6 6 H58 V10.5 H6 Z" fill="#C48F63" stroke="#2E3B2A" stroke-width="3.6" stroke-linejoin="round"/>
   </symbol>
 
-  <!-- 1 阔叶：大叶片 + 叶柄 -->
+  <!-- 基准叶：从 (40,88) 长到 (40,26)，绕基点旋转即可得各方向叶片 -->
+  <symbol id="leafbase" viewBox="0 0 80 120">
+    <path d="M40 88 C30.5 72 30.5 46 40 26 C49.5 46 49.5 72 40 88 Z"/>
+  </symbol>
+
+  <!-- 1 阔叶：三片叶自盆中舒展，中片直立、两侧对称外展 -->
   <symbol id="p-leaf" viewBox="0 0 80 120">
-    <use href="#pot" x="10" y="86" width="60" height="34"/>
-    <g stroke="#2E3B2A" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M40 90 C40 74 40 62 41 52" fill="none"/>
-      <path d="M41 54 C22 52 8 38 8 18 C28 14 42 30 41 54 Z" fill="#3E7A6B"/>
-      <path d="M41 54 C60 52 74 38 74 18 C54 14 40 30 41 54 Z" fill="#5FA391"/>
-      <path d="M41 54 C36 38 34 24 36 10 C46 16 50 34 41 54 Z" fill="#7FBFAD"/>
-      <path d="M40 86 L40 60 M40 70 L28 62 M40 76 L52 68" fill="none" stroke-width="3"/>
+    <use href="#pot" x="8" y="88" width="64" height="32"/>
+    <g stroke="#2E3B2A" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round">
+      <use href="#leafbase" fill="#3E7A6B" transform="rotate(-33 40 88)"/>
+      <use href="#leafbase" fill="#7FBFAD" transform="rotate(33 40 88)"/>
+      <use href="#leafbase" fill="#5FA391" transform="scale(.92) translate(3.5 7.6)"/>
     </g>
   </symbol>
 
-  <!-- 2 蕨：两枝拱形羽叶 -->
+  <!-- 2 蕨：单枝拱形羽叶。此前两枝交叉成 X 且叶片出框，改为单枝 -->
   <symbol id="p-fern" viewBox="0 0 80 120">
-    <use href="#pot" x="10" y="86" width="60" height="34"/>
-    <g stroke="#2E3B2A" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M38 88 C30 66 22 46 12 30" fill="none"/>
-      <path d="M44 88 C50 66 58 44 70 26" fill="none"/>
+    <use href="#pot" x="8" y="88" width="64" height="32"/>
+    <g stroke="#2E3B2A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M40 90 C41 72 45 52 56 34 C61 26 66 20 70 16" fill="none" stroke-width="3.4"/>
+      <!-- 小叶沿茎两侧交替，向尖端递减；全部在 x 8..74 内 -->
       <g fill="#7A9E3E">
-        <path d="M14 34 C6 30 0 32 -2 37 C5 41 12 40 14 34 Z"/>
-        <path d="M19 44 C10 40 3 42 1 48 C9 52 17 51 19 44 Z"/>
-        <path d="M25 55 C16 51 9 53 7 59 C15 63 23 62 25 55 Z"/>
-        <path d="M31 67 C23 63 16 65 14 71 C22 75 30 74 31 67 Z"/>
+        <path d="M41 78 C33 74 26 76 24 81 C31 85 38 83 41 78 Z"/>
+        <path d="M43 66 C36 61 29 62 27 67 C34 71 41 70 43 66 Z"/>
+        <path d="M46 55 C40 50 33 51 31 56 C38 60 44 59 46 55 Z"/>
+        <path d="M51 45 C46 40 40 41 38 45 C44 49 49 48 51 45 Z"/>
+        <path d="M57 36 C53 31 48 31 46 35 C51 38 55 38 57 36 Z"/>
       </g>
       <g fill="#A8C46B">
-        <path d="M66 30 C74 26 80 28 82 33 C75 37 68 36 66 30 Z"/>
-        <path d="M61 40 C70 36 77 38 79 44 C71 48 63 47 61 40 Z"/>
-        <path d="M55 51 C64 47 71 49 73 55 C65 59 57 58 55 51 Z"/>
-        <path d="M49 63 C57 59 64 61 66 67 C58 71 50 70 49 63 Z"/>
+        <path d="M43 80 C50 75 57 76 59 81 C52 85 45 84 43 80 Z"/>
+        <path d="M45 68 C52 63 59 64 61 69 C54 73 47 72 45 68 Z"/>
+        <path d="M49 57 C56 52 62 53 64 58 C57 62 51 61 49 57 Z"/>
+        <path d="M54 47 C60 43 66 44 67 48 C61 52 56 51 54 47 Z"/>
+        <path d="M61 38 C66 34 71 35 72 39 C67 42 62 41 61 38 Z"/>
       </g>
     </g>
   </symbol>
 
-  <!-- 3 花：五瓣不等分 -->
+  <!-- 3 花：花瓣外移收窄。此前五瓣在中心重叠，粗描边把粉色糊成一团黑 -->
   <symbol id="p-flower" viewBox="0 0 80 120">
-    <use href="#pot" x="10" y="86" width="60" height="34"/>
-    <g stroke="#2E3B2A" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M40 88 C40 74 40 60 40 48" fill="none"/>
-      <path d="M40 74 C28 70 18 72 14 79 C24 86 36 84 40 74 Z" fill="#6B9E6B"/>
-      <path d="M40 62 C52 58 62 60 66 67 C56 74 44 72 40 62 Z" fill="#9ECB8A"/>
-      <path d="M30 30 C24 14 32 4 44 6 C56 8 62 20 58 34
-               C72 32 80 42 78 54 C76 66 64 72 52 68
-               C54 82 44 92 32 90 C20 88 14 76 20 64
-               C8 66 -2 56 0 44 C2 32 16 26 30 30 Z" fill="#E8909F"/>
-      <circle cx="40" cy="48" r="13" fill="#FFD84F"/>
-      <path d="M40 41 L40 55 M33 48 L47 48" fill="none" stroke-width="3"/>
+    <use href="#pot" x="8" y="88" width="64" height="32"/>
+    <g stroke="#2E3B2A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M40 90 C40 78 40 68 40 60" fill="none"/>
+      <path d="M40 78 C30 74 22 76 19 81 C27 87 37 86 40 78 Z" fill="#6B9E6B"/>
+      <path d="M40 68 C50 64 58 66 61 71 C53 77 43 76 40 68 Z" fill="#7FB07F"/>
+      <g fill="#E8909F">
+        <path d="M40 34 C34 26 34 14 40 6 C46 14 46 26 40 34 Z"/>
+        <path d="M40 34 C34 26 34 14 40 6 C46 14 46 26 40 34 Z" transform="rotate(72 40 44)"/>
+        <path d="M40 34 C34 26 34 14 40 6 C46 14 46 26 40 34 Z" transform="rotate(144 40 44)"/>
+        <path d="M40 34 C34 26 34 14 40 6 C46 14 46 26 40 34 Z" transform="rotate(216 40 44)"/>
+        <path d="M40 34 C34 26 34 14 40 6 C46 14 46 26 40 34 Z" transform="rotate(288 40 44)"/>
+      </g>
+      <circle cx="40" cy="44" r="12" fill="#FFD84F"/>
+      <path d="M40 38 L40 50 M34 44 L46 44" fill="none" stroke-width="2.6"/>
     </g>
   </symbol>
 
-  <!-- 4 芽：两片初叶，不对称 -->
+  <!-- 4 芽：两片初叶 -->
   <symbol id="p-sprout" viewBox="0 0 80 120">
-    <use href="#pot" x="10" y="86" width="60" height="34"/>
-    <g stroke="#2E3B2A" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M40 88 C40 76 40 64 41 56" fill="none"/>
-      <path d="M41 58 C41 40 30 26 14 22 C8 40 20 58 41 58 Z" fill="#C3DC7A"/>
-      <path d="M41 58 C41 36 55 22 74 18 C80 40 64 58 41 58 Z" fill="#9ECB8A"/>
+    <use href="#pot" x="8" y="88" width="64" height="32"/>
+    <g stroke="#2E3B2A" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M40 90 C40 80 40 70 40 62" fill="none"/>
+      <path d="M40 64 C40 46 30 32 14 28 C8 46 20 64 40 64 Z" fill="#C3DC7A"/>
+      <path d="M40 64 C40 42 54 28 72 24 C78 46 62 64 40 64 Z" fill="#9ECB8A"/>
     </g>
   </symbol>
 
-  <!-- 5 莲座：外层摊开 + 内层立起 -->
+  <!-- 5 莲座：尖叶放射，取代原先的同心椭圆（原读不出多肉） -->
   <symbol id="p-rosette" viewBox="0 0 80 120">
-    <use href="#pot" x="10" y="86" width="60" height="34"/>
-    <g stroke="#2E3B2A" stroke-width="3.4" stroke-lineapp="round" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M40 86 C14 84 2 68 6 50 C10 34 24 26 40 26 C56 26 70 34 74 50 C78 68 66 84 40 86 Z" fill="#7FA8A0"/>
-      <path d="M40 84 C22 80 16 64 20 50 C24 38 32 32 40 32 C48 32 56 38 60 50 C64 64 58 80 40 84 Z" fill="#5E9490"/>
-      <path d="M40 82 C30 76 28 62 32 50 C35 42 38 38 40 38 C42 38 45 42 48 50 C52 62 50 76 40 82 Z" fill="#41766F"/>
-      <path d="M40 80 C36 74 36 64 40 56 C44 64 44 74 40 80 Z" fill="#B5D4C8"/>
+    <use href="#pot" x="8" y="88" width="64" height="32"/>
+    <g stroke="#2E3B2A" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+      <g fill="#41766F">
+        <path d="M40 84 C24 80 13 68 14 52 C30 56 41 68 40 84 Z"/>
+        <path d="M40 84 C56 80 67 68 66 52 C50 56 39 68 40 84 Z"/>
+        <path d="M40 84 C32 70 32 56 40 44 C48 56 48 70 40 84 Z"/>
+      </g>
+      <g fill="#5E9490">
+        <path d="M40 80 C28 74 22 62 24 50 C35 56 42 68 40 80 Z"/>
+        <path d="M40 80 C52 74 58 62 56 50 C45 56 38 68 40 80 Z"/>
+      </g>
+      <path d="M40 78 C36 68 36 58 40 50 C44 58 44 68 40 78 Z" fill="#7FA8A0"/>
+      <path d="M40 76 C38 68 38 60 40 54 C42 60 42 68 40 76 Z" fill="#B5D4C8"/>
     </g>
   </symbol>
 
-  <!-- 6 藤蔓：从盆沿垂落 -->
+  <!-- 6 藤：圆叶攀藤。此前叶片形状与蕨叶过近，改用圆形叶区分 -->
   <symbol id="p-vine" viewBox="0 0 80 120">
-    <use href="#pot" x="10" y="86" width="60" height="34"/>
-    <g stroke="#2E3B2A" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M40 88 C38 72 44 58 40 44 C37 32 30 24 22 20" fill="none"/>
-      <path d="M40 88 C44 76 36 64 42 52" fill="none"/>
-      <path d="M30 34 C18 32 10 38 10 48 C22 52 30 44 30 34 Z" fill="#8FB44F"/>
-      <path d="M36 22 C28 14 18 14 12 20 C20 30 32 30 36 22 Z" fill="#6B9E6B"/>
-      <path d="M44 50 C56 48 64 54 64 64 C52 68 44 60 44 50 Z" fill="#C3DC7A"/>
-      <path d="M60 96 C66 104 76 106 82 100 C76 92 66 90 60 96 Z" fill="#9ECB8A"/>
+    <use href="#pot" x="8" y="88" width="64" height="32"/>
+    <g stroke="#2E3B2A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M40 90 C40 74 44 56 52 42 C57 33 63 26 68 21" fill="none" stroke-width="3.4"/>
+      <g fill="#9EAF5E">
+        <circle cx="26" cy="72" r="9" fill="#9EAF5E"/>
+        <circle cx="62" cy="58" r="8" fill="#9EAF5E"/>
+        <circle cx="46" cy="34" r="7" fill="#9EAF5E"/>
+      </g>
+      <g fill="#C4D68C">
+        <circle cx="56" cy="80" r="8"/>
+        <circle cx="34" cy="50" r="7"/>
+        <circle cx="62" cy="30" r="6"/>
+      </g>
+      <path d="M35 74 L44 78 M54 60 L50 52 M42 38 L50 32 M50 82 L44 80 M31 52 L40 48" fill="none" stroke-width="2.6"/>
     </g>
   </symbol>
 
-  <!-- 主视觉：三枝错落 -->
+  <!-- 主视觉：中片直立 + 两侧外展 + 蕨叶衬底 -->
   <symbol id="p-hero" viewBox="0 0 160 160">
-    <use href="#pot" x="50" y="118" width="60" height="34"/>
-    <g stroke="#2E3B2A" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M80 122 C80 96 80 72 80 52" fill="none"/>
-      <path d="M80 88 C56 84 38 68 34 46 C58 42 76 58 80 88 Z" fill="#6B9E6B"/>
-      <path d="M80 88 C104 84 122 68 126 46 C102 42 84 58 80 88 Z" fill="#9ECB8A"/>
-      <path d="M80 54 C68 36 68 16 80 2 C92 16 92 36 80 54 Z" fill="#C3DC7A"/>
-      <path d="M80 60 L80 100" fill="none" stroke-width="3.4"/>
+    <use href="#pot" x="48" y="120" width="64" height="32"/>
+    <g stroke="#2E3B2A" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M76 132 C74 108 68 84 56 64" fill="none"/>
+      <path d="M84 132 C86 108 92 84 104 64" fill="none"/>
+      <g fill="#5FA391">
+        <path d="M56 66 C48 58 44 42 48 28 C58 36 62 54 56 66 Z"/>
+        <path d="M104 66 C112 58 116 42 112 28 C102 36 98 54 104 66 Z"/>
+      </g>
+      <path d="M80 130 C70 108 70 78 80 54 C90 78 90 108 80 130 Z" fill="#7FBFAD"/>
+      <path d="M80 58 C72 46 72 30 80 16 C88 30 88 46 80 58 Z" fill="#A8C46B"/>
     </g>
   </symbol>
 </defs></svg>
@@ -175,7 +208,7 @@
 <div class="phone">
   <div class="scroll">
     <div class="head">
-      <div class="brand">『ZBYBLQ』</div>
+      <div class="brand">𝒵𝐵𝒴𝐵𝐿𝒬</div>
       <div class="acts">
         <button class="iconbtn"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#3B3B3F" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.2 14.4A8.6 8.6 0 0 1 9.6 3.8a8.6 8.6 0 1 0 10.6 10.6Z"/></svg></button>
         <button class="iconbtn"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#3B3B3F" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M5 20.5c0-3.7 3.1-6.6 7-6.6s7 2.9 7 6.6"/></svg></button>
@@ -184,8 +217,7 @@
 
     <div class="intro">
       <svg><use href="#p-hero"/></svg>
-      <h1>个人工具合集</h1>
-      <p>12 个自用的小工具</p>
+      <div class="hi">你好</div>
     </div>
 
     <div class="shelfblock">
@@ -209,17 +241,22 @@
       <div class="shelfname">图像</div>
       <div class="shelf">
         <div class="row" style="--n:4">
-        <div class="item s2"><svg><use href="#p-rosette"/></svg></div>
+        <div class="item s3"><svg><use href="#p-rosette"/></svg></div>
         <div class="item s3"><svg><use href="#p-flower"/></svg></div>
         <div class="item s4"><svg><use href="#p-leaf"/></svg></div>
-        <div class="item s1"><svg><use href="#p-vine"/></svg></div>
+        <a class="more" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3B3B3F" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9.5 5.5 16 12l-6.5 6.5"/>
+          </svg>
+        </a>
         </div>
         <div class="board"></div>
         <div class="names" style="--n:4">
         <span>像素化</span>
         <span>图片混淆</span>
         <span>转 ASCII</span>
-        <span>包浆</span>
+        <span></span>
         </div>
       </div>
     </div>
@@ -228,7 +265,7 @@
       <div class="shelfname">音乐</div>
       <div class="shelf">
         <div class="row" style="--n:3">
-        <div class="item s2"><svg><use href="#p-sprout"/></svg></div>
+        <div class="item s2"><svg><use href="#p-vine"/></svg></div>
         <div class="item s1"><svg><use href="#p-flower"/></svg></div>
         <div class="item s3"><svg><use href="#p-fern"/></svg></div>
         </div>
