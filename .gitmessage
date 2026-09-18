@@ -1,0 +1,23 @@
+
+# <type>(<scope>): <subject>          <- 主题行，中文，动词开头，不超过 50 字
+#
+# type:  feat     新增功能
+#        fix      修复缺陷
+#        refactor 重构（不改变外部行为）
+#        style    样式调整
+#        docs     文档
+#        chore    杂务（构建、依赖、配置、归档、清理）
+#        perf     性能优化
+#        revert   回滚
+#
+# scope: shell | discovery | account | profile | design | icons |
+#        tools | router | notifications | archive | cleanup | structure | deps
+#
+# <body> 说明为什么改，而不是改了什么。每行不超过 72 字符。
+#
+# <footer>
+#   Refs: docs/01-refactor-structure.md §9
+#
+# 完整规范见 docs/06-commit-convention.md
+#
+# 注意：以下是上一次提交的状态，不要保存为提交信息
