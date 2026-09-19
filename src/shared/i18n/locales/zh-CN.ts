@@ -55,6 +55,25 @@ export const zhCN = {
   'profile.mode.auto': '跟随系统',
   'profile.accent': '主题配色',
   'profile.account': '账户',
+  // 个人页
+  'profile.garden': '我的花园',
+  'profile.garden.hint': '已种下 {count} / {total}',
+  'profile.garden.reset': '重置花园',
+  'profile.recent': '最近使用',
+  'profile.recent.empty': '还没有使用记录，随便逛逛吧',
+  'profile.avatar': '我的形象',
+  'profile.avatar.hint': '选一株作为你的形象',
+  'profile.name.edit': '修改名字',
+  'profile.name.placeholder': '给自己起个名字',
+  'profile.settings': '设置',
+
+  // 设置页
+  'settings.title': '设置',
+  'settings.about': '关于',
+  'settings.about.text': '一个自用的小工具合集。',
+  'settings.version': '版本',
+  'settings.garden.reset.hint': '清空使用记录，花园回到初始状态',
+
   'profile.account.pending':
     '账户系统尚未启用。启用后可跨设备同步偏好与工具数据。',
 

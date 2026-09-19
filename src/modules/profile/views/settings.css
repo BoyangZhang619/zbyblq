@@ -1,0 +1,196 @@
+/**
+ * 设置页样式
+ *
+ * 结构性内容（外观、语言、数据、关于）集中在此，
+ * 个人页因此得以保持轻。
+ */
+
+.set {
+  min-height: 100%;
+  padding-top: var(--space-5);
+}
+
+.set__back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 36px;
+  padding: 0;
+  margin-bottom: var(--space-3);
+
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+
+.set__back:hover {
+  color: var(--accent-text);
+}
+
+.set__head {
+  margin-bottom: var(--space-6);
+}
+
+.set__title {
+  font-size: var(--text-xl);
+  line-height: var(--leading-xl);
+}
+
+/* ============================================
+   分组
+   ============================================ */
+.set__group {
+  margin-bottom: var(--space-6);
+}
+
+.set__label {
+  margin-bottom: var(--space-3);
+  padding-left: var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-regular);
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+}
+
+/* ============================================
+   选项组
+   ============================================ */
+.set__choices {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.set__choice {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 64px;
+  padding: var(--space-3);
+
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  background-color: var(--surface-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--elev-card);
+
+  transition:
+    color var(--dur-fast) var(--ease-standard),
+    background-color var(--dur-fast) var(--ease-standard),
+    transform var(--dur-base) var(--ease-soft);
+}
+
+.set__choice:active {
+  transform: scale(0.97);
+}
+
+.set__choice.is-active {
+  color: var(--accent-text);
+  background-color: var(--accent-bg);
+  font-weight: var(--weight-medium);
+}
+
+/* ============================================
+   色板
+   每个按钮自带 accent-* 类，故按钮内的 var(--accent)
+   即该色板自身的主色
+   ============================================ */
+.set__swatches {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-4);
+
+  background-color: var(--surface-card);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--elev-card);
+}
+
+.set__swatch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+
+  border-radius: var(--radius-full);
+
+  transition: transform var(--dur-base) var(--ease-soft);
+}
+
+.set__swatch:active {
+  transform: scale(0.9);
+}
+
+.set__dot {
+  width: 24px;
+  height: 24px;
+  background-color: var(--accent);
+  border-radius: var(--radius-full);
+}
+
+/* 选中：黑色圆环，环与色块之间留空隙。
+   用黑色而非主题色——任何色板上都清晰可辨 */
+.set__swatch.is-active .set__dot {
+  box-shadow:
+    0 0 0 3px var(--surface-card),
+    0 0 0 4.5px var(--text-primary);
+}
+
+/* ============================================
+   动作与说明
+   ============================================ */
+.set__action {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--size-touch-min);
+  padding: 0 var(--space-4);
+
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  background-color: var(--surface-card);
+  border-radius: var(--radius-full);
+  box-shadow: var(--elev-card);
+
+  transition:
+    color var(--dur-fast) var(--ease-standard),
+    transform var(--dur-base) var(--ease-soft);
+}
+
+.set__action:hover {
+  color: var(--state-danger-fg);
+}
+
+.set__action:active {
+  transform: scale(0.97);
+}
+
+.set__hint {
+  margin-top: var(--space-2);
+  padding-left: var(--space-1);
+  font-size: var(--text-xs);
+  line-height: var(--leading-xs);
+  color: var(--text-tertiary);
+}
+
+.set__about {
+  padding: var(--space-4);
+  margin-bottom: var(--space-2);
+
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  color: var(--text-secondary);
+
+  background-color: var(--surface-card);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--elev-card);
+}
+
+@media (min-width: 768px) {
+  .set {
+    padding-top: var(--space-8);
+  }
+}

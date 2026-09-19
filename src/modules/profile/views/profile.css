@@ -1,171 +1,266 @@
 /**
- * 个人中心样式
- * 见 docs/03-design-system.md §3.3 §9
+ * 个人页样式
+ *
+ * 定位是表达性页面（我是谁、我用过什么），设置类内容已移至 /settings。
  */
 
-.profile {
+.me {
   min-height: 100%;
-  padding-top: var(--space-6);
-}
-
-.profile__header {
-  margin-bottom: var(--space-6);
-}
-
-.profile__title {
-  font-size: var(--text-2xl);
-  line-height: var(--leading-2xl);
-}
-
-.profile__subtitle {
-  margin-top: var(--space-1);
-  font-size: var(--text-sm);
-  color: var(--text-tertiary);
+  padding-top: var(--space-5);
 }
 
 /* ============================================
-   设置分组
+   身份卡
    ============================================ */
-.profile__section {
-  margin-bottom: var(--space-6);
-}
-
-.profile__section-title {
-  margin-bottom: var(--space-3);
-  font-size: var(--text-sm);
-  font-weight: var(--weight-medium);
-  color: var(--text-secondary);
-}
-
-/* ============================================
-   明暗模式
-   ============================================ */
-.profile__modes {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-2);
-}
-
-.profile__mode {
+.me__card {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+
+  background-color: var(--surface-card);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--elev-card);
+}
+
+.me__avatar {
+  flex: none;
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
-  min-height: 72px;
-  padding: var(--space-3);
+  padding: var(--space-2);
 
+  background-color: var(--accent-bg);
+  border-radius: var(--radius-xl);
+
+  transition: transform var(--dur-base) var(--ease-soft);
+}
+
+.me__avatar:active {
+  transform: scale(0.94);
+}
+
+.me__ident {
+  flex: 1;
+  min-width: 0;
+}
+
+.me__name,
+.me__nameinput {
+  display: block;
+  width: 100%;
+  padding: 0;
+
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-xl);
+  color: var(--text-primary);
+  text-align: left;
+
+  background: none;
+  border: none;
+  border-bottom: 1.5px dashed transparent;
+}
+
+.me__name:hover {
+  border-bottom-color: var(--border-default);
+}
+
+.me__nameinput {
+  border-bottom-color: var(--accent-fg);
+  outline: none;
+}
+
+.me__nameinput::placeholder {
+  color: var(--text-disabled);
+}
+
+.me__stat {
+  margin-top: var(--space-1);
   font-size: var(--text-xs);
-  color: var(--text-secondary);
-  background-color: var(--surface-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+
+.me__settings {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--size-touch-min);
+  height: var(--size-touch-min);
+
+  color: var(--text-tertiary);
+  border-radius: var(--radius-full);
 
   transition:
     color var(--dur-fast) var(--ease-standard),
-    background-color var(--dur-fast) var(--ease-standard),
-    border-color var(--dur-fast) var(--ease-standard),
-    transform var(--dur-base) var(--ease-soft);
+    background-color var(--dur-fast) var(--ease-standard);
 }
 
-.profile__mode:hover {
-  border-color: var(--border-default);
-}
-
-.profile__mode:active {
-  transform: scale(0.97);
-}
-
-.profile__mode.is-active {
-  color: var(--accent-text);
-  background-color: var(--accent-bg);
-  border-color: transparent;
-  font-weight: var(--weight-medium);
+.me__settings:hover {
+  color: var(--text-primary);
+  background-color: var(--surface-sunken);
 }
 
 /* ============================================
-   主题色板
-   每个按钮自带 accent-* 类，因此按钮内的
-   var(--accent) 即该色板自身的主色
+   形象选择
    ============================================ */
-.profile__swatches {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
-  gap: var(--space-2);
+.me__picker {
+  padding: var(--space-3);
+  margin-bottom: var(--space-4);
+
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-xl);
 }
 
-.profile__swatch {
+.me__plants {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   gap: var(--space-2);
-  min-height: 68px;
-  padding: var(--space-3);
+  overflow-x: auto;
+}
 
-  font-size: var(--text-xs);
-  color: var(--text-secondary);
-  background-color: var(--surface-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+.me__plant {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2);
+
+  border-radius: var(--radius-lg);
+  opacity: 0.5;
 
   transition:
-    border-color var(--dur-fast) var(--ease-standard),
+    opacity var(--dur-fast) var(--ease-standard),
     background-color var(--dur-fast) var(--ease-standard),
     transform var(--dur-base) var(--ease-soft);
 }
 
-.profile__swatch:hover {
-  border-color: var(--border-default);
+.me__plant:hover {
+  opacity: 0.85;
 }
 
-.profile__swatch:active {
-  transform: scale(0.97);
+.me__plant:active {
+  transform: scale(0.92);
 }
 
-.profile__swatch.is-active {
-  background-color: var(--accent-soft);
-  border-color: var(--accent);
-  color: var(--accent-deep);
-  font-weight: var(--weight-medium);
-}
-
-.profile__swatch-dot {
-  width: 26px;
-  height: 26px;
-  border-radius: var(--radius-full);
-  background-color: var(--accent);
-}
-
-.profile__swatch.is-active .profile__swatch-dot {
-  /* 选中态加一圈留白环，呼应贴纸描边 */
-  box-shadow: 0 0 0 3px var(--surface-card), 0 0 0 5px var(--accent);
-}
-
-.profile__swatch-name {
-  white-space: nowrap;
+.me__plant.is-active {
+  opacity: 1;
+  background-color: var(--surface-card);
+  box-shadow: var(--elev-card);
 }
 
 /* ============================================
-   账户占位
+   分区
    ============================================ */
-.profile__placeholder {
+.me__section {
+  margin-bottom: var(--space-6);
+}
+
+.me__heading {
+  margin-bottom: var(--space-3);
+  padding-left: var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-regular);
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+}
+
+/* ============================================
+   花园
+   用过的以原色显示，未用过的降为暗淡——只用透明度，
+   不加滤镜，以免与深色模式的处理冲突
+   ============================================ */
+.me__garden {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-3);
+
+  background-color: var(--surface-card);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--elev-card);
+}
+
+.me__plot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.22;
+
+  transition:
+    opacity var(--dur-base) var(--ease-standard),
+    transform var(--dur-base) var(--ease-soft);
+}
+
+.me__plot.is-grown {
+  opacity: 1;
+}
+
+.me__plot:active {
+  transform: scale(0.92);
+}
+
+/* ============================================
+   最近使用
+   ============================================ */
+.me__recent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.me__row {
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  padding: var(--space-4);
+  padding: var(--space-3);
 
-  color: var(--text-tertiary);
-  background-color: var(--surface-sunken);
-  border-radius: var(--radius-md);
+  background-color: var(--surface-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--elev-card);
+
+  transition: box-shadow var(--dur-base) var(--ease-standard);
 }
 
-.profile__placeholder-text {
+.me__row:hover {
+  box-shadow: var(--elev-hover);
+}
+
+.me__rowname {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--text-base);
+  color: var(--text-primary);
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.me__chevron {
+  flex: none;
+  color: var(--text-tertiary);
+}
+
+.me__empty {
+  padding: var(--space-8) var(--space-4);
   font-size: var(--text-sm);
-  line-height: var(--leading-sm);
+  color: var(--text-tertiary);
+  text-align: center;
+
+  background-color: var(--surface-card);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--elev-card);
 }
 
 @media (min-width: 768px) {
-  .profile {
-    padding-top: var(--space-10);
+  .me {
+    padding-top: var(--space-8);
+  }
+
+  .me__garden {
+    grid-template-columns: repeat(6, 1fr);
   }
 }

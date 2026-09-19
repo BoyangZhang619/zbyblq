@@ -56,6 +56,25 @@ export const en: Messages = {
   'profile.mode.auto': 'System',
   'profile.accent': 'Accent colour',
   'profile.account': 'Account',
+  // Profile
+  'profile.garden': 'My garden',
+  'profile.garden.hint': '{count} of {total} planted',
+  'profile.garden.reset': 'Reset garden',
+  'profile.recent': 'Recently used',
+  'profile.recent.empty': 'Nothing here yet. Have a wander.',
+  'profile.avatar': 'My look',
+  'profile.avatar.hint': 'Pick a plant to represent you',
+  'profile.name.edit': 'Edit name',
+  'profile.name.placeholder': 'Give yourself a name',
+  'profile.settings': 'Settings',
+
+  // Settings
+  'settings.title': 'Settings',
+  'settings.about': 'About',
+  'settings.about.text': 'A small collection of tools, made for personal use.',
+  'settings.version': 'Version',
+  'settings.garden.reset.hint': 'Clears your history so the garden starts over',
+
   'profile.account.pending':
     'Accounts are not enabled yet. Once they are, preferences and tool data can sync across devices.',
 

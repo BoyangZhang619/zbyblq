@@ -64,8 +64,6 @@ const sizeStyle = computed(() => {
   height: 100%;
 }
 
-/* 深色模式下植物偏暗，适度提亮以维持可辨度 */
-:global(:root[data-theme='dark']) .plant {
-  filter: brightness(1.15) saturate(0.92);
-}
+/* 深色模式刻意不对植物做任何调整（不加滤镜、不改描边与盆色）。
+   此前试过提亮与换浅色描边，观感突兀。深色模式只改背景。 */
 </style>
