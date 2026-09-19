@@ -139,8 +139,11 @@ pre {
   min-height: 100vh;
   min-height: 100dvh;
   background-color: var(--surface-page);
-  /* 为固定底部导航留出空间，含安全区 */
-  padding-bottom: calc(var(--size-nav-height) + env(safe-area-inset-bottom, 0px));
+  /* 为悬浮底部导航留出空间。
+     导航距底 16px、自身高 60px、内容再留 24px 呼吸，含安全区 */
+  padding-bottom: calc(
+    var(--size-nav-height) + var(--space-10) + env(safe-area-inset-bottom, 0px)
+  );
 }
 
 /* 内容最大宽度与页面边距 */

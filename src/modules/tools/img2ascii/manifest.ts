@@ -12,6 +12,7 @@ export const manifest: ToolManifest = {
   title: '图片转 ASCII',
   description: '上传图片生成字符画，支持亮度/对比度/反相，彩色 ASCII，可导出 TXT/PNG',
   icon: 'tool-ascii',
+  plant: 'leaf',
   route: {
     path: '/tools/img2ascii',
     name: 'tool-img2ascii',

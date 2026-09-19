@@ -12,6 +12,7 @@ export const manifest: ToolManifest = {
   title: 'Pixelate · 图片像素化',
   description: '上传图片 → 调像素块大小 → 导出PNG（可选限制色板 8/16/32 色）',
   icon: 'tool-pixelate',
+  plant: 'clover',
   route: {
     path: '/tools/pixelate',
     name: 'tool-pixelate',

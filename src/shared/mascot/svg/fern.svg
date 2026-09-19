@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 120" fill="none">
+
+      <g id="pot">
+    <path d="M10 9 H54 L48.5 29 C48.2 30.6 47 31.6 45.4 31.6 H18.6 C17 31.6 15.8 30.6 15.5 29 Z"
+          fill="var(--pot-body, #D9A87C)"/>
+    <path d="M6 6 H58 V10.5 H6 Z" fill="var(--pot-rim, #C48F63)"/>
+    <path d="M10 9 H54 L48.5 29 C48.2 30.6 47 31.6 45.4 31.6 H18.6 C17 31.6 15.8 30.6 15.5 29 Z
+             M6 6 H58 V10.5 H6 Z"
+          fill="none" stroke="var(--plant-outline, #2E3B2A)" stroke-width="3.6" stroke-linejoin="round"/>
+  </g>
+    <g stroke="var(--plant-outline, #2E3B2A)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M40 90 C41 72 45 52 56 34 C61 26 66 20 70 16" fill="none" stroke-width="3.4"/>
+      <!-- 小叶沿茎两侧交替，向尖端递减；全部在 x 8..74 内 -->
+      <g fill="#7A9E3E">
+        <path d="M41 78 C33 74 26 76 24 81 C31 85 38 83 41 78 Z"/>
+        <path d="M43 66 C36 61 29 62 27 67 C34 71 41 70 43 66 Z"/>
+        <path d="M46 55 C40 50 33 51 31 56 C38 60 44 59 46 55 Z"/>
+        <path d="M51 45 C46 40 40 41 38 45 C44 49 49 48 51 45 Z"/>
+        <path d="M57 36 C53 31 48 31 46 35 C51 38 55 38 57 36 Z"/>
+      </g>
+      <g fill="#A8C46B">
+        <path d="M43 80 C50 75 57 76 59 81 C52 85 45 84 43 80 Z"/>
+        <path d="M45 68 C52 63 59 64 61 69 C54 73 47 72 45 68 Z"/>
+        <path d="M49 57 C56 52 62 53 64 58 C57 62 51 61 49 57 Z"/>
+        <path d="M54 47 C60 43 66 44 67 48 C61 52 56 51 54 47 Z"/>
+        <path d="M61 38 C66 34 71 35 72 39 C67 42 62 41 61 38 Z"/>
+      </g>
+    </g>
+</svg>

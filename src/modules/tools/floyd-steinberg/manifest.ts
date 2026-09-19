@@ -12,6 +12,7 @@ export const manifest: ToolManifest = {
   title: 'Dithering · Floyd–Steinberg',
   description: '黑白/限定色 Floyd–Steinberg 误差扩散抖动：复古报纸风、GameBoy 风',
   icon: 'tool-dither',
+  plant: 'fern',
   route: {
     path: '/tools/floyd-steinberg',
     name: 'tool-floyd-steinberg',

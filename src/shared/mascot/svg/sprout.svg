@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 120" fill="none">
+
+      <g id="pot">
+    <path d="M10 9 H54 L48.5 29 C48.2 30.6 47 31.6 45.4 31.6 H18.6 C17 31.6 15.8 30.6 15.5 29 Z"
+          fill="var(--pot-body, #D9A87C)"/>
+    <path d="M6 6 H58 V10.5 H6 Z" fill="var(--pot-rim, #C48F63)"/>
+    <path d="M10 9 H54 L48.5 29 C48.2 30.6 47 31.6 45.4 31.6 H18.6 C17 31.6 15.8 30.6 15.5 29 Z
+             M6 6 H58 V10.5 H6 Z"
+          fill="none" stroke="var(--plant-outline, #2E3B2A)" stroke-width="3.6" stroke-linejoin="round"/>
+  </g>
+    <g stroke="var(--plant-outline, #2E3B2A)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M40 90 C40 80 40 70 40 62" fill="none"/>
+      <path d="M40 64 C40 46 30 32 14 28 C8 46 20 64 40 64 Z" fill="#C3DC7A"/>
+      <path d="M40 64 C40 42 54 28 72 24 C78 46 62 64 40 64 Z" fill="#9ECB8A"/>
+    </g>
+</svg>

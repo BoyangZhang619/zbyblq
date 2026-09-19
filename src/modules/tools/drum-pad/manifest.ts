@@ -12,6 +12,7 @@ export const manifest: ToolManifest = {
   title: 'Drum Pad 鼓机',
   description: '纯 WebAudio 合成鼓垫：Kick/Snare/Hat/Clap，支持键盘演奏与 16 步编排循环',
   icon: 'tool-drum',
+  plant: 'sprout',
   route: {
     path: '/tools/drum-pad',
     name: 'tool-drum-pad',

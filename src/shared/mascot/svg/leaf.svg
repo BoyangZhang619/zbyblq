@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 120" fill="none">
+  <g id="pot">
+    <path d="M10 9 H54 L48.5 29 C48.2 30.6 47 31.6 45.4 31.6 H18.6 C17 31.6 15.8 30.6 15.5 29 Z"
+          fill="var(--pot-body, #D9A87C)"/>
+    <path d="M6 6 H58 V10.5 H6 Z" fill="var(--pot-rim, #C48F63)"/>
+    <path d="M10 9 H54 L48.5 29 C48.2 30.6 47 31.6 45.4 31.6 H18.6 C17 31.6 15.8 30.6 15.5 29 Z
+             M6 6 H58 V10.5 H6 Z"
+          fill="none" stroke="var(--plant-outline, #2E3B2A)" stroke-width="3.6" stroke-linejoin="round"/>
+  </g>
+  <!--
+    三片阔叶自盆中舒展。
+    构造方式：同一片基准叶绕基部 (40,88) 旋转得到各方向。
+    此前用 <use href="#leafbase"> 引用外部 symbol，导出为独立文件后
+    引用悬空，导致植物整株不渲染——故此处内联路径。
+  -->
+  <g stroke="var(--plant-outline, #2E3B2A)" stroke-width="3.4"
+     stroke-linejoin="round" stroke-linecap="round">
+    <path d="M40 88 C30.5 72 30.5 46 40 26 C49.5 46 49.5 72 40 88 Z"
+          fill="#3E7A6B" transform="rotate(-33 40 88)"/>
+    <path d="M40 88 C30.5 72 30.5 46 40 26 C49.5 46 49.5 72 40 88 Z"
+          fill="#7FBFAD" transform="rotate(33 40 88)"/>
+    <path d="M40 88 C30.5 72 30.5 46 40 26 C49.5 46 49.5 72 40 88 Z"
+          fill="#5FA391" transform="translate(3.2 7) scale(0.92)"/>
+  </g>
+</svg>

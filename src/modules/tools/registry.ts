@@ -58,6 +58,36 @@ export function getToolsByTag(tag: string): ToolManifest[] {
   return getTools().filter(t => t.tags.includes(tag))
 }
 
+/**
+ * 货架分组
+ *
+ * 按**首个标签**（主分类）分组，保证一个工具只出现在一个货架上。
+ * 与 getAllTags 的区别：后者按全部标签聚合，多标签工具会重复出现，
+ * 只适合分类页的检索，不适合首页货架。
+ */
+export interface Shelf {
+  /** 分类名 */
+  name: string
+  tools: ToolManifest[]
+}
+
+export function getShelves(): Shelf[] {
+  const shelves = new Map<string, ToolManifest[]>()
+
+  for (const tool of getTools()) {
+    const primary = tool.tags[0]
+    if (!primary) continue
+    const bucket = shelves.get(primary)
+    if (bucket) bucket.push(tool)
+    else shelves.set(primary, [tool])
+  }
+
+  // 工具多的货架排前面，数量相同则按名称
+  return [...shelves.entries()]
+    .map(([name, tools]) => ({ name, tools }))
+    .sort((a, b) => b.tools.length - a.tools.length || a.name.localeCompare(b.name, 'zh-Hans-CN'))
+}
+
 /** 全部标签，按工具数量降序 */
 export function getAllTags(): string[] {
   const counts = new Map<string, number>()

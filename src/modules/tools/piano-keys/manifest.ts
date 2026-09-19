@@ -12,6 +12,7 @@ export const manifest: ToolManifest = {
   title: 'Piano Keys',
   description: '基于 Web Audio API 的在线钢琴，支持键盘演奏、多种音色切换、预设曲目播放',
   icon: 'tool-piano',
+  plant: 'fern',
   route: {
     path: '/tools/piano-keys',
     name: 'tool-piano-keys',

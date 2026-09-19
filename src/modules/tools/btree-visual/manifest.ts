@@ -12,6 +12,7 @@ export const manifest: ToolManifest = {
   title: '二叉树可视化',
   description: '输入层序遍历数组，自动生成可视化二叉树，支持保存为图片',
   icon: 'tool-btree',
+  plant: 'fern',
   route: {
     path: '/tools/btree-visual',
     name: 'tool-btree-visual',

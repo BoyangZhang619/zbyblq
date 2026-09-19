@@ -15,6 +15,8 @@ export {
   getTools,
   getToolsByTag,
   getAllTags,
+  getShelves,
 } from './registry'
 
+export type { Shelf } from './registry'
 export type { ToolManifest, ToolEntry, ToolStatus } from './types'

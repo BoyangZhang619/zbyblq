@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 120" fill="none">
+
+      <g id="pot">
+    <path d="M10 9 H54 L48.5 29 C48.2 30.6 47 31.6 45.4 31.6 H18.6 C17 31.6 15.8 30.6 15.5 29 Z"
+          fill="var(--pot-body, #D9A87C)"/>
+    <path d="M6 6 H58 V10.5 H6 Z" fill="var(--pot-rim, #C48F63)"/>
+    <path d="M10 9 H54 L48.5 29 C48.2 30.6 47 31.6 45.4 31.6 H18.6 C17 31.6 15.8 30.6 15.5 29 Z
+             M6 6 H58 V10.5 H6 Z"
+          fill="none" stroke="var(--plant-outline, #2E3B2A)" stroke-width="3.6" stroke-linejoin="round"/>
+  </g>
+    <g stroke="var(--plant-outline, #2E3B2A)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+      <g fill="#41766F">
+        <path d="M40 84 C24 80 13 68 14 52 C30 56 41 68 40 84 Z"/>
+        <path d="M40 84 C56 80 67 68 66 52 C50 56 39 68 40 84 Z"/>
+        <path d="M40 84 C32 70 32 56 40 44 C48 56 48 70 40 84 Z"/>
+      </g>
+      <g fill="#5E9490">
+        <path d="M40 80 C28 74 22 62 24 50 C35 56 42 68 40 80 Z"/>
+        <path d="M40 80 C52 74 58 62 56 50 C45 56 38 68 40 80 Z"/>
+      </g>
+      <path d="M40 78 C36 68 36 58 40 50 C44 58 44 68 40 78 Z" fill="#7FA8A0"/>
+      <path d="M40 76 C38 68 38 60 40 54 C42 60 42 68 40 76 Z" fill="#B5D4C8"/>
+    </g>
+</svg>

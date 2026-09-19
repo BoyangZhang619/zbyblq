@@ -12,6 +12,7 @@ export const manifest: ToolManifest = {
   title: '排序算法可视化',
   description: '支持冒泡/选择/插入/归并/快速，观察比较与交换过程，支持调速与单步执行',
   icon: 'tool-sort',
+  plant: 'bamboo',
   route: {
     path: '/tools/sort-viz',
     name: 'tool-sort-viz',

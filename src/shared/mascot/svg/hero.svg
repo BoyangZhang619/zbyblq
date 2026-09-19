@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" fill="none">
+
+      <g id="pot">
+    <path d="M10 9 H54 L48.5 29 C48.2 30.6 47 31.6 45.4 31.6 H18.6 C17 31.6 15.8 30.6 15.5 29 Z"
+          fill="var(--pot-body, #D9A87C)"/>
+    <path d="M6 6 H58 V10.5 H6 Z" fill="var(--pot-rim, #C48F63)"/>
+    <path d="M10 9 H54 L48.5 29 C48.2 30.6 47 31.6 45.4 31.6 H18.6 C17 31.6 15.8 30.6 15.5 29 Z
+             M6 6 H58 V10.5 H6 Z"
+          fill="none" stroke="var(--plant-outline, #2E3B2A)" stroke-width="3.6" stroke-linejoin="round"/>
+  </g>
+    <g stroke="var(--plant-outline, #2E3B2A)" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M76 132 C74 108 68 84 56 64" fill="none"/>
+      <path d="M84 132 C86 108 92 84 104 64" fill="none"/>
+      <g fill="#5FA391">
+        <path d="M56 66 C48 58 44 42 48 28 C58 36 62 54 56 66 Z"/>
+        <path d="M104 66 C112 58 116 42 112 28 C102 36 98 54 104 66 Z"/>
+      </g>
+      <path d="M80 130 C70 108 70 78 80 54 C90 78 90 108 80 130 Z" fill="#7FBFAD"/>
+      <path d="M80 58 C72 46 72 30 80 16 C88 30 88 46 80 58 Z" fill="#A8C46B"/>
+    </g>
+</svg>

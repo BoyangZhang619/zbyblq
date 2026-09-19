@@ -12,6 +12,7 @@ export const manifest: ToolManifest = {
   title: '路径寻找可视化',
   description: '可视化不同路径寻找算法的过程，支持多种算法与参数设置',
   icon: 'tool-path',
+  plant: 'vine',
   route: {
     path: '/tools/pathfinding-visualize',
     name: 'tool-pathfinding-visualize',

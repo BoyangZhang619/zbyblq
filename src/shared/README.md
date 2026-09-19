@@ -9,6 +9,7 @@
 ```
 shared/
 ├── ui/                   # 基础组件：AppButton、AppCard、AppSheet、AppTag ...
+├── mascot/               # 植物体系（品牌表达），详见 docs/08-home-redesign-proposal.md
 ├── icons/                # 自制 SVG 图标体系，详见 docs/04-icon-system.md
 │   ├── AppIcon.vue
 │   ├── registry.ts

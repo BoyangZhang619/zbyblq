@@ -12,6 +12,7 @@ export const manifest: ToolManifest = {
   title: 'Kalimba 拇指琴',
   description: '纯 WebAudio 合成拇指琴：点击/键盘演奏，支持调式选择与录制循环，音色治愈',
   icon: 'tool-kalimba',
+  plant: 'flower',
   route: {
     path: '/tools/kalimba',
     name: 'tool-kalimba',

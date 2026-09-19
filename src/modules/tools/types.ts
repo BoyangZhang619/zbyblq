@@ -8,6 +8,7 @@
  */
 
 import type { IconName } from '@/shared/icons'
+import type { PlantName } from '@/shared/mascot'
 
 /**
  * 工具的接入形态，同时用于标记融合迁移进度
@@ -40,6 +41,12 @@ export interface ToolManifest {
   /** 图标名，对应 shared/icons 的 registry。禁止 emoji */
   icon: IconName
 
+  /**
+   * 植物形态名，对应 shared/mascot 的 registry。
+   * 用于首页货架的工具身份表达，与几何图标分工不同。
+   */
+  plant: PlantName
+
   /** 路由信息。name 统一使用 `tool-<id>` 前缀，与将来的非工具路由形成命名空间隔离 */
   route: {
     path: string
@@ -47,9 +54,9 @@ export interface ToolManifest {
   }
 
   /**
-   * 标签。同时承担两个职责：
-   * - 首页的筛选维度
-   * - 分类页的分类来源（CategoryManager 按标签聚合）
+   * 标签。首个标签同时是**主分类**——首页货架按主分类分组，
+   * 保证一个工具只出现在一个货架上。
+   * 其余标签用于分类页的检索。
    *
    * 刻意不设独立的 category 字段——那会造成与 tags 平行的第二个分类
    * 维度，正是本机制要消除的双写问题。

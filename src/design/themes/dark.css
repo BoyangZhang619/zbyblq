@@ -49,6 +49,21 @@
   /* 遮罩 */
   --overlay-scrim: rgba(0, 0, 0, 0.56);
 
+  /* 植物
+
+     深色下描边若沿用浅色模式的深墨绿，会与背景融为一体、植物失去
+     轮廓。改用浅一号的灰绿，形成描边感而非剪影感。
+     盆体同步提亮，避免在暗底上发闷。 */
+  --plant-outline: #93AC8C;
+  --pot-body: #C79A72;
+  --pot-rim: #D9AE86;
+
+  /* 木板：深色下压暗，避免在暗底上过亮 */
+  --board-top: #6B6154;
+  --board-mid: #5C5348;
+  --board-bottom: #463F36;
+  --board-rim: #7C7161;
+
   /* 质感与网格：深色下需提高不透明度才可见 */
   --texture-opacity: 0.02;
   --texture-blend: screen;

@@ -12,6 +12,7 @@ export const manifest: ToolManifest = {
   title: '英文字体转换工具',
   description: '输入英文，点击样式即可一键转换特殊字体，支持多种花体/粗体/斜体等Unicode样式。',
   icon: 'tool-font',
+  plant: 'flower',
   route: {
     path: '/tools/eft-tool',
     name: 'tool-eft-tool',

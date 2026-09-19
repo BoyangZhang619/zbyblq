@@ -1,105 +1,59 @@
 <template>
   <div class="home grid-bg">
     <div class="page-content">
-      <header class="home__header texture-paper">
-        <div class="home__heading">
-          <h1 class="home__title">『𝑍𝐵𝑌𝐵𝐿𝑄』</h1>
-          <p class="home__subtitle">个人工具合集</p>
-        </div>
+      <header class="home__head">
+        <span class="home__brand">𝒵𝐵𝒴𝐵𝐿𝒬</span>
 
         <button
-          class="home__theme"
+          class="home__action"
           type="button"
           :aria-label="isDark ? '切换到浅色模式' : '切换到深色模式'"
           @click="toggleMode"
         >
-          <AppIcon :name="isDark ? 'theme-light' : 'theme-dark'" :size="20" decorative />
+          <AppIcon :name="isDark ? 'theme-light' : 'theme-dark'" :size="19" decorative />
         </button>
       </header>
 
-      <!-- 标签筛选 -->
-      <div class="home__filters" role="tablist" aria-label="按分类筛选">
-        <button
-          class="home__chip"
-          :class="{ 'is-active': activeTag === ALL_TAG }"
-          type="button"
-          role="tab"
-          :aria-selected="activeTag === ALL_TAG"
-          @click="activeTag = ALL_TAG"
-        >
-          全部
-          <span class="home__chip-count">{{ tools.length }}</span>
-        </button>
-        <button
-          v-for="tag in tags"
-          :key="tag"
-          class="home__chip"
-          :class="{ 'is-active': activeTag === tag }"
-          type="button"
-          role="tab"
-          :aria-selected="activeTag === tag"
-          @click="activeTag = tag"
-        >
-          {{ tag }}
-          <span class="home__chip-count">{{ countByTag(tag) }}</span>
-        </button>
+      <!-- 主视觉：植物 + 问候词 -->
+      <div class="home__hero">
+        <PlantIcon name="hero" :size="104" aspect="1 / 1" decorative />
+        <p class="home__greeting">小筑</p>
       </div>
 
-      <!-- 工具列表 -->
-      <ul v-if="visibleTools.length" class="home__list">
-        <li v-for="tool in visibleTools" :key="tool.id">
-          <ToolCard :item="tool" />
-        </li>
-      </ul>
-
-      <div v-else class="home__empty">
-        <AppIcon name="search" :size="36" decorative />
-        <p class="home__empty-title">该分类下暂无工具</p>
-        <button class="home__empty-action" type="button" @click="activeTag = ALL_TAG">
-          查看全部工具
-        </button>
-      </div>
+      <!-- 货架 -->
+      <ShelfRow
+        v-for="shelf in shelves"
+        :key="shelf.name"
+        :name="shelf.name"
+        :tools="shelf.tools"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { AppIcon } from '@/shared/icons'
-import { CategoryManager } from '../composables/category-manager'
-import { ToolListManager } from '../composables/tool-list-manager'
+import { PlantIcon } from '@/shared/mascot'
 import { useTheme } from '@/shared/composables/useTheme'
-import ToolCard from '../components/ToolCard.vue'
+import { getShelves } from '@/modules/tools'
+import ShelfRow from '../components/ShelfRow.vue'
 
 /**
- * 首页：工具导航
+ * 首页：植物货架
  *
- * 布局原则见 docs/03-design-system.md §9：单页单主任务、
- * 触控优先、渐进披露。
+ * 布局原则见 docs/08-home-redesign-proposal.md §7.2：
+ * 不用卡片，工具以「植物 + 花盆」的形式坐在木板上，
+ * 一层货架 = 一个分类。
+ *
+ * 木板的坑：标签必须放在木板之下。放在植物下方会被木板遮挡，
+ * 二者需用同一套 grid 列宽才能对齐。
  */
-
-const ALL_TAG = '全部'
-
-const categoryManager = new CategoryManager()
-const toolListManager = new ToolListManager()
 
 const { resolvedMode, toggleMode } = useTheme()
 const isDark = computed(() => resolvedMode.value === 'dark')
 
-const tools = computed(() => toolListManager.getToolList())
-const tags = computed(() => categoryManager.getCategories().map(c => c.name))
-
-const activeTag = ref<string>(ALL_TAG)
-
-const visibleTools = computed(() =>
-  activeTag.value === ALL_TAG
-    ? tools.value
-    : toolListManager.getToolList({ category: activeTag.value }),
-)
-
-function countByTag(tag: string): number {
-  return categoryManager.getCategoryById(tag)?.count ?? 0
-}
+const shelves = computed(() => getShelves())
 </script>
 
 <style scoped>

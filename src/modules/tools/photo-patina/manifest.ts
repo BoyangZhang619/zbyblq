@@ -12,6 +12,7 @@ export const manifest: ToolManifest = {
   title: '电子包浆 · JPEG 二次压缩',
   description: '上传照片，选择包浆风格与强度，生成具有复古包浆效果的图片',
   icon: 'tool-patina',
+  plant: 'leaf',
   route: {
     path: '/tools/photo-patina',
     name: 'tool-photo-patina',
