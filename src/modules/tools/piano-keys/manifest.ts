@@ -9,15 +9,15 @@ import type { ToolManifest } from '../types'
 
 export const manifest: ToolManifest = {
   id: 'piano-keys',
-  title: 'Piano Keys',
-  description: '基于 Web Audio API 的在线钢琴，支持键盘演奏、多种音色切换、预设曲目播放',
+  title: { 'zh-CN': 'Piano Keys', en: 'Piano Keys' },
+  description: { 'zh-CN': '基于 Web Audio API 的在线钢琴，支持键盘演奏、多种音色切换、预设曲目播放', en: 'A Web Audio piano with keyboard play, several timbres and preset songs.' },
   icon: 'tool-piano',
   plant: 'fern',
   route: {
     path: '/tools/piano-keys',
     name: 'tool-piano-keys',
   },
-  tags: ['音乐'],
+  tags: ['music'],
   badge: 'INTERESTING',
   status: 'active',
   entry: 'iframe',

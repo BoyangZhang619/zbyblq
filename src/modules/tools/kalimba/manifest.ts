@@ -9,15 +9,15 @@ import type { ToolManifest } from '../types'
 
 export const manifest: ToolManifest = {
   id: 'kalimba',
-  title: 'Kalimba 拇指琴',
-  description: '纯 WebAudio 合成拇指琴：点击/键盘演奏，支持调式选择与录制循环，音色治愈',
+  title: { 'zh-CN': 'Kalimba 拇指琴', en: 'Kalimba' },
+  description: { 'zh-CN': '纯 WebAudio 合成拇指琴：点击/键盘演奏，支持调式选择与录制循环，音色治愈', en: 'A WebAudio thumb piano with scale selection, loop recording and a warm tone.' },
   icon: 'tool-kalimba',
   plant: 'flower',
   route: {
     path: '/tools/kalimba',
     name: 'tool-kalimba',
   },
-  tags: ['音乐'],
+  tags: ['music'],
   badge: 'IDK',
   status: 'active',
   entry: 'iframe',

@@ -9,15 +9,15 @@ import type { ToolManifest } from '../types'
 
 export const manifest: ToolManifest = {
   id: 'pathfinding-visualize',
-  title: '路径寻找可视化',
-  description: '可视化不同路径寻找算法的过程，支持多种算法与参数设置',
+  title: { 'zh-CN': '路径寻找可视化', en: 'Pathfinding Visualizer' },
+  description: { 'zh-CN': '可视化不同路径寻找算法的过程，支持多种算法与参数设置', en: 'Watch pathfinding algorithms explore a grid, with several algorithms and settings.' },
   icon: 'tool-path',
   plant: 'vine',
   route: {
     path: '/tools/pathfinding-visualize',
     name: 'tool-pathfinding-visualize',
   },
-  tags: ['算法', '工具'],
+  tags: ['algorithm', 'utility'],
   badge: 'INTERESTING',
   status: 'active',
   entry: 'iframe',

@@ -21,3 +21,4 @@ export {
 
 export type { Shelf } from './registry'
 export type { ToolManifest, ToolEntry, ToolStatus } from './types'
+export type { ToolTag } from '@/shared/i18n'

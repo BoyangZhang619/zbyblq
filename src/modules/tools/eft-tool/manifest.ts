@@ -9,15 +9,15 @@ import type { ToolManifest } from '../types'
 
 export const manifest: ToolManifest = {
   id: 'eft-tool',
-  title: '英文字体转换工具',
-  description: '输入英文，点击样式即可一键转换特殊字体，支持多种花体/粗体/斜体等Unicode样式。',
+  title: { 'zh-CN': '英文字体转换工具', en: 'Font Style Converter' },
+  description: { 'zh-CN': '输入英文，点击样式即可一键转换特殊字体，支持多种花体/粗体/斜体等Unicode样式。', en: 'Type English text and pick a style to convert it into Unicode letterforms.' },
   icon: 'tool-font',
   plant: 'flower',
   route: {
     path: '/tools/eft-tool',
     name: 'tool-eft-tool',
   },
-  tags: ['工具'],
+  tags: ['utility'],
   badge: 'not NEW',
   status: 'active',
   entry: 'native',

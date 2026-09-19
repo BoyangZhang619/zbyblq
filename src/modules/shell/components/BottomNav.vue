@@ -1,5 +1,5 @@
 <template>
-  <nav class="bottom-nav" aria-label="主导航">
+  <nav class="bottom-nav" :aria-label="t('nav.home')">
     <div class="nav-items">
       <router-link
         v-for="item in navItems"
@@ -7,7 +7,7 @@
         :to="item.path"
         class="nav-item"
         :class="item.routeName === currentRouteName ? 'active' : 'inactive'"
-        :aria-label="item.name"
+        :aria-label="t(item.labelKey)"
         :aria-current="item.routeName === currentRouteName ? 'page' : undefined"
       >
         <AppIcon
@@ -25,6 +25,7 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { AppIcon, type IconName } from '@/shared/icons'
+import { t } from '@/shared/i18n'
 
 /**
  * 底部导航
@@ -36,16 +37,17 @@ import { AppIcon, type IconName } from '@/shared/icons'
 
 interface NavEntry {
   id: string
-  name: string
+  /** 文案键，标签随语言变化 */
+  labelKey: 'nav.home' | 'nav.category' | 'nav.profile'
   path: string
   routeName: string
   icon: IconName
 }
 
 const navItems: NavEntry[] = [
-  { id: 'home',    name: '主页',     path: '/home',    routeName: 'home',    icon: 'nav-home' },
-  { id: 'sort',    name: '分类',     path: '/sort',    routeName: 'sort',    icon: 'nav-category' },
-  { id: 'profile', name: '个人中心', path: '/profile', routeName: 'profile', icon: 'nav-profile' },
+  { id: 'home',    labelKey: 'nav.home',    path: '/home',    routeName: 'home',    icon: 'nav-home' },
+  { id: 'sort',    labelKey: 'nav.category', path: '/sort',    routeName: 'sort',    icon: 'nav-category' },
+  { id: 'profile', labelKey: 'nav.profile', path: '/profile', routeName: 'profile', icon: 'nav-profile' },
 ]
 
 const route = useRoute()

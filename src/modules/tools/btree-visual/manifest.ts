@@ -9,15 +9,15 @@ import type { ToolManifest } from '../types'
 
 export const manifest: ToolManifest = {
   id: 'btree-visual',
-  title: '二叉树可视化',
-  description: '输入层序遍历数组，自动生成可视化二叉树，支持保存为图片',
+  title: { 'zh-CN': '二叉树可视化', en: 'Binary Tree Visualizer' },
+  description: { 'zh-CN': '输入层序遍历数组，自动生成可视化二叉树，支持保存为图片', en: 'Enter a level-order array to generate a tree diagram. Exportable as an image.' },
   icon: 'tool-btree',
   plant: 'fern',
   route: {
     path: '/tools/btree-visual',
     name: 'tool-btree-visual',
   },
-  tags: ['算法', '工具'],
+  tags: ['algorithm', 'utility'],
   badge: 'USELESS',
   status: 'active',
   entry: 'iframe',

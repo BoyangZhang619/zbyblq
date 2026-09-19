@@ -9,25 +9,20 @@
 
 import { getTools, getToolsByTag, getAllTags } from '@/modules/tools'
 import type { ToolManifest } from '@/modules/tools'
+import { tagName, tagDescription, type ToolTag } from '@/shared/i18n'
 
 export interface Category {
-  id: string
+  /** 分类标识 */
+  id: ToolTag
+  /** 显示名，随语言变化 */
   name: string
   count: number
+  /** 说明文案，随语言变化 */
   description: string
 }
 
-/** 已知分类的说明文案。未在此登记的标签回退为通用描述 */
-const CATEGORY_DESCRIPTIONS: Record<string, string> = {
-  工具: '实用工具集合',
-  算法: '算法可视化与演示',
-  图像: '图像处理与转换',
-  音乐: '音乐创作与演奏',
-  实验: '试验性质的功能',
-}
-
 export class CategoryManager {
-  private categories: Map<string, Category> = new Map()
+  private categories: Map<ToolTag, Category> = new Map()
   private tools: ToolManifest[] = []
 
   constructor() {
@@ -41,9 +36,9 @@ export class CategoryManager {
       const toolsInTag = getToolsByTag(tag)
       this.categories.set(tag, {
         id: tag,
-        name: tag,
+        name: tagName(tag),
         count: toolsInTag.length,
-        description: CATEGORY_DESCRIPTIONS[tag] ?? `${tag}相关工具`,
+        description: tagDescription(tag),
       })
     }
   }
@@ -53,11 +48,11 @@ export class CategoryManager {
     return Array.from(this.categories.values()).sort((a, b) => b.count - a.count)
   }
 
-  public getCategoryById(id: string): Category | undefined {
+  public getCategoryById(id: ToolTag): Category | undefined {
     return this.categories.get(id)
   }
 
-  public getToolsByCategory(categoryId: string): ToolManifest[] {
+  public getToolsByCategory(categoryId: ToolTag): ToolManifest[] {
     return getToolsByTag(categoryId)
   }
 
@@ -69,7 +64,7 @@ export class CategoryManager {
     return this.categories.size
   }
 
-  public isCategoryExists(categoryId: string): boolean {
+  public isCategoryExists(categoryId: ToolTag): boolean {
     return this.categories.has(categoryId)
   }
 }

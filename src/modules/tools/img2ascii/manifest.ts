@@ -9,15 +9,15 @@ import type { ToolManifest } from '../types'
 
 export const manifest: ToolManifest = {
   id: 'img2ascii',
-  title: '图片转 ASCII',
-  description: '上传图片生成字符画，支持亮度/对比度/反相，彩色 ASCII，可导出 TXT/PNG',
+  title: { 'zh-CN': '图片转 ASCII', en: 'Image to ASCII' },
+  description: { 'zh-CN': '上传图片生成字符画，支持亮度/对比度/反相，彩色 ASCII，可导出 TXT/PNG', en: 'Turn an image into character art. Brightness, contrast, invert and colour output.' },
   icon: 'tool-ascii',
   plant: 'leaf',
   route: {
     path: '/tools/img2ascii',
     name: 'tool-img2ascii',
   },
-  tags: ['图像', '工具', '实验'],
+  tags: ['image', 'utility', 'experimental'],
   badge: 'INTERESTING',
   status: 'active',
   entry: 'iframe',

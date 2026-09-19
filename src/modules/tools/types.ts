@@ -9,6 +9,7 @@
 
 import type { IconName } from '@/shared/icons'
 import type { PlantName } from '@/shared/mascot'
+import type { Localized, ToolTag } from '@/shared/i18n'
 
 /**
  * 工具的接入形态，同时用于标记融合迁移进度
@@ -32,11 +33,11 @@ export interface ToolManifest {
   /** 唯一标识，同时用作模块目录名与数据同步的维度 */
   id: string
 
-  /** 卡片标题 */
-  title: string
+  /** 各语种的标题 */
+  title: Localized<string>
 
-  /** 卡片描述，建议不超过 40 字 */
-  description: string
+  /** 各语种的描述，中文建议不超过 40 字 */
+  description: Localized<string>
 
   /** 图标名，对应 shared/icons 的 registry。禁止 emoji */
   icon: IconName
@@ -61,9 +62,11 @@ export interface ToolManifest {
    * 刻意不设独立的 category 字段——那会造成与 tags 平行的第二个分类
    * 维度，正是本机制要消除的双写问题。
    */
-  tags: string[]
+  tags: ToolTag[]
 
-  /** 卡片上的徽章文字，可选 */
+  /** 卡片上的徽章文字，可选。刻意不本地化——它们是随性的短标记，
+   *  逐语言翻译反而会失去原有的语气 */
+
   badge?: string
 
   status: ToolStatus

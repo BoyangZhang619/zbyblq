@@ -18,14 +18,9 @@ export type ThemeMode = 'light' | 'dark' | 'auto'
 export const ACCENT_NAMES = ['sun', 'mint', 'rose', 'peach', 'sky', 'lilac'] as const
 export type AccentName = (typeof ACCENT_NAMES)[number]
 
-export const ACCENT_LABELS: Record<AccentName, string> = {
-  sun: '暖阳',
-  mint: '薄荷',
-  rose: '玫瑰',
-  peach: '蜜桃',
-  sky: '天青',
-  lilac: '丁香',
-}
+/**
+ * 色板的显示名由 i18n 的 accent.* 提供，本模块只管颜色标识本身。
+ */
 
 /**
  * 默认色板：暖阳。取自参照对象的实测主色 #FFD84F，

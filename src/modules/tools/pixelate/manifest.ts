@@ -9,15 +9,15 @@ import type { ToolManifest } from '../types'
 
 export const manifest: ToolManifest = {
   id: 'pixelate',
-  title: 'Pixelate · 图片像素化',
-  description: '上传图片 → 调像素块大小 → 导出PNG（可选限制色板 8/16/32 色）',
+  title: { 'zh-CN': 'Pixelate · 图片像素化', en: 'Pixelate' },
+  description: { 'zh-CN': '上传图片 → 调像素块大小 → 导出PNG（可选限制色板 8/16/32 色）', en: 'Adjust the block size and optionally limit the palette, then export a PNG.' },
   icon: 'tool-pixelate',
   plant: 'clover',
   route: {
     path: '/tools/pixelate',
     name: 'tool-pixelate',
   },
-  tags: ['图像', '工具'],
+  tags: ['image', 'utility'],
   badge: 'IDK',
   status: 'active',
   entry: 'iframe',

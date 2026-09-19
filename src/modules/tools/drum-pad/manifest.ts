@@ -9,15 +9,15 @@ import type { ToolManifest } from '../types'
 
 export const manifest: ToolManifest = {
   id: 'drum-pad',
-  title: 'Drum Pad 鼓机',
-  description: '纯 WebAudio 合成鼓垫：Kick/Snare/Hat/Clap，支持键盘演奏与 16 步编排循环',
+  title: { 'zh-CN': 'Drum Pad 鼓机', en: 'Drum Pad' },
+  description: { 'zh-CN': '纯 WebAudio 合成鼓垫：Kick/Snare/Hat/Clap，支持键盘演奏与 16 步编排循环', en: 'A WebAudio drum machine with keyboard play and a 16-step sequencer.' },
   icon: 'tool-drum',
   plant: 'sprout',
   route: {
     path: '/tools/drum-pad',
     name: 'tool-drum-pad',
   },
-  tags: ['音乐'],
+  tags: ['music'],
   badge: 'IDK',
   status: 'active',
   entry: 'iframe',

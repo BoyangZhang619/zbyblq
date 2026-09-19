@@ -9,15 +9,15 @@ import type { ToolManifest } from '../types'
 
 export const manifest: ToolManifest = {
   id: 'encryption-graph',
-  title: '小番茄图片混淆',
-  description: '基于空间填充曲线的图片混淆工具，混淆后压缩仍保持色彩，支持混淆/解混淆/还原操作',
+  title: { 'zh-CN': '小番茄图片混淆', en: 'Image Scrambler' },
+  description: { 'zh-CN': '基于空间填充曲线的图片混淆工具，混淆后压缩仍保持色彩，支持混淆/解混淆/还原操作', en: 'Scrambles an image along a space-filling curve. Colours survive compression.' },
   icon: 'tool-scramble',
   plant: 'rosette',
   route: {
     path: '/tools/encryption-graph',
     name: 'tool-encryption-graph',
   },
-  tags: ['图像', '工具'],
+  tags: ['image', 'utility'],
   badge: 'XIXI',
   status: 'active',
   entry: 'iframe',

@@ -8,6 +8,7 @@
  */
 
 import type { ToolManifest, ToolStatus } from './types'
+import { TAG_ORDER, type ToolTag } from '@/shared/i18n'
 import { manifest as BtreeVisual } from './btree-visual/manifest'
 import { manifest as EftTool } from './eft-tool/manifest'
 import { manifest as EncryptionGraph } from './encryption-graph/manifest'
@@ -54,7 +55,7 @@ export function getTools(status: ToolStatus = 'active'): ToolManifest[] {
   return ALL_TOOLS.filter(t => t.status === status)
 }
 
-export function getToolsByTag(tag: string): ToolManifest[] {
+export function getToolsByTag(tag: ToolTag): ToolManifest[] {
   return getTools().filter(t => t.tags.includes(tag))
 }
 
@@ -66,13 +67,13 @@ export function getToolsByTag(tag: string): ToolManifest[] {
  * 只适合分类页的检索，不适合首页货架。
  */
 export interface Shelf {
-  /** 分类名 */
-  name: string
+  /** 分类标识。显示名由 i18n 的 tag.* 提供 */
+  tag: ToolTag
   tools: ToolManifest[]
 }
 
 export function getShelves(): Shelf[] {
-  const shelves = new Map<string, ToolManifest[]>()
+  const shelves = new Map<ToolTag, ToolManifest[]>()
 
   for (const tool of getTools()) {
     const primary = tool.tags[0]
@@ -82,10 +83,11 @@ export function getShelves(): Shelf[] {
     else shelves.set(primary, [tool])
   }
 
-  // 工具多的货架排前面，数量相同则按名称
+  // 工具多的货架排前面；数量相同则按分类 ID 的固定顺序，保证切换语言
+  // 时货架次序不跳动
   return [...shelves.entries()]
-    .map(([name, tools]) => ({ name, tools }))
-    .sort((a, b) => b.tools.length - a.tools.length || a.name.localeCompare(b.name, 'zh-Hans-CN'))
+    .map(([tag, tools]) => ({ tag, tools }))
+    .sort((a, b) => b.tools.length - a.tools.length || TAG_ORDER.indexOf(a.tag) - TAG_ORDER.indexOf(b.tag))
 }
 
 /**
@@ -95,13 +97,13 @@ export function getShelves(): Shelf[] {
  * 分类页必须与首页货架用同一套分组，否则会出现「货架上 1 个、
  * 详情页 9 个」的矛盾——所以详情页走本函数。
  */
-export function getToolsByPrimaryTag(tag: string): ToolManifest[] {
+export function getToolsByPrimaryTag(tag: ToolTag): ToolManifest[] {
   return getTools().filter(t => t.tags[0] === tag)
 }
 
 /** 全部标签，按工具数量降序 */
-export function getAllTags(): string[] {
-  const counts = new Map<string, number>()
+export function getAllTags(): ToolTag[] {
+  const counts = new Map<ToolTag, number>()
   for (const tool of getTools()) {
     for (const tag of tool.tags) {
       counts.set(tag, (counts.get(tag) ?? 0) + 1)

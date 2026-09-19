@@ -9,15 +9,15 @@ import type { ToolManifest } from '../types'
 
 export const manifest: ToolManifest = {
   id: 'photo-patina',
-  title: '电子包浆 · JPEG 二次压缩',
-  description: '上传照片，选择包浆风格与强度，生成具有复古包浆效果的图片',
+  title: { 'zh-CN': '电子包浆 · JPEG 二次压缩', en: 'Digital Patina' },
+  description: { 'zh-CN': '上传照片，选择包浆风格与强度，生成具有复古包浆效果的图片', en: 'Re-compress a photo repeatedly for a weathered, low-fidelity look.' },
   icon: 'tool-patina',
   plant: 'leaf',
   route: {
     path: '/tools/photo-patina',
     name: 'tool-photo-patina',
   },
-  tags: ['图像', '工具', '实验'],
+  tags: ['image', 'utility', 'experimental'],
   badge: 'INTERESTING',
   status: 'active',
   entry: 'iframe',

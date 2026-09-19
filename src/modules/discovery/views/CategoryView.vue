@@ -5,12 +5,12 @@
       <template v-if="current">
         <button class="cat__back" type="button" @click="clear">
           <AppIcon name="arrow-left" :size="16" decorative />
-          全部分类
+          {{ t('category.all') }}
         </button>
 
         <header class="cat__head">
-          <h1 class="cat__title">{{ current.name }}</h1>
-          <span class="cat__count">{{ current.tools.length }} 个工具</span>
+          <h1 class="cat__title">{{ tagName(current.tag) }}</h1>
+          <span class="cat__count">{{ tn('common.count.tools', current.tools.length) }}</span>
         </header>
 
         <!--
@@ -26,8 +26,8 @@
             <router-link class="cat__row" :to="tool.route.path">
               <PlantIcon :name="tool.plant" :size="40" decorative />
               <span class="cat__text">
-                <span class="cat__name">{{ tool.title }}</span>
-                <span class="cat__desc">{{ tool.description }}</span>
+                <span class="cat__name">{{ lt(tool.title) }}</span>
+                <span class="cat__desc">{{ lt(tool.description) }}</span>
               </span>
             </router-link>
           </li>
@@ -37,18 +37,23 @@
       <!-- ============ 分类索引 ============ -->
       <template v-else>
         <header class="cat__head">
-          <h1 class="cat__title">分类</h1>
+          <h1 class="cat__title">{{ t('category.title') }}</h1>
         </header>
 
         <ul class="cat__index">
-          <li v-for="item in categories" :key="item.name">
-            <button class="cat__entry" type="button" @click="select(item.name)">
-              <PlantIcon :name="item.plant" :size="44" decorative />
+          <li v-for="shelf in shelves" :key="shelf.tag">
+            <button
+              class="cat__entry"
+              type="button"
+              :aria-label="t('category.index.more', { name: tagName(shelf.tag) })"
+              @click="select(shelf.tag)"
+            >
+              <PlantIcon :name="shelf.tools[0].plant" :size="44" decorative />
               <span class="cat__text">
-                <span class="cat__name">{{ item.name }}</span>
-                <span class="cat__desc">{{ item.description }}</span>
+                <span class="cat__name">{{ tagName(shelf.tag) }}</span>
+                <span class="cat__desc">{{ tagDescription(shelf.tag) }}</span>
               </span>
-              <span class="cat__count">{{ item.tools.length }}</span>
+              <span class="cat__count">{{ shelf.tools.length }}</span>
               <AppIcon name="arrow-right" :size="16" class="cat__chevron" decorative />
             </button>
           </li>
@@ -63,14 +68,15 @@ import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { AppIcon } from '@/shared/icons'
 import { PlantIcon } from '@/shared/mascot'
-import { getShelves, type ToolManifest } from '@/modules/tools'
+import { t, tn, lt, tagName, tagDescription, type ToolTag } from '@/shared/i18n'
+import { getShelves } from '@/modules/tools'
 
 /**
  * 分类页
  *
  * 两个层级共用本组件：
  *   无 query        → 分类索引
- *   ?category=xxx   → 该分类下的全部工具
+ *   ?category=<tag> → 该分类下的全部工具（tag 为分类 ID，非显示名）
  *
  * 与首页的分工：首页是浏览（植物大、节奏慢、情绪优先），
  * 本页是查找（信息密度优先，植物降为锚点）。
@@ -81,40 +87,19 @@ const router = useRouter()
 
 const shelves = getShelves()
 
-interface CategoryEntry {
-  name: string
-  /** 代表植物：取该分类首个工具的形态 */
-  plant: ToolManifest['plant']
-  tools: ToolManifest[]
-  description: string
-}
-
-/** 分类说明。未登记的标签回退为通用描述 */
-const DESCRIPTIONS: Record<string, string> = {
-  工具: '实用工具集合',
-  算法: '算法可视化与演示',
-  图像: '图像处理与转换',
-  音乐: '音乐创作与演奏',
-  实验: '试验性质的功能',
-}
-
-const categories = computed<CategoryEntry[]>(() =>
-  shelves.map(s => ({
-    name: s.name,
-    plant: s.tools[0].plant,
-    tools: s.tools,
-    description: DESCRIPTIONS[s.name] ?? `${s.name}相关工具`,
-  })),
-)
-
+/**
+ * 按分类 ID 定位当前分类
+ *
+ * 用 ID 而非显示名——显示名随语言变化，不能用作标识。
+ */
 const current = computed(() => {
-  const name = route.query.category as string | undefined
-  if (!name) return undefined
-  return categories.value.find(c => c.name === name)
+  const tag = route.query.category as ToolTag | undefined
+  if (!tag) return undefined
+  return shelves.find(s => s.tag === tag)
 })
 
-function select(name: string): void {
-  router.push({ name: 'sort', query: { category: name } })
+function select(tag: ToolTag): void {
+  router.push({ name: 'sort', query: { category: tag } })
 }
 
 function clear(): void {

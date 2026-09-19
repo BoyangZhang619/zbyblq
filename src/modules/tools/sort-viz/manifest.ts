@@ -9,15 +9,15 @@ import type { ToolManifest } from '../types'
 
 export const manifest: ToolManifest = {
   id: 'sort-viz',
-  title: '排序算法可视化',
-  description: '支持冒泡/选择/插入/归并/快速，观察比较与交换过程，支持调速与单步执行',
+  title: { 'zh-CN': '排序算法可视化', en: 'Sorting Visualizer' },
+  description: { 'zh-CN': '支持冒泡/选择/插入/归并/快速，观察比较与交换过程，支持调速与单步执行', en: 'Watch bubble, selection, insertion, merge and quick sort, step by step.' },
   icon: 'tool-sort',
   plant: 'bamboo',
   route: {
     path: '/tools/sort-viz',
     name: 'tool-sort-viz',
   },
-  tags: ['算法', '工具'],
+  tags: ['algorithm', 'utility'],
   badge: 'GOOD-LOOKING',
   status: 'active',
   entry: 'iframe',

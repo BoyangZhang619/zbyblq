@@ -1,6 +1,6 @@
 <template>
   <section class="shelf">
-    <h2 class="shelf__name">{{ name }}</h2>
+    <h2 class="shelf__name">{{ tagName(tag) }}</h2>
 
     <div class="shelf__stage">
       <!--
@@ -14,7 +14,7 @@
           <router-link
             class="shelf__item"
             :to="tool.route.path"
-            :aria-label="tool.title"
+            :aria-label="lt(tool.title)"
           >
             <PlantIcon :name="tool.plant" :size="SIZES[i % SIZES.length]" decorative />
           </router-link>
@@ -25,8 +25,8 @@
       <router-link
         v-if="hasMore"
         class="shelf__more"
-        :to="{ name: 'sort', query: { category: name } }"
-        :aria-label="`查看「${name}」的全部 ${tools.length} 个工具`"
+        :to="{ name: 'sort', query: { category: tag } }"
+        :aria-label="t('home.shelf.more', { name: tagName(tag), count: tools.length })"
       >
         <AppIcon name="arrow-right" :size="18" decorative />
       </router-link>
@@ -36,7 +36,7 @@
       <ul class="shelf__names">
         <li v-for="tool in visible" :key="tool.id" class="shelf__slot">
           <router-link class="shelf__label" :to="tool.route.path">
-            {{ tool.title }}
+            {{ lt(tool.title) }}
           </router-link>
         </li>
       </ul>
@@ -48,6 +48,7 @@
 import { computed } from 'vue'
 import { AppIcon } from '@/shared/icons'
 import { PlantIcon } from '@/shared/mascot'
+import { t, lt, tagName, type ToolTag } from '@/shared/i18n'
 import type { ToolManifest } from '@/modules/tools'
 
 /**
@@ -58,8 +59,8 @@ import type { ToolManifest } from '@/modules/tools'
  */
 
 const props = withDefaults(defineProps<{
-  /** 分类名，作为货架标题 */
-  name: string
+  /** 分类标识。显示名由 i18n 提供 */
+  tag: ToolTag
   /** 该分类下的全部工具 */
   tools: ToolManifest[]
   /** 最多展示几个，超出则由箭头跳转 */

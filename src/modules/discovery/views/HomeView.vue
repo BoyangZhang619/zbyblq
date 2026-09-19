@@ -2,12 +2,12 @@
   <div class="home grid-bg">
     <div class="page-content">
       <header class="home__head">
-        <span class="home__brand">𝒵𝐵𝒴𝐵𝐿𝒬</span>
+        <span class="home__brand">{{ t('app.brand') }}</span>
 
         <button
           class="home__action"
           type="button"
-          :aria-label="isDark ? '切换到浅色模式' : '切换到深色模式'"
+          :aria-label="isDark ? t('home.theme.toLight') : t('home.theme.toDark')"
           @click="toggleMode"
         >
           <AppIcon :name="isDark ? 'theme-light' : 'theme-dark'" :size="19" decorative />
@@ -17,14 +17,14 @@
       <!-- 主视觉：植物 + 问候词 -->
       <div class="home__hero">
         <PlantIcon name="hero" :size="104" aspect="1 / 1" decorative />
-        <p class="home__greeting">小筑</p>
+        <p class="home__greeting">{{ t('app.greeting') }}</p>
       </div>
 
       <!-- 货架 -->
       <ShelfRow
         v-for="shelf in shelves"
-        :key="shelf.name"
-        :name="shelf.name"
+        :key="shelf.tag"
+        :tag="shelf.tag"
         :tools="shelf.tools"
       />
     </div>
@@ -36,6 +36,7 @@ import { computed } from 'vue'
 import { AppIcon } from '@/shared/icons'
 import { PlantIcon } from '@/shared/mascot'
 import { useTheme } from '@/shared/composables/useTheme'
+import { t } from '@/shared/i18n'
 import { getShelves } from '@/modules/tools'
 import ShelfRow from '../components/ShelfRow.vue'
 
