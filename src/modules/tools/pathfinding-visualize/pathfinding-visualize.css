@@ -1,0 +1,484 @@
+/**
+ * 路径寻找可视化样式
+ *
+ * 类名前缀取 pathfind——工具名 pathfinding-visualize 的简写，
+ * 与「<工具>__<元素>」的命名约定一致，见 docs/09-tool-page-spec.md §4.3。
+ *
+ * 只引用语义令牌，无裸色值、无裸 px 间距。网格与格子的样式在
+ * components/PathBoard.vue 内（与渲染方式绑定），两处共用的状态色
+ * 由下面的 --pathfind-state-* 下发。
+ *
+ * 布局原则见 docs/03-design-system.md §9
+ */
+
+.pathfind {
+  /* 网格与图例共用的状态色。两组样式分处两个文件，用局部变量保证同源。
+     权重与已访问都取「状态前景色 30% 混卡片底」：换算成不透明色后，
+     浅色深色两套主题下都能与网格底、墙色拉开，且互为冷暖两极，
+     六套马卡龙主色下也不会与路径色撞色 */
+  --pathfind-state-wall: var(--text-primary);
+  --pathfind-state-weight: color-mix(in srgb, var(--state-warning-fg) 30%, var(--surface-card));
+  --pathfind-state-start: var(--state-success-fg);
+  --pathfind-state-end: var(--state-danger-fg);
+  --pathfind-state-visited: color-mix(in srgb, var(--state-info-fg) 30%, var(--surface-card));
+  --pathfind-state-path: var(--accent-fg);
+
+  min-height: 100%;
+  padding-top: var(--space-6);
+}
+
+.pathfind__header {
+  margin-bottom: var(--space-6);
+}
+
+.pathfind__title {
+  font-size: var(--text-2xl);
+  line-height: var(--leading-2xl);
+}
+
+.pathfind__subtitle {
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+/* ============================================
+   主操作
+   ============================================ */
+.pathfind__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+
+.pathfind__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: var(--size-touch-min);
+  padding: 0 var(--space-4);
+
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+
+  transition:
+    color var(--dur-fast) var(--ease-standard),
+    background-color var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard),
+    transform var(--dur-base) var(--ease-soft);
+}
+
+.pathfind__btn:hover:not(:disabled) {
+  border-color: var(--border-default);
+}
+
+.pathfind__btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.pathfind__btn:disabled {
+  opacity: 0.45;
+}
+
+.pathfind__btn--primary {
+  font-weight: var(--weight-medium);
+  color: var(--text-on-accent);
+  background-color: var(--accent-fg);
+  border-color: transparent;
+}
+
+/* 悬停时把主色朝主文字色偏一点，而不是换成 --accent-text：
+   后者在 sun 色板下是深橄榄，与同样偏深的 --text-on-accent 对比不足 */
+.pathfind__btn--primary:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--accent-fg) 86%, var(--text-primary));
+}
+
+/* ============================================
+   网格
+   ============================================ */
+.pathfind__stage {
+  margin-bottom: var(--space-6);
+}
+
+.pathfind__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.pathfind__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 28px;
+  padding: 0 var(--space-3);
+
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+}
+
+.pathfind__dot {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-xs);
+}
+
+.pathfind__dot--start {
+  background-color: var(--pathfind-state-start);
+}
+
+.pathfind__dot--end {
+  background-color: var(--pathfind-state-end);
+}
+
+.pathfind__dot--wall {
+  background-color: var(--pathfind-state-wall);
+}
+
+.pathfind__dot--weight {
+  background-color: var(--pathfind-state-weight);
+}
+
+.pathfind__dot--visited {
+  background-color: var(--pathfind-state-visited);
+}
+
+.pathfind__dot--path {
+  background-color: var(--pathfind-state-path);
+}
+
+.pathfind__board-wrap {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.pathfind__toast {
+  position: absolute;
+  left: var(--space-3);
+  bottom: var(--space-3);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  max-width: calc(100% - var(--space-6));
+  padding: var(--space-2) var(--space-3);
+
+  font-size: var(--text-xs);
+  line-height: var(--leading-xs);
+  color: var(--text-secondary);
+  background-color: var(--surface-overlay);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--elev-float);
+
+  /* 常驻 DOM 以保证读屏能播报内容变化，仅以透明度显隐 */
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity var(--dur-base) var(--ease-standard),
+    transform var(--dur-base) var(--ease-out);
+  pointer-events: none;
+}
+
+.pathfind__toast.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.pathfind__foot {
+  margin-top: var(--space-3);
+  font-size: var(--text-xs);
+  line-height: var(--leading-xs);
+  color: var(--text-tertiary);
+}
+
+/* ============================================
+   参数
+   ============================================ */
+.pathfind__controls {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.pathfind__group {
+  min-width: 0;
+}
+
+.pathfind__group-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.pathfind__group-title {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-sm);
+  color: var(--text-secondary);
+}
+
+.pathfind__group-head .pathfind__group-title {
+  margin-bottom: 0;
+}
+
+.pathfind__value {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+
+.pathfind__hint {
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  line-height: var(--leading-xs);
+  color: var(--text-tertiary);
+}
+
+/* ============================================
+   选择器与开关
+   ============================================ */
+.pathfind__select {
+  display: block;
+  width: 100%;
+  min-height: var(--size-touch-min);
+  padding: 0 var(--space-3);
+
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+
+  transition: border-color var(--dur-fast) var(--ease-standard);
+}
+
+.pathfind__select:hover {
+  border-color: var(--border-default);
+}
+
+.pathfind__checks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-top: var(--space-3);
+}
+
+.pathfind__check {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--size-touch-min);
+
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.pathfind__check input {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent-fg);
+  cursor: pointer;
+}
+
+/* ============================================
+   绘制模式
+   ============================================ */
+.pathfind__seg {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.pathfind__seg-btn {
+  min-height: var(--size-touch-min);
+  padding: 0 var(--space-4);
+
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+
+  transition:
+    color var(--dur-fast) var(--ease-standard),
+    background-color var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard);
+}
+
+.pathfind__seg-btn:hover {
+  border-color: var(--border-default);
+}
+
+.pathfind__seg-btn.is-active {
+  font-weight: var(--weight-medium);
+  color: var(--accent-text);
+  background-color: var(--accent-bg);
+  border-color: transparent;
+}
+
+/* ============================================
+   滑块
+
+   几何与配色沿用 image-tool.css 的滑块观感。该文件按规范只服务
+   图像类工具，本工具不能复用它的类名，故按同样观感重写一份；
+   若再有第三个工具需要，应上提到 shared/ui/ 成为公共骨架
+   ============================================ */
+.pathfind__range {
+  display: block;
+  width: 100%;
+  height: 28px;
+  margin: 0;
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.pathfind__range::-webkit-slider-runnable-track {
+  height: 4px;
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-full);
+}
+
+.pathfind__range::-moz-range-track {
+  height: 4px;
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-full);
+}
+
+.pathfind__range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: -8px;
+  background-color: var(--accent-fg);
+  border: 3px solid var(--surface-card);
+  border-radius: var(--radius-full);
+  box-shadow: var(--elev-card);
+  cursor: pointer;
+}
+
+.pathfind__range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background-color: var(--accent-fg);
+  border: 3px solid var(--surface-card);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+}
+
+/* ============================================
+   统计
+   ============================================ */
+.pathfind__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.pathfind__stat {
+  min-width: 0;
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-md);
+}
+
+.pathfind__stat-label {
+  display: block;
+  font-size: var(--text-xs);
+  line-height: var(--leading-xs);
+  color: var(--text-tertiary);
+}
+
+.pathfind__stat-value {
+  display: block;
+  margin-top: var(--space-1);
+  font-size: var(--text-md);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================
+   快捷键
+   ============================================ */
+.pathfind__keys {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.pathfind__key-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.pathfind__key-chord {
+  display: inline-flex;
+  flex: none;
+  gap: var(--space-1);
+  min-width: 84px;
+}
+
+.pathfind__key-label {
+  font-size: var(--text-xs);
+  line-height: var(--leading-xs);
+  color: var(--text-secondary);
+}
+
+.pathfind__kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 var(--space-1);
+
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xs);
+}
+
+/* ============================================
+   宽屏
+   ============================================ */
+@media (min-width: 768px) {
+  .pathfind {
+    padding-top: var(--space-10);
+  }
+
+  .pathfind__controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-6) var(--space-5);
+  }
+
+  /* 快捷键组独占一行 */
+  .pathfind__group--wide {
+    grid-column: 1 / -1;
+  }
+
+  .pathfind__keys {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

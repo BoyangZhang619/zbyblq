@@ -247,7 +247,8 @@
 }
 
 .imgtool__chip {
-  min-height: 34px;
+  /* 触控区必须达 --size-touch-min。此前是 34px，低于规范 §7 的下限 */
+  min-height: var(--size-touch-min);
   padding: 0 var(--space-3);
   font-size: var(--text-sm);
   color: var(--text-secondary);

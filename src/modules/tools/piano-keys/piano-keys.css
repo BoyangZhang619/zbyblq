@@ -1,0 +1,504 @@
+/**
+ * Piano Keys 样式
+ *
+ * 除键盘与曲谱条的尺寸外，一律引用语义令牌，见 docs/09-tool-page-spec.md §4。
+ * 尺寸是纯几何值（琴键宽高、曲谱条高度），按组件级约定值集中声明在
+ * .piano-keys 上，断点处只改这几个值——与间距、字号无关。
+ */
+
+.piano-keys {
+  min-height: 100%;
+  padding-top: var(--space-6);
+
+  /* 琴键几何。默认值取自旧版 main.css，断点处等比收缩 */
+  --pk-white-w: 42px;
+  --pk-white-h: 168px;
+  --pk-black-w: 26px;
+  --pk-black-h: 104px;
+
+  /* 曲谱显示区高度 */
+  --pk-strip-h: 168px;
+
+  /* 当前音符框的最小宽度与单个琴谱记号的宽度上限 */
+  --pk-note-box-min: 104px;
+  --pk-chip-max: 88px;
+}
+
+.piano-keys__header {
+  margin-bottom: var(--space-6);
+}
+
+.piano-keys__title {
+  font-size: var(--text-2xl);
+  line-height: var(--leading-2xl);
+}
+
+.piano-keys__subtitle {
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+.piano-keys__error {
+  margin-bottom: var(--space-4);
+  padding: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--state-danger-fg);
+  background-color: var(--state-danger-bg);
+  border-radius: var(--radius-md);
+}
+
+.piano-keys__label {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+}
+
+.piano-keys__stage {
+  margin-bottom: var(--space-6);
+}
+
+/* ============================================
+   状态行：当前音符 / 音色 / 提示
+   ============================================ */
+.piano-keys__status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.piano-keys__note-box {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: var(--pk-note-box-min);
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-md);
+}
+
+.piano-keys__note-label {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+.piano-keys__note {
+  font-size: var(--text-lg);
+  line-height: var(--leading-lg);
+  font-weight: var(--weight-bold);
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+
+.piano-keys__note.is-active {
+  color: var(--accent-text);
+}
+
+.piano-keys__tone {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--size-touch-min);
+}
+
+.piano-keys__tone-label {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.piano-keys__select {
+  min-height: var(--size-touch-min);
+  padding-inline: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.piano-keys__select:hover {
+  border-color: var(--border-default);
+}
+
+/* ============================================
+   按钮
+   ============================================ */
+.piano-keys__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: var(--size-touch-min);
+  padding-inline: var(--space-4);
+
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+
+  transition:
+    color var(--dur-fast) var(--ease-standard),
+    background-color var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard),
+    transform var(--dur-base) var(--ease-soft);
+}
+
+.piano-keys__btn:hover:not(:disabled) {
+  border-color: var(--border-default);
+}
+
+.piano-keys__btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.piano-keys__btn:disabled {
+  opacity: 0.45;
+}
+
+.piano-keys__btn--primary {
+  color: var(--text-on-accent);
+  background-color: var(--accent-fg);
+  border-color: transparent;
+}
+
+.piano-keys__btn--primary:hover:not(:disabled) {
+  background-color: var(--accent-text);
+}
+
+.piano-keys__btn[aria-pressed='true'] {
+  color: var(--accent-text);
+  background-color: var(--accent-bg);
+  border-color: transparent;
+}
+
+/* ============================================
+   键盘
+
+   一行要放下 36 个白键，在内容列的最大宽度里只放得下不到一半。
+   旧版整页全宽，此处让键盘行溢出内容列、贴到视口两侧，
+   键盘本身仍可横向滚动。
+   ============================================ */
+.piano-keys__scroll {
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  padding-inline: var(--page-gutter);
+  padding-block: var(--space-1);
+  overflow-x: auto;
+}
+
+.piano-keys__keyboard {
+  display: flex;
+  width: max-content;
+  padding: var(--space-4) var(--space-3) var(--space-3);
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-lg);
+}
+
+.piano-keys__octave {
+  display: flex;
+  position: relative;
+}
+
+.piano-keys__key {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: var(--space-3);
+
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+
+  transition:
+    background-color var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard),
+    transform var(--dur-fast) var(--ease-standard);
+}
+
+/* 白键：卡片色 */
+.piano-keys__key.is-white {
+  width: var(--pk-white-w);
+  height: var(--pk-white-h);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-default);
+  border-radius: 0 0 var(--radius-xs) var(--radius-xs);
+  z-index: 1;
+}
+
+/* 黑键：墨色。黑键取墨色而非某个固定深色，深色模式下与白键
+   自然互换明暗，两种主题下黑白键都保持对比 */
+.piano-keys__key.is-black {
+  width: var(--pk-black-w);
+  height: var(--pk-black-h);
+  margin-inline: calc(var(--pk-black-w) / -2);
+  padding-bottom: var(--space-2);
+  background-color: var(--text-primary);
+  border-radius: 0 0 var(--radius-xs) var(--radius-xs);
+  z-index: 2;
+}
+
+/* 按下：白键铺主题底色，黑键与主题色相混——黑键直接换成主题色
+   会让键上的标记失去对比 */
+.piano-keys__key.is-white.is-pressed {
+  background-color: var(--accent-bg);
+  border-color: var(--accent-fg);
+}
+
+.piano-keys__key.is-black.is-pressed {
+  background-color: color-mix(in srgb, var(--accent-fg) 34%, var(--text-primary));
+}
+
+.piano-keys__key.is-pressed {
+  transform: translateY(2px);
+}
+
+.piano-keys__key-label {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--text-tertiary);
+  pointer-events: none;
+}
+
+.piano-keys__key.is-black .piano-keys__key-label {
+  color: var(--surface-card);
+}
+
+.piano-keys__key.is-white.is-pressed .piano-keys__key-label {
+  color: var(--accent-text);
+}
+
+.piano-keys__hint {
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+/* 触屏窄屏只留 C3–C5：与旧版手机端一致，少几个八度换来更宽的触控面。
+   键盘仍可横向滚动，被隐藏的音并非不可达——上一行的提示会说明 */
+@media (pointer: coarse) and (max-width: 1023px) {
+  .piano-keys__octave[data-octave='2'],
+  .piano-keys__octave[data-octave='6'],
+  .piano-keys__octave[data-octave='7'] {
+    display: none;
+  }
+}
+
+/* ============================================
+   提示
+   ============================================ */
+.piano-keys__tips {
+  margin-bottom: var(--space-6);
+  padding: var(--space-4);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.piano-keys__tips-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-bottom: var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.piano-keys__tips-list:last-child {
+  margin-bottom: 0;
+}
+
+.piano-keys__tips-list li {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.piano-keys__tips-list li::before {
+  content: '·';
+  color: var(--accent-fg);
+}
+
+/* 键位表用等宽字体，符号列才能上下对齐 */
+.piano-keys__tips-list--keys {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+/* ============================================
+   曲谱
+   ============================================ */
+.piano-keys__songs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.piano-keys__song {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-height: var(--size-touch-min);
+  padding: var(--space-2) var(--space-3);
+  text-align: left;
+
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+
+  transition:
+    background-color var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard),
+    transform var(--dur-base) var(--ease-soft);
+}
+
+.piano-keys__song:hover {
+  border-color: var(--border-default);
+}
+
+.piano-keys__song:active {
+  transform: scale(0.99);
+}
+
+.piano-keys__song.is-active {
+  background-color: var(--accent-bg);
+  border-color: transparent;
+}
+
+.piano-keys__song.is-playing {
+  border-color: var(--accent-fg);
+}
+
+.piano-keys__song-name {
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+}
+
+.piano-keys__song.is-active .piano-keys__song-name {
+  color: var(--accent-text);
+}
+
+.piano-keys__song-desc {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+.piano-keys__strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: var(--space-1);
+  min-height: var(--pk-strip-h);
+  max-height: var(--pk-strip-h);
+  margin-bottom: var(--space-4);
+  padding: var(--space-3);
+  overflow-y: auto;
+
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-lg);
+}
+
+.piano-keys__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  min-height: 100%;
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+.piano-keys__note-chip {
+  display: inline-block;
+  max-width: var(--pk-chip-max);
+  padding: var(--space-1) var(--space-2);
+  overflow: hidden;
+
+  font-size: var(--text-xs);
+  line-height: var(--leading-xs);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  color: var(--text-secondary);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xs);
+
+  transition:
+    color var(--dur-fast) var(--ease-standard),
+    background-color var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard);
+}
+
+.piano-keys__note-chip.is-chord {
+  color: var(--accent-text);
+  background-color: var(--accent-bg);
+  border-color: transparent;
+}
+
+.piano-keys__note-chip.is-rest {
+  color: var(--text-disabled);
+}
+
+.piano-keys__note-chip.is-played {
+  opacity: 0.5;
+}
+
+.piano-keys__note-chip.is-current {
+  color: var(--text-on-accent);
+  background-color: var(--accent-fg);
+  border-color: transparent;
+  opacity: 1;
+}
+
+.piano-keys__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/* ============================================
+   断点：琴键收缩，其余节奏不变
+   ============================================ */
+@media (max-width: 900px) {
+  .piano-keys {
+    --pk-white-w: 34px;
+    --pk-white-h: 140px;
+    --pk-black-w: 21px;
+    --pk-black-h: 88px;
+    --pk-strip-h: 132px;
+  }
+}
+
+@media (max-width: 600px) {
+  .piano-keys {
+    --pk-white-w: 28px;
+    --pk-white-h: 120px;
+    --pk-black-w: 18px;
+    --pk-black-h: 72px;
+    --pk-strip-h: 112px;
+  }
+
+  .piano-keys__note-box {
+    --pk-note-box-min: 88px;
+  }
+}
+
+@media (min-width: 768px) {
+  .piano-keys {
+    padding-top: var(--space-10);
+  }
+
+  .piano-keys__scroll {
+    padding-inline: var(--page-gutter-wide);
+  }
+}

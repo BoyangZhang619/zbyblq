@@ -2,8 +2,8 @@
   <div class="imgtool">
     <div class="page-content">
       <header class="imgtool__header">
-        <h1 class="imgtool__title">图片像素化</h1>
-        <p class="imgtool__subtitle">调整像素块大小，可选择性限制色板</p>
+        <h1 class="imgtool__title">{{ tt('title') }}</h1>
+        <p class="imgtool__subtitle">{{ tt('subtitle') }}</p>
       </header>
 
       <!-- 上传 -->
@@ -30,12 +30,12 @@
         />
         <AppIcon name="tool-pixelate" :size="30" decorative />
         <p class="imgtool__drop-title">
-          {{ hasImage ? '已载入图片，点击可更换' : '点击选择图片，或拖放到此处' }}
+          {{ hasImage ? tt('dropReplace') : tt('dropPick') }}
         </p>
         <p v-if="dimensions" class="imgtool__drop-meta">
           原图 {{ dimensions.width }} × {{ dimensions.height }}
         </p>
-        <p v-else class="imgtool__drop-meta">支持任意常见图片格式</p>
+        <p v-else class="imgtool__drop-meta">{{ tt('dropHint') }}</p>
       </div>
 
       <p v-if="status === 'error'" class="imgtool__error">{{ errorMessage }}</p>
@@ -44,7 +44,7 @@
       <section v-if="hasImage" class="imgtool__section">
         <div class="imgtool__field">
           <div class="imgtool__field-head">
-            <label class="imgtool__label" for="block-range">像素块大小</label>
+            <label class="imgtool__label" for="block-range">{{ tt('blockSize') }}</label>
             <span class="imgtool__value">{{ blockSize }}</span>
           </div>
           <input
@@ -56,14 +56,14 @@
             :max="BLOCK_SIZE_MAX"
             step="1"
           />
-          <p class="imgtool__hint">数值越大，马赛克越粗</p>
+          <p class="imgtool__hint">{{ tt('blockHint') }}</p>
         </div>
 
         <div class="imgtool__field">
           <label class="imgtool__switch">
             <input v-model="quantize" type="checkbox" />
             <span class="imgtool__switch-track" aria-hidden="true"></span>
-            <span class="imgtool__switch-text">限制色板</span>
+            <span class="imgtool__switch-text">{{ tt('quantize') }}</span>
           </label>
 
           <div v-if="quantize" class="imgtool__chips" role="radiogroup" aria-label="色板大小">
@@ -77,20 +77,18 @@
               :aria-checked="paletteSize === size"
               @click="paletteSize = size"
             >
-              {{ size }} 色
+              {{ tt('palette', { count: size }) }}
             </button>
           </div>
-          <p class="imgtool__hint">
-            通道分箱近似量化，色带感是像素风的预期效果
-          </p>
+          <p class="imgtool__hint">{{ tt('quantizeHint') }}</p>
         </div>
 
         <div class="imgtool__actions">
-          <button class="imgtool__btn" type="button" @click="reset">重置参数</button>
-          <button class="imgtool__btn" type="button" @click="fit">适配画布</button>
+          <button class="imgtool__btn" type="button" @click="reset">{{ tt('reset') }}</button>
+          <button class="imgtool__btn" type="button" @click="fit">{{ tt('fit') }}</button>
           <button class="imgtool__btn imgtool__btn--primary" type="button" @click="exportPNG">
             <AppIcon name="save" :size="16" decorative />
-            导出 PNG
+            {{ tt('export') }}
           </button>
         </div>
       </section>
@@ -98,7 +96,7 @@
       <!-- 预览 -->
       <section v-if="hasImage" class="imgtool__section">
         <div class="imgtool__preview-head">
-          <h2 class="imgtool__label">预览</h2>
+          <h2 class="imgtool__label">{{ tt('preview') }}</h2>
           <span class="imgtool__value">{{ outputSize }}</span>
         </div>
         <div class="imgtool__canvas-wrap texture-paper">
@@ -113,6 +111,8 @@
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { AppIcon } from '@/shared/icons'
 import { useImageFile } from '@/shared/composables/useImageFile'
+import { useToolI18n } from '@/shared/i18n'
+import { messages } from './locales'
 import { createCanvas, drawImageToCanvas, downloadCanvasPNG } from '@/shared/utils/canvas'
 import {
   pixelate,
@@ -128,8 +128,10 @@ import {
  * 图片像素化
  *
  * 融合迁移完成（docs/02-fusion-architecture.md Stage 3）：由 iframe 桥接
- * 改为原生 Vue 组件，接入设计令牌与图标体系。
+ * 改为原生 Vue 组件，接入设计令牌、图标体系与 i18n。
  */
+
+const { tt } = useToolI18n(messages)
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const blockSize = ref(BLOCK_SIZE_DEFAULT)

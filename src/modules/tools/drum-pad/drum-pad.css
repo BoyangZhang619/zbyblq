@@ -1,0 +1,419 @@
+/**
+ * Drum Pad 鼓机样式
+ *
+ * 只引用语义令牌与 --space-* / --radius-* 刻度，不出现裸色值与裸 px 间距。
+ * 裸 px 仅用于 1px 描边与纯几何量（描边宽度、内阴影），与
+ * docs/09-tool-page-spec.md §4.1 的例外一致。
+ */
+
+/* ============================================
+   页面骨架
+   ============================================ */
+.drum-pad {
+  min-height: 100%;
+  padding-top: var(--space-6);
+}
+
+.drum-pad__header {
+  margin-bottom: var(--space-6);
+}
+
+.drum-pad__title {
+  font-size: var(--text-2xl);
+  line-height: var(--leading-2xl);
+}
+
+.drum-pad__subtitle {
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+/* 键盘提示：旧版是页头的两枚胶囊徽章，位置与形态保持 */
+.drum-pad__hints {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.drum-pad__hint {
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-full);
+}
+
+/* ============================================
+   容器
+   ============================================ */
+.drum-pad__panel,
+.drum-pad__card {
+  padding: var(--space-4);
+  margin-bottom: var(--space-6);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--elev-card);
+}
+
+.drum-pad__card:last-child {
+  margin-bottom: 0;
+}
+
+/* ============================================
+   控制台
+   ============================================ */
+.drum-pad__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.drum-pad__fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+.drum-pad__field {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  min-height: var(--size-touch-min);
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-md);
+}
+
+.drum-pad__label {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.drum-pad__value {
+  min-width: var(--space-6);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 滑杆：与图像类工具 skeleton 的滑杆同一套视觉规格 */
+.drum-pad__range {
+  display: block;
+  width: 100%;
+  height: var(--space-7);
+  margin: 0;
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.drum-pad__range::-webkit-slider-runnable-track {
+  height: var(--space-1);
+  background-color: var(--border-subtle);
+  border-radius: var(--radius-full);
+}
+
+.drum-pad__range::-moz-range-track {
+  height: var(--space-1);
+  background-color: var(--border-subtle);
+  border-radius: var(--radius-full);
+}
+
+.drum-pad__range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: var(--space-5);
+  height: var(--space-5);
+  margin-top: calc(var(--space-2) * -1);
+  background-color: var(--accent-fg);
+  border: var(--space-1) solid var(--surface-sunken);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+}
+
+.drum-pad__range::-moz-range-thumb {
+  width: var(--space-5);
+  height: var(--space-5);
+  background-color: var(--accent-fg);
+  border: var(--space-1) solid var(--surface-sunken);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+}
+
+/* ============================================
+   走带
+   ============================================ */
+.drum-pad__transport {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.drum-pad__status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--size-touch-min);
+  margin-left: auto;
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+/* ============================================
+   按钮
+   ============================================ */
+.drum-pad__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--size-touch-min);
+  padding: 0 var(--space-4);
+
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+  background-color: var(--surface-sunken);
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+
+  transition:
+    color var(--dur-fast) var(--ease-standard),
+    background-color var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard),
+    transform var(--dur-base) var(--ease-soft);
+}
+
+.drum-pad__btn:hover:not(:disabled) {
+  border-color: var(--border-default);
+}
+
+.drum-pad__btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.drum-pad__btn:disabled {
+  opacity: 0.45;
+}
+
+.drum-pad__btn--primary {
+  color: var(--text-on-accent);
+  background-color: var(--accent-fg);
+}
+
+.drum-pad__btn--primary:hover:not(:disabled) {
+  background-color: var(--accent-text);
+}
+
+.drum-pad__btn--primary:disabled {
+  color: var(--accent-text);
+  background-color: var(--accent-bg);
+  opacity: 1;
+}
+
+.drum-pad__btn--danger {
+  color: var(--state-danger-fg);
+  background-color: var(--state-danger-bg);
+}
+
+/* 录制中：颜色之外同时有文字（按钮文案变为「停止录制」） */
+.drum-pad__btn.is-active {
+  color: var(--state-danger-fg);
+  background-color: var(--state-danger-bg);
+  border-color: var(--state-danger-fg);
+}
+
+/* ============================================
+   鼓垫
+   ============================================ */
+.drum-pad__pads {
+  display: grid;
+  /* 4 列与键盘四排一一对应：QWER / ASDF / ZXCV / 1234 */
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.drum-pad__pad {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-2);
+  min-height: var(--space-16);
+  padding: var(--space-3) var(--space-2);
+  text-align: left;
+  user-select: none;
+  -webkit-user-select: none;
+
+  background-color: var(--surface-sunken);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+
+  transition:
+    background-color var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard),
+    transform var(--dur-base) var(--ease-soft);
+}
+
+.drum-pad__pad:hover {
+  border-color: var(--border-default);
+}
+
+.drum-pad__pad:active {
+  transform: scale(0.96);
+}
+
+/* 触发点亮。旧版为 90ms 高亮，时长在 composable 中 */
+.drum-pad__pad.is-on {
+  background-color: var(--accent-bg);
+  border-color: var(--accent-fg);
+}
+
+.drum-pad__pad-name {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+}
+
+.drum-pad__pad.is-on .drum-pad__pad-name {
+  color: var(--accent-text);
+}
+
+.drum-pad__pad-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-1);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+/* Ghost 鼓垫不发声，视觉上弱化，避免误判为故障 */
+.drum-pad__pad.is-silent .drum-pad__pad-name,
+.drum-pad__pad.is-silent .drum-pad__pad-meta {
+  color: var(--text-tertiary);
+  opacity: 0.7;
+}
+
+.drum-pad__legend {
+  margin-top: var(--space-3);
+  font-size: var(--text-xs);
+  line-height: var(--leading-sm);
+  color: var(--text-tertiary);
+}
+
+.drum-pad__legend-tip {
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+}
+
+/* ============================================
+   音序器
+   ============================================ */
+.drum-pad__seq-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.drum-pad__seq-title {
+  font-size: var(--text-md);
+  line-height: var(--leading-md);
+}
+
+.drum-pad__seq-sub {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+/* 16 步在窄屏放不下时横向滚动。滚动条由全局样式隐藏 */
+.drum-pad__seq-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.drum-pad__seq {
+  width: max-content;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.drum-pad__seq-row {
+  position: sticky;
+  left: 0;
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--text-tertiary);
+  text-align: left;
+  white-space: nowrap;
+  background-color: var(--surface-card);
+  border-right: 1px solid var(--border-subtle);
+}
+
+.drum-pad__seq-cell {
+  padding: 0;
+}
+
+.drum-pad__step {
+  display: block;
+  width: var(--space-8);
+  height: var(--space-8);
+  background-color: var(--surface-sunken);
+  border-right: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+
+  transition:
+    background-color var(--dur-fast) var(--ease-standard),
+    box-shadow var(--dur-fast) var(--ease-standard);
+}
+
+/* 最右一列与最下一行不加描边，否则与外框重线 */
+.drum-pad__seq-cell:last-child .drum-pad__step {
+  border-right: none;
+}
+
+.drum-pad__seq tr:last-child .drum-pad__step {
+  border-bottom: none;
+}
+
+/* 每 4 步一条分隔线，即一拍 */
+.drum-pad__step.is-barline {
+  border-right: 2px solid var(--border-default);
+}
+
+/* 播放头：空心描边的高亮列。写在 .is-on 之前，
+   使得同一格既打点又在播放头上时保留打点的底色 */
+.drum-pad__step.is-playhead {
+  background-color: var(--state-warning-bg);
+  box-shadow: inset 0 0 0 2px var(--state-warning-fg);
+}
+
+/* 已打点 */
+.drum-pad__step.is-on {
+  background-color: var(--state-success-bg);
+}
+
+@media (min-width: 768px) {
+  .drum-pad {
+    padding-top: var(--space-10);
+  }
+
+  .drum-pad__fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

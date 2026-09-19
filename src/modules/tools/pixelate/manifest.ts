@@ -20,7 +20,7 @@ export const manifest: ToolManifest = {
   tags: ['image', 'utility'],
   badge: 'IDK',
   status: 'active',
-  entry: 'iframe',
+  entry: 'native',
   lifecycle: {
     updated: '2026-01-06',
   },

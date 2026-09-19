@@ -1,0 +1,79 @@
+/**
+ * 电子包浆样式
+ *
+ * 界面骨架复用 @/shared/ui/image-tool.css 的 imgtool__* 类，本文件只写
+ * 本工具特有的部分。详见 docs/09-tool-page-spec.md §4.2
+ */
+
+/* ============================================
+   参数
+   ============================================ */
+
+.photo-patina__group-title {
+  margin-bottom: var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+}
+
+/* 12 个滑杆单列排下来太长，宽屏分两列 */
+.photo-patina__fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: var(--space-5);
+}
+
+/* ============================================
+   预览
+   ============================================ */
+
+.photo-patina__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+}
+
+.photo-patina__card {
+  min-width: 0;
+  margin: 0;
+}
+
+.photo-patina__card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.photo-patina__card-title {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+}
+
+/**
+ * 覆盖骨架里的 image-rendering: pixelated
+ *
+ * 那条规则是为像素画准备的（imgtool__canvas 服务于 pixelate 等五个工具）。
+ * 包浆结果是一张照片，最近邻缩放会在缩略预览时产生摩尔纹与锯齿。
+ */
+.photo-patina__canvas {
+  image-rendering: auto;
+}
+
+/* 性能读数：数字对齐，避免逐帧跳动 */
+.photo-patina__readout {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (min-width: 768px) {
+  .photo-patina__fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* 原图与包浆结果并排，方便对照 */
+  .photo-patina__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

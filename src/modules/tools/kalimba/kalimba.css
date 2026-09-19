@@ -1,0 +1,393 @@
+/**
+ * Kalimba 拇指琴样式
+ *
+ * 布局原则见 docs/03-design-system.md §9。只引用语义令牌。
+ *
+ * 音条的高度曲线由 utils/music.ts 算出 0..1 的系数（原实现的 d^1.3），
+ * 上下限放在这里——曲线是算法，上下限是视觉，窄屏可以整体压低而不必
+ * 改动算法。130 / 220 为原实现的取值。
+ */
+
+.kalimba {
+  min-height: 100%;
+  padding-top: var(--space-6);
+
+  --kalimba-tine-short: 130px;
+  --kalimba-tine-long: 220px;
+}
+
+.kalimba__header {
+  margin-bottom: var(--space-6);
+}
+
+.kalimba__title {
+  font-size: var(--text-2xl);
+  line-height: var(--leading-2xl);
+}
+
+.kalimba__subtitle {
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+.kalimba__section {
+  margin-bottom: var(--space-6);
+}
+
+.kalimba__section-title {
+  margin-bottom: var(--space-3);
+  font-size: var(--text-md);
+  line-height: var(--leading-md);
+}
+
+.kalimba__panel {
+  padding: var(--space-4);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.kalimba__hint {
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  line-height: var(--leading-xs);
+  color: var(--text-tertiary);
+}
+
+/* ============================================
+   按钮
+   ============================================ */
+.kalimba__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--size-touch-min);
+  padding: 0 var(--space-4);
+
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+
+  transition:
+    color var(--dur-fast) var(--ease-standard),
+    background-color var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard),
+    transform var(--dur-base) var(--ease-soft);
+}
+
+.kalimba__btn:hover:not(:disabled) {
+  border-color: var(--border-default);
+}
+
+.kalimba__btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.kalimba__btn:disabled {
+  opacity: 0.45;
+}
+
+.kalimba__btn--primary {
+  font-weight: var(--weight-medium);
+  color: var(--text-on-accent);
+  background-color: var(--accent-fg);
+  border-color: transparent;
+}
+
+.kalimba__btn--primary:hover:not(:disabled) {
+  background-color: var(--accent-text);
+}
+
+/* 已启用后按钮常驻为禁用态，此时仍应读得清 */
+.kalimba__btn--primary:disabled {
+  opacity: 0.7;
+}
+
+/* 录制中 / 播放中：状态同时由文案与圆点表达，不只靠颜色 */
+.kalimba__btn.is-recording {
+  color: var(--state-danger-fg);
+  background-color: var(--state-danger-bg);
+  border-color: transparent;
+}
+
+.kalimba__btn.is-playing {
+  color: var(--accent-text);
+  background-color: var(--accent-bg);
+  border-color: transparent;
+}
+
+.kalimba__rec-dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  background-color: var(--state-danger-fg);
+  border-radius: var(--radius-full);
+}
+
+.kalimba__transport {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.kalimba__status {
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+/* ============================================
+   参数
+   ============================================ */
+.kalimba__field {
+  margin-bottom: var(--space-5);
+}
+
+.kalimba__field:last-child {
+  margin-bottom: 0;
+}
+
+.kalimba__field-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.kalimba__label {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+}
+
+.kalimba__value {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+
+.kalimba__select {
+  width: 100%;
+  min-height: var(--size-touch-min);
+  margin-top: var(--space-2);
+  padding: 0 var(--space-3);
+
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+
+  transition: border-color var(--dur-fast) var(--ease-standard);
+}
+
+.kalimba__select:hover {
+  border-color: var(--border-default);
+}
+
+.kalimba__range {
+  display: block;
+  width: 100%;
+  height: 28px;
+  margin: 0;
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.kalimba__range::-webkit-slider-runnable-track {
+  height: 4px;
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-full);
+}
+
+.kalimba__range::-moz-range-track {
+  height: 4px;
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-full);
+}
+
+.kalimba__range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: -8px;
+  background-color: var(--accent-fg);
+  border: 3px solid var(--surface-card);
+  border-radius: var(--radius-full);
+  box-shadow: var(--elev-card);
+  cursor: pointer;
+}
+
+.kalimba__range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background-color: var(--accent-fg);
+  border: 3px solid var(--surface-card);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+}
+
+/* ============================================
+   琴键
+
+   17 根音条固定 44px 触控宽度，容器横向滚动。原实现为 46 / 52px 加
+   overflow:auto，此处统一到 --size-touch-min 这一个约束。
+   ============================================ */
+.kalimba__keys {
+  padding: var(--space-4) var(--space-3);
+  overflow-x: auto;
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-lg);
+}
+
+.kalimba__tines {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-1);
+  width: max-content;
+  margin-inline: auto;
+}
+
+.kalimba__tine {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  width: var(--size-touch-min);
+  padding: var(--space-3) 0;
+
+  /* 中间最长、两侧渐短。系数缺失时退化为最短，不至于塌成 0 */
+  height: calc(
+    var(--kalimba-tine-short) +
+    (var(--kalimba-tine-long) - var(--kalimba-tine-short)) * var(--kalimba-tine-factor, 0)
+  );
+
+  color: var(--text-secondary);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md) var(--radius-md) var(--radius-sm) var(--radius-sm);
+
+  transition:
+    color var(--dur-fast) var(--ease-standard),
+    background-color var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard);
+}
+
+.kalimba__tine:hover {
+  border-color: var(--border-default);
+}
+
+.kalimba__tine.is-on {
+  color: var(--accent-text);
+  background-color: var(--accent-bg);
+  border-color: transparent;
+}
+
+.kalimba__tine-note {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  font-variant-numeric: tabular-nums;
+}
+
+.kalimba__tine-octave {
+  opacity: 0.75;
+}
+
+.kalimba__tine-key {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+.kalimba__tine.is-on .kalimba__tine-key {
+  color: var(--accent-text);
+  opacity: 0.75;
+}
+
+.kalimba__hints {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.kalimba__chip {
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+}
+
+/* ============================================
+   小技巧
+   ============================================ */
+.kalimba__tips {
+  padding: var(--space-4);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.kalimba__tips-summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--size-touch-min);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.kalimba__tips-chevron {
+  margin-left: auto;
+  color: var(--text-tertiary);
+  transition: transform var(--dur-base) var(--ease-soft);
+}
+
+.kalimba__tips[open] .kalimba__tips-chevron {
+  transform: rotate(90deg);
+}
+
+.kalimba__tips-list {
+  margin-top: var(--space-2);
+  padding-left: var(--space-5);
+  list-style: disc;
+  font-size: var(--text-xs);
+  line-height: var(--leading-base);
+  color: var(--text-tertiary);
+}
+
+.kalimba__tips-list li + li {
+  margin-top: var(--space-2);
+}
+
+/* ============================================
+   响应式
+   ============================================ */
+@media (min-width: 768px) {
+  .kalimba {
+    padding-top: var(--space-10);
+  }
+}
+
+/* 窄屏：按同一比例压低音条（100/168 与 130/220 比值一致） */
+@media (max-width: 640px) {
+  .kalimba {
+    --kalimba-tine-short: 100px;
+    --kalimba-tine-long: 168px;
+  }
+}

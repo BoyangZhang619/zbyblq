@@ -1,0 +1,30 @@
+/**
+ * 小番茄图片混淆样式
+ *
+ * 上传区、操作区、预览容器等骨架来自 shared/ui/image-tool.css，
+ * 这里只写本工具特有的部分。布局原则见 docs/03-design-system.md §9
+ */
+
+/* 操作区是本工具紧接上传区的第一块内容，去掉骨架默认的上外边距 */
+.encryption-graph__actions {
+  margin-top: 0;
+}
+
+/* 状态播报。常驻节点，读屏才能播报内容变化；无文案时收起，不占高度 */
+.encryption-graph__status {
+  margin-bottom: var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.encryption-graph__status.is-idle {
+  margin-bottom: 0;
+}
+
+/* 预览画布。骨架默认的 image-rendering: pixelated 面向像素画类工具，
+   本工具展示的是照片，最近邻缩放会出现明显锯齿，故覆盖为默认插值；
+   max-height 限制竖构图照片的占位高度 */
+.encryption-graph__canvas {
+  image-rendering: auto;
+  max-height: 60vh;
+}

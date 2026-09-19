@@ -1,0 +1,259 @@
+/**
+ * 二叉树可视化 样式
+ *
+ * 布局原则见 docs/03-design-system.md §9：组件只引用语义令牌，
+ * 不写裸色值、裸 px 与原始令牌（--ink-*、--paper-*）。
+ *
+ * 画布自身的显示尺寸由 TreeCanvas.vue 按容器宽度算出后写在元素上，
+ * 这里只负责把它居中。
+ */
+
+.btree {
+  min-height: 100%;
+  padding-top: var(--space-6);
+}
+
+.btree__header {
+  margin-bottom: var(--space-6);
+}
+
+.btree__title {
+  font-size: var(--text-2xl);
+  line-height: var(--leading-2xl);
+}
+
+.btree__subtitle {
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+.btree__section {
+  margin-bottom: var(--space-6);
+}
+
+.btree__label {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+}
+
+/* ============================================
+   输入
+   ============================================ */
+.btree__input-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.btree__input {
+  /* 窄屏下独占一行，按钮换行到下一行；宽屏见文件末尾的媒体查询 */
+  flex: 1 1 100%;
+  min-width: 0;
+  min-height: var(--size-touch-min);
+  padding: 0 var(--space-3);
+
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+
+  transition: border-color var(--dur-fast) var(--ease-standard);
+}
+
+.btree__input::placeholder {
+  color: var(--text-disabled);
+}
+
+.btree__input:focus {
+  outline: none;
+  border-color: var(--accent-fg);
+}
+
+/* ============================================
+   按钮
+   ============================================ */
+.btree__btn {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: var(--size-touch-min);
+  padding: 0 var(--space-4);
+
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+
+  transition:
+    color var(--dur-fast) var(--ease-standard),
+    background-color var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard),
+    transform var(--dur-base) var(--ease-soft);
+}
+
+.btree__btn:hover:not(:disabled) {
+  border-color: var(--border-default);
+}
+
+.btree__btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.btree__btn:disabled {
+  opacity: 0.45;
+}
+
+.btree__btn--primary {
+  color: var(--text-on-accent);
+  background-color: var(--accent-fg);
+  border-color: transparent;
+}
+
+.btree__btn--primary:hover:not(:disabled) {
+  background-color: var(--accent-text);
+}
+
+/* ============================================
+   提示与错误
+   ============================================ */
+.btree__hint {
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  line-height: var(--leading-xs);
+  color: var(--text-tertiary);
+}
+
+.btree__error {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  padding: var(--space-3);
+
+  font-size: var(--text-sm);
+  color: var(--state-danger-fg);
+  background-color: var(--state-danger-bg);
+  border-radius: var(--radius-md);
+}
+
+/* ============================================
+   示例
+   ============================================ */
+.btree__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.btree__chip {
+  min-height: var(--size-touch-min);
+  padding: 0 var(--space-4);
+
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+
+  transition:
+    color var(--dur-fast) var(--ease-standard),
+    background-color var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard);
+}
+
+.btree__chip:hover {
+  color: var(--accent-text);
+  background-color: var(--accent-bg);
+  border-color: transparent;
+}
+
+/* ============================================
+   画布
+   ============================================ */
+.btree__stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-lg);
+}
+
+/* 无树时只留空状态，画布不占位 */
+.btree__stage.is-empty .btree__canvas-host {
+  display: none;
+}
+
+.btree__canvas-host {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.btree__placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-10) var(--space-4);
+
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+  text-align: center;
+}
+
+/* ============================================
+   统计
+   ============================================ */
+.btree__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+  padding: var(--space-4);
+
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.btree__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.btree__stat-label {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+.btree__stat-value {
+  margin: 0;
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-xl);
+  color: var(--accent-text);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (min-width: 768px) {
+  .btree {
+    padding-top: var(--space-10);
+  }
+
+  /* 宽屏下输入框与按钮同排，输入框吃掉剩余宽度 */
+  .btree__input {
+    flex: 1 1 auto;
+  }
+}

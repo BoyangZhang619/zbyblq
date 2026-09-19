@@ -55,6 +55,10 @@ export const zhCN = {
   'profile.mode.auto': '跟随系统',
   'profile.accent': '主题配色',
   'profile.account': '账户',
+  // 共享：图像加载错误。供 useImageFile 使用，各工具不必各写一套
+  'image.error.notImage': '请选择图片文件',
+  'image.error.loadFailed': '图片加载失败，文件可能已损坏',
+
   // 个人页
   'profile.garden': '我的花园',
   'profile.garden.hint': '已种下 {count} / {total}',

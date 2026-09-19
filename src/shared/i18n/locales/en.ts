@@ -46,6 +46,10 @@ export const en: Messages = {
   'tag.desc.music': 'Music making and playback',
   'tag.desc.experimental': 'Experimental features',
 
+  // Shared: image loading errors
+  'image.error.notImage': 'Please choose an image file',
+  'image.error.loadFailed': 'Could not load the image — the file may be damaged',
+
   // Profile
   'profile.title': 'Profile',
   'profile.subtitle': 'Appearance and preferences',

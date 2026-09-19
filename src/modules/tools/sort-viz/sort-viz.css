@@ -1,0 +1,429 @@
+/**
+ * 排序算法可视化样式
+ *
+ * 布局原则见 docs/03-design-system.md §9：单页单主任务——柱状图是唯一
+ * 视觉焦点，控制项收在上方面板内，使用说明折叠在末尾。
+ *
+ * 配色说明：柱体状态与旧实现的色相一致，均落在语义状态令牌上——
+ * 蓝（默认）→ info，红（比较/交换）→ danger，黄（pivot）→ warning，
+ * 绿（已排序）→ success。不直接用主题色，是因为主题色随心情切换，
+ * 若与状态色撞色，四个状态将无法区分。
+ */
+
+.sortviz {
+  min-height: 100%;
+  padding-top: var(--space-6);
+}
+
+.sortviz__header {
+  margin-bottom: var(--space-6);
+}
+
+.sortviz__title {
+  font-size: var(--text-2xl);
+  line-height: var(--leading-2xl);
+}
+
+.sortviz__subtitle {
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--text-tertiary);
+}
+
+/* ============================================
+   控制面板
+   ============================================ */
+.sortviz__panel {
+  padding: var(--space-4);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.sortviz__fields {
+  display: grid;
+  gap: var(--space-3);
+}
+
+/* 一项参数：标签 | 控件 | 当前值 */
+.sortviz__field {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--size-touch-min);
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-md);
+}
+
+.sortviz__label {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.sortviz__value {
+  min-width: var(--space-6);
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.sortviz__select {
+  /* 没有「当前值」一列，跨到行尾以免控件被挤窄 */
+  grid-column: 2 / -1;
+  width: 100%;
+  min-height: var(--size-touch-min);
+  padding: 0 var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.sortviz__select:disabled {
+  color: var(--text-disabled);
+}
+
+/* 滑块：几何沿用图像类工具的骨架，使全站控件手感一致 */
+.sortviz__range {
+  display: block;
+  width: 100%;
+  height: var(--space-6);
+  margin: 0;
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.sortviz__range::-webkit-slider-runnable-track {
+  height: var(--space-1);
+  background-color: var(--surface-card);
+  border-radius: var(--radius-full);
+}
+
+.sortviz__range::-moz-range-track {
+  height: var(--space-1);
+  background-color: var(--surface-card);
+  border-radius: var(--radius-full);
+}
+
+.sortviz__range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: var(--space-5);
+  height: var(--space-5);
+  margin-top: calc(var(--space-2) * -1);
+  background-color: var(--accent-fg);
+  border: 3px solid var(--surface-card);
+  border-radius: var(--radius-full);
+  box-shadow: var(--elev-card);
+  cursor: pointer;
+}
+
+.sortviz__range::-moz-range-thumb {
+  width: var(--space-5);
+  height: var(--space-5);
+  background-color: var(--accent-fg);
+  border: 3px solid var(--surface-card);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+}
+
+.sortviz__range:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+/* ============================================
+   操作按钮
+   ============================================ */
+.sortviz__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+.sortviz__divider {
+  flex: 1;
+}
+
+.sortviz__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: var(--size-touch-min);
+  padding: 0 var(--space-4);
+
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+
+  transition:
+    color var(--dur-fast) var(--ease-standard),
+    background-color var(--dur-fast) var(--ease-standard),
+    border-color var(--dur-fast) var(--ease-standard),
+    transform var(--dur-base) var(--ease-soft);
+}
+
+.sortviz__btn:hover:not(:disabled) {
+  border-color: var(--border-default);
+}
+
+.sortviz__btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.sortviz__btn:disabled {
+  opacity: 0.45;
+}
+
+.sortviz__btn--primary {
+  color: var(--text-on-accent);
+  background-color: var(--accent-fg);
+  border-color: transparent;
+}
+
+.sortviz__btn--primary:hover:not(:disabled) {
+  background-color: var(--accent-text);
+}
+
+.sortviz__btn--danger {
+  color: var(--state-danger-fg);
+  background-color: var(--state-danger-bg);
+  border-color: transparent;
+}
+
+/* ============================================
+   计数
+   ============================================ */
+.sortviz__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+.sortviz__stat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-md);
+}
+
+.sortviz__stat-key {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.sortviz__stat-val {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.sortviz__stat-val.is-done {
+  color: var(--state-success-fg);
+}
+
+/* ============================================
+   柱状图
+   ============================================ */
+.sortviz__viz {
+  margin-top: var(--space-5);
+  padding: var(--space-3);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.sortviz__bars {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  /* 半格间距：数量上限 140 根，整格会把柱身挤没 */
+  gap: calc(var(--space-1) / 2);
+  aspect-ratio: 16 / 10;
+  min-height: calc(var(--space-16) * 4);
+  padding: var(--space-2);
+  overflow: hidden;
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-md);
+}
+
+.sortviz__bar {
+  position: relative;
+  /* 抬到区间带之上，区间只是背景带而非蒙层 */
+  z-index: 1;
+  flex: 1;
+  min-width: 0;
+  background-color: var(--state-info-fg);
+  border-radius: var(--radius-xs) var(--radius-xs) 0 0;
+  transition:
+    height var(--dur-instant) linear,
+    background-color var(--dur-instant) linear;
+}
+
+/* 状态配色：顺序即优先级，后者覆盖前者 */
+.sortviz__bar.is-active {
+  background-color: var(--state-danger-fg);
+}
+
+.sortviz__bar.is-pivot {
+  background-color: var(--state-warning-fg);
+}
+
+.sortviz__bar.is-sorted {
+  background-color: var(--state-success-fg);
+}
+
+/* ============================================
+   处理区间高亮
+
+   外层与柱状图内容区对齐，区间段与标签的百分比都以它为基准，
+   与旧实现同一种估算方式（未计入柱间间隙）。
+   ============================================ */
+.sortviz__shade-layer {
+  position: absolute;
+  inset: var(--space-2);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* 标签层：与区间层同一几何，只把层级抬到柱体之上 */
+.sortviz__shade-layer--label {
+  z-index: 2;
+}
+
+.sortviz__shade {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.sortviz__shade.is-merge {
+  background-color: var(--state-info-bg);
+}
+
+.sortviz__shade.is-quick {
+  background-color: var(--state-warning-bg);
+}
+
+.sortviz__shade-label {
+  position: absolute;
+  top: var(--space-1);
+  transform: translateX(var(--space-2));
+
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--text-primary);
+  white-space: nowrap;
+
+  background-color: var(--surface-overlay);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  box-shadow: var(--elev-card);
+  opacity: 0.92;
+}
+
+/* ============================================
+   悬停提示
+   ============================================ */
+.sortviz__tip {
+  position: fixed;
+  /* 需盖过底部导航（z-index 1000），页面内无更高的浮层 */
+  z-index: 9999;
+  padding: var(--space-2) var(--space-3);
+  pointer-events: none;
+
+  font-size: var(--text-xs);
+  color: var(--text-primary);
+
+  background-color: var(--surface-overlay);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--elev-float);
+
+  opacity: 0;
+  transform: translateY(calc(var(--space-1) * -1));
+  transition:
+    opacity var(--dur-fast) var(--ease-standard),
+    transform var(--dur-fast) var(--ease-standard);
+}
+
+.sortviz__tip.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.sortviz__tip-value {
+  font-weight: var(--weight-medium);
+}
+
+.sortviz__tip-index {
+  margin-top: var(--space-1);
+  color: var(--text-tertiary);
+}
+
+/* ============================================
+   使用说明
+   ============================================ */
+.sortviz__help {
+  margin-top: var(--space-5);
+}
+
+.sortviz__help-summary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--size-touch-min);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.sortviz__help-list {
+  padding-left: var(--space-5);
+  list-style: disc;
+}
+
+.sortviz__help-item {
+  margin-top: var(--space-2);
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  color: var(--text-tertiary);
+}
+
+@media (min-width: 768px) {
+  .sortviz {
+    padding-top: var(--space-10);
+  }
+
+  .sortviz__fields {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  /* 窄屏下按钮换行，间隔条已无意义 */
+  .sortviz__divider {
+    display: none;
+  }
+}

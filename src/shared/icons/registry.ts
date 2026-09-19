@@ -23,6 +23,8 @@ import navCategory from './svg/nav-category.svg?raw'
 import navHome from './svg/nav-home.svg?raw'
 import navProfile from './svg/nav-profile.svg?raw'
 import palette from './svg/palette.svg?raw'
+import pause from './svg/pause.svg?raw'
+import play from './svg/play.svg?raw'
 import save from './svg/save.svg?raw'
 import search from './svg/search.svg?raw'
 import settings from './svg/settings.svg?raw'
@@ -32,6 +34,9 @@ import star from './svg/star.svg?raw'
 import statusInfo from './svg/status-info.svg?raw'
 import statusSuccess from './svg/status-success.svg?raw'
 import statusWarning from './svg/status-warning.svg?raw'
+import stepForward from './svg/step-forward.svg?raw'
+import stop from './svg/stop.svg?raw'
+import swapVertical from './svg/swap-vertical.svg?raw'
 import themeDark from './svg/theme-dark.svg?raw'
 import themeLight from './svg/theme-light.svg?raw'
 import toolAscii from './svg/tool-ascii.svg?raw'
@@ -52,6 +57,7 @@ import toolScramble from './svg/tool-scramble.svg?raw'
 import toolSort from './svg/tool-sort.svg?raw'
 import toolTodo from './svg/tool-todo.svg?raw'
 import trash from './svg/trash.svg?raw'
+import undo from './svg/undo.svg?raw'
 import upload from './svg/upload.svg?raw'
 
 export const iconRegistry = {
@@ -68,6 +74,8 @@ export const iconRegistry = {
   'nav-home': navHome,
   'nav-profile': navProfile,
   'palette': palette,
+  'pause': pause,
+  'play': play,
   'save': save,
   'search': search,
   'settings': settings,
@@ -77,6 +85,9 @@ export const iconRegistry = {
   'status-info': statusInfo,
   'status-success': statusSuccess,
   'status-warning': statusWarning,
+  'step-forward': stepForward,
+  'stop': stop,
+  'swap-vertical': swapVertical,
   'theme-dark': themeDark,
   'theme-light': themeLight,
   'tool-ascii': toolAscii,
@@ -97,6 +108,7 @@ export const iconRegistry = {
   'tool-sort': toolSort,
   'tool-todo': toolTodo,
   'trash': trash,
+  'undo': undo,
   'upload': upload,
 } as const
 

@@ -1,0 +1,12 @@
+/**
+ * Dithering · Floyd–Steinberg 的专属样式
+ *
+ * 界面骨架复用 @/shared/ui/image-tool.css 的 imgtool__* 类，本文件只补充
+ * 该工具特有的部分。布局原则见 docs/03-design-system.md §9
+ */
+
+/* 模式与色板都是「标签下方直接跟选项组」的结构，与骨架里的
+   「开关后接选项组」不同：间距取与 field-head 一致的一档 */
+.floyd-steinberg__chips {
+  margin-top: var(--space-2);
+}

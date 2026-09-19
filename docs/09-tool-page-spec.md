@@ -54,7 +54,7 @@ Stage 4  旧目录下线 —— 删除 public/<tool>/
 src/modules/tools/<tool-id>/
 ├── manifest.ts           # 已存在，仅需把 entry 改为 'native'
 ├── index.vue             # 必需：入口视图
-├── <tool>.css            # 必需：本工具样式
+├── <tool>.css            # 按需：仅当有共享骨架之外的样式时
 ├── locales.ts            # 必需：本工具的界面文案（见 §5）
 ├── composables/          # 逻辑：与 DOM 解耦的纯 TS
 │   └── use<Thing>.ts
@@ -142,17 +142,31 @@ src/modules/tools/<tool-id>/
 
 **不要**修改 `src/shared/i18n/locales/` 下的全局文案表——多个工具并行开发会冲突。
 
-在 `src/modules/tools/<tool-id>/locales.ts` 建本工具的文案：
+在 `src/modules/tools/<tool-id>/locales.ts` 建本工具的文案。
+
+**注意形状：语种在外层，键在内层。** `useToolI18n` 的入参是 `Record<Locale, T>`：
 
 ```ts
-import type { Localized } from '@/shared/i18n'
+import type { Messages } from '@/shared/i18n'   // 若需复用全局键
 
-export const messages: Record<string, Localized> = {
-  title:    { 'zh-CN': '图片像素化', en: 'Pixelate' },
-  subtitle: { 'zh-CN': '调整像素块大小', en: 'Adjust the block size' },
-  blockSize:{ 'zh-CN': '像素块大小', en: 'Block size' },
+const zhCN = {
+  title:     '图片像素化',
+  subtitle:  '调整像素块大小',
+  blockSize: '像素块大小',
 }
+
+/** 声明为 typeof zhCN，漏翻一个键就是编译错误 */
+const en: typeof zhCN = {
+  title:     'Pixelate',
+  subtitle:  'Adjust the block size',
+  blockSize: 'Block size',
+}
+
+export const messages = { 'zh-CN': zhCN, en }
 ```
+
+> 本文档早期版本此处写成了 `Record<string, Localized>`（键在外），与实现相反，
+> 会导致照抄者编译失败。已更正。
 
 组件内：
 
@@ -263,7 +277,7 @@ import { AppIcon } from '@/shared/icons'
 - [ ] 无硬编码文案，全部走 `tt()`
 - [ ] 中英双语均完整
 - [ ] 无裸色值 / 裸 px / 原始令牌引用
-- [ ] 图像类工具复用了 `imgtool__*` 骨架
+- [ ] 图像类工具复用了 `imgtool__*` 骨架（纯用共享骨架时不必有自有 CSS）
 - [ ] 每个图标按钮有 `aria-label`
 - [ ] 触控区不小于 44px
 - [ ] 逻辑提取为独立文件，未与 DOM 耦合

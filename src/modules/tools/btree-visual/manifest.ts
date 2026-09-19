@@ -20,8 +20,8 @@ export const manifest: ToolManifest = {
   tags: ['algorithm', 'utility'],
   badge: 'USELESS',
   status: 'active',
-  entry: 'iframe',
+  entry: 'native',
   lifecycle: {
-    updated: '2026-01-03',
+    updated: '2026-09-19',
   },
 }

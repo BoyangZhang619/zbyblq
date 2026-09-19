@@ -1,0 +1,85 @@
+/**
+ * 图片转 ASCII 的工具样式
+ *
+ * 骨架（上传区、参数控件、按钮、预览头）来自 shared/ui/image-tool.css，
+ * 本文件只补图像类工具里独有的部分——等宽字符网格的输出区。
+ *
+ * 颜色、间距、圆角、字号、时长一律走语义令牌，见 docs/09-tool-page-spec.md §4。
+ * 少数纯几何值（字符格尺寸、行高）有其必要：它们要与 canvas 导出图逐像素对齐，
+ * 换成间距令牌反而会错位。
+ */
+
+/* ============================================
+   参数
+   ============================================ */
+
+/* 反相与彩色并排，读作一组开关 */
+.img2ascii__switches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+}
+
+/* ============================================
+   预览
+   ============================================ */
+
+/* 预览标题旁的当前模式 */
+.img2ascii__mode {
+  margin-left: var(--space-2);
+  padding: 1px var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-regular);
+  color: var(--accent-text);
+  background-color: var(--accent-bg);
+  border-radius: var(--radius-full);
+}
+
+/* 输出区。字符画可能远宽于屏幕，故独立滚动 */
+.img2ascii__output {
+  min-height: 45vh;
+  max-height: 68vh;
+  margin: var(--space-3) 0 0;
+  padding: var(--space-3);
+  overflow: auto;
+
+  color: var(--text-primary);
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-lg);
+
+  /* 等宽字体来自 base.css 对 pre 的定义，此处不重复声明 */
+  line-height: 1;
+}
+
+/*
+  纯文本模式用 pre 自带的 white-space: pre；彩色模式必须改回 normal——
+  它的每个字符都是 inline-block 元素，换行由 .img2ascii__line 承担，
+  若保留 pre 的空白语义，标记里的任何换行都会被原样画进网格。
+*/
+.img2ascii__output--color {
+  white-space: normal;
+}
+
+/* 一行。高度固定为 1em，与 PNG 导出的 1.02em 行距接近 */
+.img2ascii__line {
+  display: block;
+  height: 1em;
+}
+
+/*
+  一个字符。宽度 0.62em 让等宽字形接近方块，
+  并与 utils/ascii-png.ts 的 CHAR_WIDTH_RATIO 保持一致——
+  两边不一致会让导出的图和预览对不上。
+*/
+.img2ascii__char {
+  display: inline-block;
+  width: 0.62em;
+}
+
+/* 复制、导出等操作的文字反馈。留出高度，避免出现时页面跳动 */
+.img2ascii__status {
+  min-height: var(--space-5);
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}

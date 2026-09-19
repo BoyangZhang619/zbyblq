@@ -11,8 +11,22 @@
 
 import { ref, shallowRef, computed } from 'vue'
 import type { Ref } from 'vue'
+import { t, type MessageKey } from '@/shared/i18n'
 
 export type LoadStatus = 'idle' | 'loading' | 'ready' | 'error'
+
+/**
+ * 加载失败的类别
+ *
+ * 只暴露**错误码**而非消息文本：本模块在 shared 层，若把中文写死在这里，
+ * 英文环境会显示中文报错。文案由全局文案表提供，随语言变化。
+ */
+export type ImageFileError = 'notImage' | 'loadFailed'
+
+const ERROR_KEYS: Record<ImageFileError, MessageKey> = {
+  notImage: 'image.error.notImage',
+  loadFailed: 'image.error.loadFailed',
+}
 
 export interface UseImageFileOptions {
   /**
@@ -32,8 +46,13 @@ export function useImageFile(options: UseImageFileOptions) {
 
   const image = shallowRef<HTMLImageElement | null>(null)
   const status = ref<LoadStatus>('idle')
-  const errorMessage = ref('')
+  const errorCode = ref<ImageFileError | null>(null)
   const isDragging = ref(false)
+
+  /** 已翻译的错误消息。在模板中读取即随语言变化 */
+  const errorMessage = computed(() =>
+    errorCode.value ? t(ERROR_KEYS[errorCode.value]) : '',
+  )
 
   const hasImage = computed(() => status.value === 'ready' && image.value !== null)
 
@@ -42,9 +61,9 @@ export function useImageFile(options: UseImageFileOptions) {
     return img ? { width: img.naturalWidth, height: img.naturalHeight } : null
   })
 
-  function fail(message: string): void {
+  function fail(code: ImageFileError): void {
     status.value = 'error'
-    errorMessage.value = message
+    errorCode.value = code
   }
 
   /**
@@ -57,12 +76,12 @@ export function useImageFile(options: UseImageFileOptions) {
     if (!file) return
 
     if (!file.type.startsWith('image/')) {
-      fail('请选择图片文件')
+      fail('notImage')
       return
     }
 
     status.value = 'loading'
-    errorMessage.value = ''
+    errorCode.value = null
 
     const url = URL.createObjectURL(file)
     const img = new Image()
@@ -76,7 +95,7 @@ export function useImageFile(options: UseImageFileOptions) {
 
     img.onerror = () => {
       URL.revokeObjectURL(url)
-      fail('图片加载失败，文件可能已损坏')
+      fail('loadFailed')
     }
 
     img.src = url
@@ -121,6 +140,7 @@ export function useImageFile(options: UseImageFileOptions) {
   return {
     image,
     status,
+    errorCode,
     errorMessage,
     isDragging,
     hasImage,
