@@ -65,7 +65,7 @@ export interface TreeLayoutSize {
 }
 
 /** 失败原因。文案由视图层映射，逻辑层不认识文案键 */
-export type TreeErrorCode = 'empty-input' | 'invalid-format' | 'no-tree'
+export type TreeErrorCode = 'empty-input' | 'invalid-format' | 'no-tree' | 'too-large'
 
 /**
  * 解析层序遍历数组
@@ -210,6 +210,19 @@ export function layoutTree(root: TreeNode | null): TreeLayoutSize {
    组合式状态
    ============================================ */
 
+/**
+ * 单个画布的最大边长
+ *
+ * 取 16384 而非各浏览器的实际上限（Chrome 65535、Safari 4096 至 16384
+ * 不等）——按最保守的算，宁可多拒绝一次，也不要产出白屏。
+ */
+export const MAX_CANVAS_SIDE = 16384
+
+/** 按当前 devicePixelRatio 换算后是否超出画布上限 */
+export function exceedsCanvasLimit(size: TreeLayoutSize, dpr: number): boolean {
+  return size.width * dpr > MAX_CANVAS_SIDE || size.height * dpr > MAX_CANVAS_SIDE
+}
+
 export function useTreeLayout() {
   const input = ref(DEFAULT_INPUT)
   /**
@@ -224,7 +237,7 @@ export function useTreeLayout() {
   const hasTree = computed(() => tree.value !== null)
 
   /** 按当前输入重新生成。任一环节失败都只置错误码，保留现有画面 */
-  function generate(): void {
+  function generate(dpr = 2): void {
     const raw = input.value.trim()
     if (!raw) {
       error.value = 'empty-input'
@@ -243,7 +256,27 @@ export function useTreeLayout() {
       return
     }
 
-    layout.value = layoutTree(root)
+    const next = layoutTree(root)
+
+    /*
+      画布尺寸上限检查
+
+      画布宽 = 节点跨度 + 148，高 = 层数 × 80 + 100。浏览器对单个画布
+      有尺寸上限（Chrome 系约 16384×16384），且 devicePixelRatio 会把
+      两个方向都再放大一倍。超出时创建画布不会报错，而是得到一张空白
+      位图——用户看到的是白屏，无从判断原因。
+
+      因此在生成前就拒绝，并给出可执行的建议。
+    */
+    if (exceedsCanvasLimit(next, dpr)) {
+      tree.value = null
+      layout.value = { width: 0, height: 0 }
+      stats.value = getTreeStats(root)
+      error.value = 'too-large'
+      return
+    }
+
+    layout.value = next
     tree.value = root
     stats.value = getTreeStats(root)
     error.value = null

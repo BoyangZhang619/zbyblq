@@ -39,6 +39,11 @@ export type BtreeMessages = {
   errorEmpty: string
   errorFormat: string
   errorNoTree: string
+  /** 超出画布上限。此项用模态而非就地提示，见组件内的说明 */
+  errorTooLarge: string
+  overflowTitle: string
+  overflowBody: string
+  overflowConfirm: string
 }
 
 export const messages: Record<Locale, BtreeMessages> = {
@@ -65,6 +70,11 @@ export const messages: Record<Locale, BtreeMessages> = {
     errorEmpty: '请输入层序遍历数组',
     errorFormat: '输入格式错误，请输入有效的数组，如：[1, 2, 3, null, 4]',
     errorNoTree: '无法构建二叉树，请检查输入',
+    errorTooLarge: '树超出画布上限',
+    overflowTitle: '树太大，无法绘制',
+    overflowBody:
+      '当前输入会生成超过浏览器画布上限的图形，绘制结果将是空白。请减少节点数量，或改成更平衡的结构。',
+    overflowConfirm: '知道了',
   },
   en: {
     title: 'Binary Tree Visualizer',
@@ -89,5 +99,10 @@ export const messages: Record<Locale, BtreeMessages> = {
     errorEmpty: 'Enter a level-order array',
     errorFormat: 'Invalid format. Use a valid array, e.g. [1, 2, 3, null, 4]',
     errorNoTree: 'Cannot build a tree from this input',
+    errorTooLarge: 'Tree exceeds the canvas limit',
+    overflowTitle: 'Tree too large to draw',
+    overflowBody:
+      'This input would exceed the browser canvas limit and render as a blank image. Try fewer nodes, or a more balanced shape.',
+    overflowConfirm: 'Got it',
   },
 }

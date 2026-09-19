@@ -1,0 +1,94 @@
+/**
+ * 模态对话框样式
+ *
+ * 遮罩与面板都走语义令牌；深色模式下遮罩更重（见 themes/dark.css 的
+ * --overlay-scrim）。
+ */
+
+.dlg {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+}
+
+.dlg__scrim {
+  position: absolute;
+  inset: 0;
+  background-color: var(--overlay-scrim);
+}
+
+.dlg__panel {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  padding: var(--space-5);
+
+  background-color: var(--surface-overlay);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--elev-float);
+
+  /* 进入动画：轻微上浮 + 淡入。用 --ease-out 而非 --ease-soft，
+     面板尺寸大，过冲会显得晃 */
+  animation: dlg-in var(--dur-base) var(--ease-out);
+}
+
+.dlg__panel:focus {
+  outline: none;
+}
+
+@keyframes dlg-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dlg__panel {
+    animation: none;
+  }
+}
+
+.dlg__title {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-md);
+  line-height: var(--leading-md);
+  color: var(--text-primary);
+}
+
+.dlg__body {
+  font-size: var(--text-sm);
+  line-height: var(--leading-sm);
+  color: var(--text-secondary);
+}
+
+.dlg__actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--space-5);
+}
+
+.dlg__btn {
+  min-height: var(--size-touch-min);
+  padding: 0 var(--space-5);
+
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-on-accent);
+  background-color: var(--accent-fg);
+  border-radius: var(--radius-full);
+
+  transition: transform var(--dur-base) var(--ease-soft);
+}
+
+.dlg__btn:active {
+  transform: scale(0.97);
+}

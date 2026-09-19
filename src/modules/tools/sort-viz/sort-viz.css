@@ -244,6 +244,8 @@
 .sortviz__viz {
   margin-top: var(--space-5);
   padding: var(--space-3);
+  /* 兜底：容器内任何残余溢出都不外泄到页面 */
+  overflow: hidden;
   background-color: var(--surface-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
@@ -255,8 +257,13 @@
   align-items: flex-end;
   /* 半格间距：数量上限 140 根，整格会把柱身挤没 */
   gap: calc(var(--space-1) / 2);
-  aspect-ratio: 16 / 10;
-  min-height: calc(var(--space-16) * 4);
+  /* 高度用固定值，不用 aspect-ratio。
+     此前写的是 `aspect-ratio: 16/10` + `min-height: 256px`：两者同时存在时，
+     min-height 会经宽高比反推出 410px 的最小宽度，撑破 358px 的父容器，
+     造成页面横向溢出（实测 docScrollWidth 439 对 innerWidth 390）。
+     去掉 aspect-ratio 后宽度回归父容器决定。 */
+  width: 100%;
+  height: calc(var(--space-16) * 3.5);
   padding: var(--space-2);
   overflow: hidden;
   background-color: var(--surface-sunken);

@@ -19,10 +19,10 @@
             :placeholder="tt('inputPlaceholder')"
             spellcheck="false"
             autocomplete="off"
-            @keydown.enter="generate"
+            @keydown.enter="runGenerate"
           />
 
-          <button class="btree__btn btree__btn--primary" type="button" @click="generate">
+          <button class="btree__btn btree__btn--primary" type="button" @click="runGenerate">
             <AppIcon name="sparkle" :size="16" decorative />
             {{ tt('generate') }}
           </button>
@@ -106,16 +106,25 @@
         </dl>
       </section>
     </div>
+
+    <AppDialog
+      :open="overflowOpen"
+      :title="tt('overflowTitle')"
+      :body="tt('overflowBody')"
+      :confirm-text="tt('overflowConfirm')"
+      @close="overflowOpen = false"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { AppIcon } from '@/shared/icons'
 import { useToolI18n } from '@/shared/i18n'
 import { messages, type BtreeMessages } from './locales'
 import TreeCanvas from './components/TreeCanvas.vue'
 import { useTreeLayout, type TreeErrorCode } from './composables/useTreeLayout'
+import AppDialog from '@/shared/ui/AppDialog.vue'
 
 /**
  * 二叉树可视化
@@ -149,9 +158,30 @@ const ERROR_KEYS: Record<TreeErrorCode, keyof BtreeMessages> = {
   'empty-input': 'errorEmpty',
   'invalid-format': 'errorFormat',
   'no-tree': 'errorNoTree',
+  'too-large': 'errorTooLarge',
 }
 
 const errorMessage = computed(() => (error.value ? tt(ERROR_KEYS[error.value]) : ''))
+
+/**
+ * 生成前把 devicePixelRatio 传给布局计算
+ *
+ * 画布上限是按设备像素算的，DPR 2 的屏幕可用的逻辑尺寸只有一半，
+ * 因此必须由视图层告知——composable 不读浏览器全局。
+ */
+function runGenerate(): void {
+  generate(window.devicePixelRatio || 1)
+}
+
+/**
+ * 超限用模态而非就地提示
+ *
+ * 其余错误（空输入、格式错）是操作过程中的常态，就地提示即可；
+ * 「树太大」不同——用户按了生成却什么都没出现，必须明确告知原因，
+ * 否则会以为是功能坏了。
+ */
+const overflowOpen = ref(false)
+watch(error, (code) => { overflowOpen.value = code === 'too-large' })
 
 const canvasAlt = computed(() => tt('canvasAlt', { count: stats.value.nodeCount }))
 

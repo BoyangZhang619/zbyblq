@@ -26,6 +26,7 @@ export const en: Messages = {
   // Home
   'home.theme.toLight': 'Switch to light mode',
   'home.theme.toDark': 'Switch to dark mode',
+  'home.switchLanguage': 'Switch language',
   'home.shelf.more': 'View all {count} tools in {name}',
 
   // Category

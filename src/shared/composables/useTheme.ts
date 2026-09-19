@@ -27,6 +27,17 @@ export type AccentName = (typeof ACCENT_NAMES)[number]
  * 见 docs/emmo-style-reference.md §2.1
  */
 const DEFAULT_ACCENT: AccentName = 'sun'
+
+/**
+ * 深色模式暂时停用
+ *
+ * 深色主题的令牌与切换逻辑都还在（themes/dark.css、setMode、toggleMode），
+ * 只是入口已从设置页移除，且此处强制落在浅色——否则系统处于深色的用户
+ * 会进入一个无法切回的界面。
+ *
+ * 恢复方式：把 FORCE_LIGHT 改为 false，并在 SettingsView 恢复「外观模式」分组。
+ */
+const FORCE_LIGHT = true
 const STORAGE_KEY = 'zbyblq:theme'
 
 interface StoredTheme {
@@ -58,6 +69,7 @@ function loadStored(): void {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return
     const parsed = JSON.parse(raw) as Partial<StoredTheme>
+    if (FORCE_LIGHT) return
     if (parsed.mode === 'light' || parsed.mode === 'dark' || parsed.mode === 'auto') {
       mode.value = parsed.mode
     }
@@ -111,6 +123,7 @@ export function initTheme(): void {
   })
 
   loadStored()
+  if (FORCE_LIGHT) mode.value = 'light'
   applyToDom()
 
   // 任一维度变化时重绘并持久化

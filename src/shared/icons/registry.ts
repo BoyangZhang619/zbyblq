@@ -19,6 +19,7 @@ import close from './svg/close.svg?raw'
 import externalLink from './svg/external-link.svg?raw'
 import heart from './svg/heart.svg?raw'
 import hint from './svg/hint.svg?raw'
+import language from './svg/language.svg?raw'
 import navCategory from './svg/nav-category.svg?raw'
 import navHome from './svg/nav-home.svg?raw'
 import navProfile from './svg/nav-profile.svg?raw'
@@ -70,6 +71,7 @@ export const iconRegistry = {
   'external-link': externalLink,
   'heart': heart,
   'hint': hint,
+  'language': language,
   'nav-category': navCategory,
   'nav-home': navHome,
   'nav-profile': navProfile,

@@ -7,10 +7,10 @@
         <button
           class="home__action"
           type="button"
-          :aria-label="isDark ? t('home.theme.toLight') : t('home.theme.toDark')"
-          @click="toggleMode"
+          :aria-label="t('home.switchLanguage')"
+          @click="switchLanguage"
         >
-          <AppIcon :name="isDark ? 'theme-light' : 'theme-dark'" :size="19" decorative />
+          <AppIcon name="language" :size="19" decorative />
         </button>
       </header>
 
@@ -35,8 +35,7 @@
 import { computed } from 'vue'
 import { AppIcon } from '@/shared/icons'
 import { PlantIcon } from '@/shared/mascot'
-import { useTheme } from '@/shared/composables/useTheme'
-import { t } from '@/shared/i18n'
+import { t, useI18n } from '@/shared/i18n'
 import { getShelves } from '@/modules/tools'
 import ShelfRow from '../components/ShelfRow.vue'
 
@@ -51,10 +50,20 @@ import ShelfRow from '../components/ShelfRow.vue'
  * 二者需用同一套 grid 列宽才能对齐。
  */
 
-const { resolvedMode, toggleMode } = useTheme()
-const isDark = computed(() => resolvedMode.value === 'dark')
+const { locale, locales, setLocale } = useI18n()
 
 const shelves = computed(() => getShelves())
+
+/**
+ * 在可用语种间轮换
+ *
+ * 放在首页右上角而非只藏在设置里——语言是「一眼即用」的偏好，
+ * 不该让英文用户先进中文的设置页才能改。
+ */
+function switchLanguage(): void {
+  const i = locales.indexOf(locale.value as (typeof locales)[number])
+  setLocale(locales[(i + 1) % locales.length])
+}
 </script>
 
 <style scoped>

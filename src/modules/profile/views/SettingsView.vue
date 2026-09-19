@@ -10,25 +10,11 @@
         <h1 class="set__title">{{ t('settings.title') }}</h1>
       </header>
 
-      <!-- 外观模式 -->
-      <section class="set__group">
-        <h2 class="set__label">{{ t('profile.appearance') }}</h2>
-        <div class="set__choices" role="radiogroup" :aria-label="t('profile.appearance')">
-          <button
-            v-for="option in MODE_OPTIONS"
-            :key="option.value"
-            class="set__choice"
-            :class="{ 'is-active': mode === option.value }"
-            type="button"
-            role="radio"
-            :aria-checked="mode === option.value"
-            @click="setMode(option.value)"
-          >
-            <AppIcon :name="option.icon" :size="18" decorative />
-            <span>{{ t(option.labelKey) }}</span>
-          </button>
-        </div>
-      </section>
+      <!--
+        外观模式（浅色/深色/跟随系统）暂时移除：深色主题下植物与花盆
+        的观感问题未解决，入口先隐藏。令牌与切换逻辑仍保留在
+        useTheme 与 themes/dark.css 中，恢复时补回本分组即可。
+      -->
 
       <!-- 主题配色 -->
       <section class="set__group">
@@ -92,8 +78,8 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { AppIcon, type IconName } from '@/shared/icons'
-import { useTheme, ACCENT_NAMES, type AccentName, type ThemeMode } from '@/shared/composables/useTheme'
+import { AppIcon } from '@/shared/icons'
+import { useTheme, ACCENT_NAMES, type AccentName } from '@/shared/composables/useTheme'
 import { useProfile } from '@/shared/composables/useProfile'
 import { useI18n, type MessageKey } from '@/shared/i18n'
 
@@ -106,17 +92,11 @@ import { useI18n, type MessageKey } from '@/shared/i18n'
  */
 
 const router = useRouter()
-const { mode, accent, setMode, setAccent } = useTheme()
+const { accent, setAccent } = useTheme()
 const { resetGarden } = useProfile()
 const { locale, locales, localeLabels, t, setLocale } = useI18n()
 
 const version = __APP_VERSION__
-
-const MODE_OPTIONS: { value: ThemeMode; labelKey: MessageKey; icon: IconName }[] = [
-  { value: 'light', labelKey: 'profile.mode.light', icon: 'theme-light' },
-  { value: 'dark',  labelKey: 'profile.mode.dark',  icon: 'theme-dark' },
-  { value: 'auto',  labelKey: 'profile.mode.auto',  icon: 'settings' },
-]
 
 /** 色板文案键与色板 ID 一一对应，写成映射以保证类型完整 */
 const ACCENT_KEYS: Record<AccentName, MessageKey> = {

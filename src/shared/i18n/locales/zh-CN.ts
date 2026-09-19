@@ -25,6 +25,7 @@ export const zhCN = {
   // 首页
   'home.theme.toLight': '切换到浅色模式',
   'home.theme.toDark': '切换到深色模式',
+  'home.switchLanguage': '切换语言',
   'home.shelf.more': '查看「{name}」的全部 {count} 个工具',
 
   // 分类
