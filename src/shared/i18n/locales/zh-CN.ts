@@ -47,6 +47,7 @@ export const zhCN = {
   'tag.desc.experimental': '试验性质的功能',
 
   // 个人中心
+  'profile.defaultName': '小筑',
   'profile.title': '我的',
   'profile.subtitle': '外观与偏好设置',
   'profile.language': '语言',
@@ -81,6 +82,25 @@ export const zhCN = {
 
   'profile.account.pending':
     '账户系统尚未启用。启用后可跨设备同步偏好与工具数据。',
+
+  // 足迹
+  'profile.footprint': '足迹',
+  'heatmap.summary': '{days} 天有记录，共 {count} 次',
+  'heatmap.cell': '{date}：{count} 次',
+
+  // 行囊
+  'profile.satchel': '行囊',
+  'profile.satchel.hint': '这里没有云端，东西只存在这台设备上。想换设备或清缓存前，先把它带走。',
+  'profile.satchel.export': '导出',
+  'profile.satchel.import': '导入',
+  'profile.satchel.imported': '已导入，正在重新载入',
+  'profile.satchel.err.not-json': '这不是一个有效的 JSON 文件',
+  'profile.satchel.err.not-bundle': '这不是本应用导出的文件',
+  'profile.satchel.err.version-too-new': '文件来自更新的版本，当前版本读不了',
+  'profile.satchel.err.empty': '文件里没有可导入的数据',
+
+  // 花园翻页
+  'profile.garden.page': '第 {page} / {total} 页',
 
   // 主题色板
   'accent.sun': '暖阳',

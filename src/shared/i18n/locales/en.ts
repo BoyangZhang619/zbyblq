@@ -52,6 +52,7 @@ export const en: Messages = {
   'image.error.loadFailed': 'Could not load the image — the file may be damaged',
 
   // Profile
+  'profile.defaultName': 'Little Nook',
   'profile.title': 'Profile',
   'profile.subtitle': 'Appearance and preferences',
   'profile.language': 'Language',
@@ -82,6 +83,26 @@ export const en: Messages = {
 
   'profile.account.pending':
     'Accounts are not enabled yet. Once they are, preferences and tool data can sync across devices.',
+
+  // Footprint
+  'profile.footprint': 'Footprint',
+  'heatmap.summary': '{days} days, {count} visits',
+  'heatmap.cell': '{date}: {count}',
+
+  // Satchel
+  'profile.satchel': 'Satchel',
+  'profile.satchel.hint':
+    'There is no cloud here — everything lives on this device. Take it with you before switching devices or clearing storage.',
+  'profile.satchel.export': 'Export',
+  'profile.satchel.import': 'Import',
+  'profile.satchel.imported': 'Imported. Reloading…',
+  'profile.satchel.err.not-json': 'That is not a valid JSON file',
+  'profile.satchel.err.not-bundle': 'That file was not exported by this app',
+  'profile.satchel.err.version-too-new': 'The file is from a newer version',
+  'profile.satchel.err.empty': 'The file contains no data to import',
+
+  // Garden paging
+  'profile.garden.page': 'Page {page} of {total}',
 
   // Accent palettes
   'accent.sun': 'Sun',

@@ -1,15 +1,13 @@
 /**
  * 个人化数据
  *
- * 昵称、形象植物、以及工具使用记录。全部存 localStorage——
+ * 昵称、形象植物、使用记录。全部存 localStorage——
  * 账户系统尚未启用（见 docs/05-account-system.md），当前为纯本地。
  *
  * 花园机制：用过的工具，其植物以原色显示；未用过的显示为暗淡的「种子」。
- * 这是一个不施压的收集机制——不显示进度条、不发催促提醒，
- * 与品牌的「不会催促你必须完美」一致。
+ * 不显示进度条、不发催促提醒，与品牌的「不会催促你必须完美」一致。
  *
- * 存储用**单一有序数组**而非 Set：既需要「是否用过」的集合语义，
- * 也需要「最近用过哪些」的顺序语义，数组去重后两者都能派生。
+ * 同时记录**按天的使用次数**，供个人页的足迹热力图使用。
  */
 
 import { ref, computed, watch } from 'vue'
@@ -23,25 +21,36 @@ export const RECENT_LIMIT = 5
 /** 可选作形象的植物。排除仅供主视觉使用的 hero */
 export const AVATAR_PLANTS: PlantName[] = PLANT_NAMES.filter(p => p !== 'hero')
 
+/** 按天的使用次数：YYYY-MM-DD -> 次数 */
+export type DailyCounts = Record<string, number>
+
 interface StoredProfile {
   nickname: string | null
   avatarPlant: PlantName
   /** 工具 id，最近使用的排在最前 */
   visits: string[]
+  daily: DailyCounts
 }
 
 /* ============================================
    状态：模块级单例
    ============================================ */
 
-/** 为 null 时由界面回退到 i18n 的默认问候语 */
+/** 为 null 时由界面回退到默认昵称 */
 const nickname = ref<string | null>(null)
 const avatarPlant = ref<PlantName>('sprout')
-/** 按最近使用排序的工具 id。整个数组替换以触发响应式 */
+/** 按最近使用排序的工具 id */
 const visits = ref<string[]>([])
+const daily = ref<DailyCounts>({})
 
 /** 已使用过的工具 id 集合，由 visits 派生 */
 const visitedSet = computed(() => new Set(visits.value))
+
+/** 本地日期键。刻意不用 toISOString——那是 UTC，跨时区会错一天 */
+function todayKey(d = new Date()): string {
+  const pad = (n: number) => String(n).padStart(2, '0')
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
+}
 
 function load(): void {
   try {
@@ -58,6 +67,13 @@ function load(): void {
     if (Array.isArray(parsed.visits)) {
       visits.value = parsed.visits.filter(x => typeof x === 'string')
     }
+    if (parsed.daily && typeof parsed.daily === 'object') {
+      const clean: DailyCounts = {}
+      for (const [k, v] of Object.entries(parsed.daily)) {
+        if (/^\d{4}-\d{2}-\d{2}$/.test(k) && typeof v === 'number' && v > 0) clean[k] = v
+      }
+      daily.value = clean
+    }
   } catch {
     // 存储损坏时静默回退到默认值，不阻断应用启动
   }
@@ -69,6 +85,7 @@ function persist(): void {
       nickname: nickname.value,
       avatarPlant: avatarPlant.value,
       visits: visits.value,
+      daily: daily.value,
     }
     localStorage.setItem(STORAGE_KEY, JSON.stringify(payload))
   } catch {
@@ -85,7 +102,7 @@ export function initProfile(): void {
 
   load()
 
-  watch([nickname, avatarPlant, visits], persist)
+  watch([nickname, avatarPlant, visits, daily], persist, { deep: true })
 }
 
 /* ============================================
@@ -110,10 +127,14 @@ export function useProfile() {
   /**
    * 记录一次工具访问。由路由守卫调用。
    *
-   * 重复访问会把该工具移到最前，而不是重复添加。
+   * 重复访问会把该工具移到最前，而不是重复添加；
+   * 按天的计数则每次都累加。
    */
   function markVisited(toolId: string): void {
-    if (visits.value[0] === toolId) return   // 已在最前，无需变动
+    const key = todayKey()
+    daily.value = { ...daily.value, [key]: (daily.value[key] ?? 0) + 1 }
+
+    if (visits.value[0] === toolId) return
     visits.value = [toolId, ...visits.value.filter(id => id !== toolId)]
   }
 
@@ -124,12 +145,36 @@ export function useProfile() {
   /** 清空使用记录，花园回到初始状态 */
   function resetGarden(): void {
     visits.value = []
+    daily.value = {}
+  }
+
+  /** 供「行囊」导出使用 */
+  function snapshot(): StoredProfile {
+    return {
+      nickname: nickname.value,
+      avatarPlant: avatarPlant.value,
+      visits: [...visits.value],
+      daily: { ...daily.value },
+    }
+  }
+
+  /** 供「行囊」导入使用 */
+  function restore(data: StoredProfile): void {
+    nickname.value = typeof data.nickname === 'string' && data.nickname.trim()
+      ? data.nickname.trim()
+      : null
+    if (data.avatarPlant && AVATAR_PLANTS.includes(data.avatarPlant)) {
+      avatarPlant.value = data.avatarPlant
+    }
+    visits.value = Array.isArray(data.visits) ? data.visits.filter(x => typeof x === 'string') : []
+    daily.value = data.daily && typeof data.daily === 'object' ? data.daily : {}
   }
 
   return {
     nickname,
     avatarPlant,
     visits,
+    daily,
     visitedCount,
     recentToolIds,
     setNickname,
@@ -137,5 +182,7 @@ export function useProfile() {
     markVisited,
     isVisited,
     resetGarden,
+    snapshot,
+    restore,
   }
 }

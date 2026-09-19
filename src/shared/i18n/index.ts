@@ -21,8 +21,9 @@ import {
 } from './types'
 import { zhCN, type MessageKey } from './locales/zh-CN'
 import { en } from './locales/en'
+import { WHISPERS, whisperAt } from './whispers'
 
-export { LOCALES, LOCALE_LABELS, TOOL_TAGS, TAG_ORDER }
+export { LOCALES, LOCALE_LABELS, TOOL_TAGS, TAG_ORDER, WHISPERS, whisperAt }
 export type { Locale, Localized, MessageKey, ToolTag }
 
 const MESSAGES: Record<Locale, Record<MessageKey, string>> = {
@@ -186,6 +187,25 @@ export function useToolI18n<T extends Record<string, string>>(
   }
 
   return { tt, locale }
+}
+
+/* ============================================
+   小句子
+   ============================================ */
+
+/**
+ * 本次会话选中的那一句
+ *
+ * 模块级常量，每次启动应用抽一次。导航时不重抽——同一句话在首页与
+ * 个人页应保持一致，否则来回切换会一直闪。
+ *
+ * 用取模而非按语种长度取，因为中英语料条数可以不同。
+ */
+const whisperIndex = Math.floor(Math.random() * 100003)
+
+/** 当前语言的随机小句子。语言切换后自动取同一条语料位置 */
+export function useWhisper() {
+  return computed(() => whisperAt(locale.value, whisperIndex))
 }
 
 /* ============================================

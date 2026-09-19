@@ -1,0 +1,78 @@
+/**
+ * 足迹热力图样式
+ *
+ * 星期为列、周为行（与 GitHub 图相反），理由见组件内说明。
+ */
+
+.hm {
+  padding: var(--space-4);
+  background-color: var(--surface-card);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--elev-card);
+}
+
+.hm__head,
+.hm__grid {
+  display: grid;
+  /* 列宽封顶，不随容器拉伸——7 列平分 358px 会得到 48px 的巨格，
+     热力图靠「密」传达信息，格子大了反而读不出节奏。
+     用 space-between 把封顶后的七列均匀铺开。 */
+  grid-template-columns: repeat(7, minmax(0, 22px));
+  justify-content: space-between;
+  gap: var(--space-1);
+}
+
+.hm__head {
+  margin-bottom: var(--space-2);
+}
+
+.hm__head-cell {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  text-align: center;
+}
+
+.hm__cell {
+  aspect-ratio: 1;
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-xs);
+}
+
+/* 未到来的日期不画——画出未来会让人误以为「那天没做事」 */
+.hm__cell.is-outside {
+  background-color: transparent;
+}
+
+/*
+  五档深浅。用 color-mix 与主题色混合，而不是写死五个颜色——
+  换主题色板时整张图跟着变，无需维护五组色值。
+*/
+.hm__cell[data-level='1'] { background-color: color-mix(in srgb, var(--accent-fg) 25%, var(--surface-sunken)); }
+.hm__cell[data-level='2'] { background-color: color-mix(in srgb, var(--accent-fg) 45%, var(--surface-sunken)); }
+.hm__cell[data-level='3'] { background-color: color-mix(in srgb, var(--accent-fg) 70%, var(--surface-sunken)); }
+.hm__cell[data-level='4'] { background-color: var(--accent-fg); }
+
+.hm__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.hm__foot-text {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+.hm__legend {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.hm__cell--legend {
+  width: 12px;
+  height: 12px;
+  aspect-ratio: auto;
+}

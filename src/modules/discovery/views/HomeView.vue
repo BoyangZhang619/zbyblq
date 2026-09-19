@@ -17,7 +17,7 @@
       <!-- 主视觉：植物 + 问候词 -->
       <div class="home__hero">
         <PlantIcon name="hero" :size="104" aspect="1 / 1" decorative />
-        <p class="home__greeting">{{ t('app.greeting') }}</p>
+        <p class="home__greeting">{{ whisper }}</p>
       </div>
 
       <!-- 货架 -->
@@ -35,7 +35,7 @@
 import { computed } from 'vue'
 import { AppIcon } from '@/shared/icons'
 import { PlantIcon } from '@/shared/mascot'
-import { t, useI18n } from '@/shared/i18n'
+import { t, useI18n, useWhisper } from '@/shared/i18n'
 import { getShelves } from '@/modules/tools'
 import ShelfRow from '../components/ShelfRow.vue'
 
@@ -51,6 +51,7 @@ import ShelfRow from '../components/ShelfRow.vue'
  */
 
 const { locale, locales, setLocale } = useI18n()
+const whisper = useWhisper()
 
 const shelves = computed(() => getShelves())
 
