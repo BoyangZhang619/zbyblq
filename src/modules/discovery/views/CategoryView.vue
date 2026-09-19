@@ -1,53 +1,56 @@
 <template>
-  <div class="category">
+  <div class="cat">
     <div class="page-content">
-      <!-- 二级：某分类下的工具 -->
-      <template v-if="selected">
-        <button class="category__back" type="button" @click="clear">
-          <AppIcon name="arrow-right" :size="18" class="category__back-icon" decorative />
-          返回分类
+      <!-- ============ 分类详情：全部工具 ============ -->
+      <template v-if="current">
+        <button class="cat__back" type="button" @click="clear">
+          <AppIcon name="arrow-left" :size="16" decorative />
+          全部分类
         </button>
 
-        <header class="category__header">
-          <h1 class="category__title">{{ selected.name }}</h1>
-          <p class="category__meta">{{ selected.count }} 个工具</p>
-          <p class="category__desc">{{ selected.description }}</p>
+        <header class="cat__head">
+          <h1 class="cat__title">{{ current.name }}</h1>
+          <span class="cat__count">{{ current.tools.length }} 个工具</span>
         </header>
 
-        <ul v-if="tools.length" class="category__list">
-          <li v-for="tool in tools" :key="tool.id">
-            <ToolCard :item="tool" />
+        <!--
+          刻意不用货架。
+          货架的美感来自「陈列精选的少数」，一层最多三个；分类页要给的是
+          全量，用货架会退化成带横线的网格。此处改为紧凑列表——
+          植物降为 40px 的视觉锚点，描述回归（主页删它是因为浏览时是噪音，
+          查找时它是信息）。
+          见 docs/08-home-redesign-proposal.md §9
+        -->
+        <ul class="cat__list">
+          <li v-for="tool in current.tools" :key="tool.id">
+            <router-link class="cat__row" :to="tool.route.path">
+              <PlantIcon :name="tool.plant" :size="40" decorative />
+              <span class="cat__text">
+                <span class="cat__name">{{ tool.title }}</span>
+                <span class="cat__desc">{{ tool.description }}</span>
+              </span>
+            </router-link>
           </li>
         </ul>
-
-        <div v-else class="category__empty">
-          <AppIcon name="search" :size="36" decorative />
-          <p>该分类下暂无工具</p>
-        </div>
       </template>
 
-      <!-- 一级：分类概览 -->
+      <!-- ============ 分类索引 ============ -->
       <template v-else>
-        <header class="category__header">
-          <h1 class="category__title">分类浏览</h1>
-          <p class="category__meta">按标签查看全部工具</p>
+        <header class="cat__head">
+          <h1 class="cat__title">分类</h1>
         </header>
 
-        <ul class="category__grid">
-          <li v-for="item in categories" :key="item.id">
-            <button class="category__item" type="button" @click="select(item.id)">
-              <span class="category__item-name">{{ item.name }}</span>
-              <span class="category__item-count">{{ item.count }}</span>
-              <span class="category__item-desc">{{ item.description }}</span>
+        <ul class="cat__index">
+          <li v-for="item in categories" :key="item.name">
+            <button class="cat__entry" type="button" @click="select(item.name)">
+              <PlantIcon :name="item.plant" :size="44" decorative />
+              <span class="cat__text">
+                <span class="cat__name">{{ item.name }}</span>
+                <span class="cat__desc">{{ item.description }}</span>
+              </span>
+              <span class="cat__count">{{ item.tools.length }}</span>
+              <AppIcon name="arrow-right" :size="16" class="cat__chevron" decorative />
             </button>
-          </li>
-
-          <li>
-            <router-link to="/home" class="category__item category__item--all">
-              <span class="category__item-name">全部工具</span>
-              <span class="category__item-count">{{ totalTools }}</span>
-              <span class="category__item-desc">浏览完整列表</span>
-            </router-link>
           </li>
         </ul>
       </template>
@@ -56,49 +59,66 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { AppIcon } from '@/shared/icons'
-import { CategoryManager } from '../composables/category-manager'
-import { ToolListManager } from '../composables/tool-list-manager'
-import ToolCard from '../components/ToolCard.vue'
+import { PlantIcon } from '@/shared/mascot'
+import { getShelves, type ToolManifest } from '@/modules/tools'
 
 /**
  * 分类页
  *
- * 与首页的标签筛选为两级关系：首页是快速筛选，本页提供
- * 分类概览与下钻浏览，包含分类说明。
+ * 两个层级共用本组件：
+ *   无 query        → 分类索引
+ *   ?category=xxx   → 该分类下的全部工具
+ *
+ * 与首页的分工：首页是浏览（植物大、节奏慢、情绪优先），
+ * 本页是查找（信息密度优先，植物降为锚点）。
  */
 
 const route = useRoute()
-const categoryManager = new CategoryManager()
-const toolListManager = new ToolListManager()
+const router = useRouter()
 
-const selectedId = ref<string | null>(null)
+const shelves = getShelves()
 
-// 支持通过 ?category=xxx 深链接进入某个分类
-const initial = route.query.category as string | undefined
-if (initial && categoryManager.isCategoryExists(initial)) {
-  selectedId.value = initial
+interface CategoryEntry {
+  name: string
+  /** 代表植物：取该分类首个工具的形态 */
+  plant: ToolManifest['plant']
+  tools: ToolManifest[]
+  description: string
 }
 
-const categories = computed(() => categoryManager.getCategories())
-const totalTools = computed(() => categoryManager.getAllTools().length)
+/** 分类说明。未登记的标签回退为通用描述 */
+const DESCRIPTIONS: Record<string, string> = {
+  工具: '实用工具集合',
+  算法: '算法可视化与演示',
+  图像: '图像处理与转换',
+  音乐: '音乐创作与演奏',
+  实验: '试验性质的功能',
+}
 
-const selected = computed(() =>
-  selectedId.value ? categoryManager.getCategoryById(selectedId.value) : undefined,
+const categories = computed<CategoryEntry[]>(() =>
+  shelves.map(s => ({
+    name: s.name,
+    plant: s.tools[0].plant,
+    tools: s.tools,
+    description: DESCRIPTIONS[s.name] ?? `${s.name}相关工具`,
+  })),
 )
 
-const tools = computed(() =>
-  selectedId.value ? toolListManager.getToolList({ category: selectedId.value }) : [],
-)
+const current = computed(() => {
+  const name = route.query.category as string | undefined
+  if (!name) return undefined
+  return categories.value.find(c => c.name === name)
+})
 
-function select(id: string): void {
-  selectedId.value = id
+function select(name: string): void {
+  router.push({ name: 'sort', query: { category: name } })
 }
 
 function clear(): void {
-  selectedId.value = null
+  router.push({ name: 'sort' })
 }
 </script>
 

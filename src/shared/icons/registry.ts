@@ -10,6 +10,7 @@
  * 图标设计规范见 docs/04-icon-system.md §3
  */
 
+import arrowLeft from './svg/arrow-left.svg?raw'
 import arrowRight from './svg/arrow-right.svg?raw'
 import bug from './svg/bug.svg?raw'
 import check from './svg/check.svg?raw'
@@ -54,6 +55,7 @@ import trash from './svg/trash.svg?raw'
 import upload from './svg/upload.svg?raw'
 
 export const iconRegistry = {
+  'arrow-left': arrowLeft,
   'arrow-right': arrowRight,
   'bug': bug,
   'check': check,

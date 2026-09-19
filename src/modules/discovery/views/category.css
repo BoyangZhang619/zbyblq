@@ -1,23 +1,27 @@
 /**
  * 分类页样式
- * 见 docs/03-design-system.md §9
+ *
+ * 与首页的分工：首页是浏览（植物大、有木板、节奏慢），
+ * 本页是查找（信息密度优先，植物降为视觉锚点）。
+ *
+ * 见 docs/08-home-redesign-proposal.md §9
  */
 
-.category {
+.cat {
   min-height: 100%;
-  padding-top: var(--space-6);
+  padding-top: var(--space-5);
 }
 
 /* ============================================
-   返回
+   页头
    ============================================ */
-.category__back {
+.cat__back {
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
   min-height: 36px;
-  padding: 0 var(--space-2) 0 0;
-  margin-bottom: var(--space-4);
+  padding: 0;
+  margin-bottom: var(--space-3);
 
   font-size: var(--text-sm);
   color: var(--text-secondary);
@@ -25,141 +29,119 @@
   transition: color var(--dur-fast) var(--ease-standard);
 }
 
-.category__back:hover {
+.cat__back:hover {
   color: var(--accent-text);
 }
 
-/* 复用右箭头图标，旋转为左向 */
-.category__back-icon {
-  transform: rotate(180deg);
-}
-
-/* ============================================
-   页头
-   ============================================ */
-.category__header {
-  margin-bottom: var(--space-6);
-}
-
-.category__title {
-  font-size: var(--text-2xl);
-  line-height: var(--leading-2xl);
-}
-
-.category__meta {
-  margin-top: var(--space-1);
-  font-size: var(--text-sm);
-  color: var(--text-tertiary);
-}
-
-.category__desc {
-  margin-top: var(--space-2);
-  font-size: var(--text-sm);
-  color: var(--text-secondary);
-}
-
-/* ============================================
-   分类概览
-   ============================================ */
-.category__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+.cat__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
   gap: var(--space-3);
+  margin-bottom: var(--space-5);
 }
 
-.category__item {
+.cat__title {
+  font-size: var(--text-xl);
+  line-height: var(--leading-xl);
+}
+
+.cat__count {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================
+   条目共用
+   ============================================ */
+.cat__list,
+.cat__index {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-1);
+  gap: var(--space-2);
+}
+
+.cat__row,
+.cat__entry {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
   width: 100%;
-  min-height: 108px;
-  padding: var(--space-4);
+  padding: var(--space-3);
   text-align: left;
 
   background-color: var(--surface-card);
-  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   box-shadow: var(--elev-card);
 
   transition:
     transform var(--dur-base) var(--ease-soft),
-    box-shadow var(--dur-base) var(--ease-standard),
-    border-color var(--dur-base) var(--ease-standard);
+    box-shadow var(--dur-base) var(--ease-standard);
 }
 
-.category__item:hover {
+.cat__row:active,
+.cat__entry:active {
+  transform: scale(0.99);
+}
+
+.cat__entry:hover {
   box-shadow: var(--elev-hover);
-  border-color: var(--border-default);
-  transform: translateY(-2px);
 }
 
-.category__item:active {
-  transform: scale(0.98);
+.cat__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;   /* 允许子元素收缩，否则长描述不省略 */
+  flex: 1;
 }
 
-.category__item-name {
-  font-size: var(--text-md);
-  font-weight: var(--weight-bold);
+.cat__name {
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
   color: var(--text-primary);
 }
 
-.category__item-count {
-  font-size: var(--text-xl);
-  font-weight: var(--weight-bold);
-  line-height: 1.2;
-  color: var(--accent-text);
-  font-variant-numeric: tabular-nums;
-}
-
-.category__item-desc {
-  margin-top: auto;
+.cat__desc {
   font-size: var(--text-xs);
+  line-height: var(--leading-xs);
   color: var(--text-tertiary);
-}
 
-/* 「全部工具」入口用主题色区分 */
-.category__item--all {
-  background-color: var(--accent-bg);
-  border-color: transparent;
-}
-
-.category__item--all .category__item-count {
-  color: var(--accent-text);
-}
-
-.category__item--all .category__item-desc {
-  color: var(--accent-text);
-  opacity: 0.75;
+  /* 描述最多两行。查找场景下它是有用信息，但不应淹没列表 */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* ============================================
-   工具列表
+   分类索引的右端
    ============================================ */
-.category__list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
+.cat__entry .cat__count {
+  flex: none;
+  font-size: var(--text-base);
+  font-weight: var(--weight-bold);
+  color: var(--accent-text);
 }
 
-.category__empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-16) var(--space-4);
+.cat__chevron {
+  flex: none;
   color: var(--text-tertiary);
-  text-align: center;
 }
 
+/* ============================================
+   宽屏
+   ============================================ */
 @media (min-width: 768px) {
-  .category {
-    padding-top: var(--space-10);
+  .cat {
+    padding-top: var(--space-8);
   }
 
-  .category__list {
+  .cat__list {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-4);
+    gap: var(--space-3);
   }
 }

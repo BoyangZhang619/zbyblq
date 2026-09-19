@@ -88,6 +88,17 @@ export function getShelves(): Shelf[] {
     .sort((a, b) => b.tools.length - a.tools.length || a.name.localeCompare(b.name, 'zh-Hans-CN'))
 }
 
+/**
+ * 按主分类取工具
+ *
+ * 与 getToolsByTag 的区别：后者按任意标签匹配，多标签工具会重复出现。
+ * 分类页必须与首页货架用同一套分组，否则会出现「货架上 1 个、
+ * 详情页 9 个」的矛盾——所以详情页走本函数。
+ */
+export function getToolsByPrimaryTag(tag: string): ToolManifest[] {
+  return getTools().filter(t => t.tags[0] === tag)
+}
+
 /** 全部标签，按工具数量降序 */
 export function getAllTags(): string[] {
   const counts = new Map<string, number>()

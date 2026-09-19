@@ -14,6 +14,7 @@ export {
   getToolByRouteName,
   getTools,
   getToolsByTag,
+  getToolsByPrimaryTag,
   getAllTags,
   getShelves,
 } from './registry'
