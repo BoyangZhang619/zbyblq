@@ -123,7 +123,7 @@
       <!-- ============ 足迹 ============ -->
       <section class="me__section">
         <h2 class="me__heading">{{ t('profile.footprint') }}</h2>
-        <AppHeatmap :data="daily" :weeks="9" />
+        <AppHeatmap :data="daily" />
       </section>
 
       <!-- ============ 行囊 ============ -->

@@ -1,7 +1,8 @@
 /**
  * 足迹热力图样式
  *
- * 星期为列、周为行（与 GitHub 图相反），理由见组件内说明。
+ * 一列一周，右端为当周。尺寸由组件按容器宽度反推，此处只定义
+ * 与尺寸无关的部分。
  */
 
 .hm {
@@ -11,36 +12,45 @@
   box-shadow: var(--elev-card);
 }
 
-.hm__head,
-.hm__grid {
+.hm__body {
+  display: flex;
+  align-items: flex-start;
+  /* 标签列与网格之间也走同一个间距值 */
+  gap: 3px;
+}
+
+/* 星期标签：与网格行严格对齐靠同一套 grid-template-rows */
+.hm__labels {
+  flex: none;
   display: grid;
-  /* 列宽封顶，不随容器拉伸——7 列平分 358px 会得到 48px 的巨格，
-     热力图靠「密」传达信息，格子大了反而读不出节奏。
-     用 space-between 把封顶后的七列均匀铺开。 */
-  grid-template-columns: repeat(7, minmax(0, 22px));
-  justify-content: space-between;
-  gap: var(--space-1);
 }
 
-.hm__head {
-  margin-bottom: var(--space-2);
-}
+.hm__label {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 
-.hm__head-cell {
-  font-size: var(--text-xs);
+  font-size: 9px;
+  line-height: 1;
   color: var(--text-tertiary);
-  text-align: center;
+}
+
+/*
+  一列一周。用 grid-auto-flow: column 让单元格按列填充——
+  每七天一列，最后一列只到今天，因此比其余列短。
+  行列间距由组件的 gridStyle 统一给出（同一个值）。
+*/
+.hm__grid {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: space-between;
 }
 
 .hm__cell {
-  aspect-ratio: 1;
   background-color: var(--surface-sunken);
-  border-radius: var(--radius-xs);
-}
-
-/* 未到来的日期不画——画出未来会让人误以为「那天没做事」 */
-.hm__cell.is-outside {
-  background-color: transparent;
+  border-radius: 2px;
 }
 
 /*
@@ -68,11 +78,10 @@
 .hm__legend {
   display: flex;
   align-items: center;
-  gap: var(--space-1);
+  gap: 3px;
 }
 
 .hm__cell--legend {
-  width: 12px;
-  height: 12px;
-  aspect-ratio: auto;
+  width: 10px;
+  height: 10px;
 }
