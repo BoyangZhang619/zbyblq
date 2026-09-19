@@ -23,7 +23,7 @@
             <input
               id="sortviz-size"
               v-model.number="size"
-              class="sortviz__range"
+              class="app-range"
               type="range"
               :min="SIZE_MIN"
               :max="SIZE_MAX"
@@ -39,7 +39,7 @@
             <input
               id="sortviz-speed"
               v-model.number="speed"
-              class="sortviz__range"
+              class="app-range"
               type="range"
               :min="SPEED_MIN"
               :max="SPEED_MAX"
@@ -98,18 +98,18 @@
           </button>
         </div>
 
-        <div class="sortviz__stats">
-          <div class="sortviz__stat">
-            <span class="sortviz__stat-key">{{ tt('statCompare') }}</span>
-            <span class="sortviz__stat-val">{{ compareCount }}</span>
+        <div class="app-stats">
+          <div class="app-stat">
+            <span class="app-stat__label">{{ tt('statCompare') }}</span>
+            <span class="app-stat__value">{{ compareCount }}</span>
           </div>
-          <div class="sortviz__stat">
-            <span class="sortviz__stat-key">{{ tt('statWrite') }}</span>
-            <span class="sortviz__stat-val">{{ writeCount }}</span>
+          <div class="app-stat">
+            <span class="app-stat__label">{{ tt('statWrite') }}</span>
+            <span class="app-stat__value">{{ writeCount }}</span>
           </div>
-          <div class="sortviz__stat">
-            <span class="sortviz__stat-key">{{ tt('statStatus') }}</span>
-            <span class="sortviz__stat-val" :class="{ 'is-done': isDone }" aria-live="polite">
+          <div class="app-stat">
+            <span class="app-stat__label">{{ tt('statStatus') }}</span>
+            <span class="app-stat__value" :class="{ 'is-done': isDone }" aria-live="polite">
               <AppIcon v-if="isDone" name="check" :size="14" decorative />
               {{ statusText }}
             </span>

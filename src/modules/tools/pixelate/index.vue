@@ -50,7 +50,7 @@
           <input
             id="block-range"
             v-model.number="blockSize"
-            class="imgtool__range"
+            class="app-range"
             type="range"
             :min="BLOCK_SIZE_MIN"
             :max="BLOCK_SIZE_MAX"

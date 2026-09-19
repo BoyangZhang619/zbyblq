@@ -1,3 +1,7 @@
+@import '@/shared/ui/controls.css';
+
+/* 滑杆规格统一到共享控件 .app-range，
+   此处不再重复定义。 */
 /**
  * Drum Pad 鼓机样式
  *
@@ -101,50 +105,6 @@
   color: var(--text-tertiary);
   text-align: right;
   font-variant-numeric: tabular-nums;
-}
-
-/* 滑杆：与图像类工具 skeleton 的滑杆同一套视觉规格 */
-.drum-pad__range {
-  display: block;
-  width: 100%;
-  height: var(--space-7);
-  margin: 0;
-  background: transparent;
-  -webkit-appearance: none;
-  appearance: none;
-}
-
-.drum-pad__range::-webkit-slider-runnable-track {
-  height: var(--space-1);
-  background-color: var(--border-subtle);
-  border-radius: var(--radius-full);
-}
-
-.drum-pad__range::-moz-range-track {
-  height: var(--space-1);
-  background-color: var(--border-subtle);
-  border-radius: var(--radius-full);
-}
-
-.drum-pad__range::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: var(--space-5);
-  height: var(--space-5);
-  margin-top: calc(var(--space-2) * -1);
-  background-color: var(--accent-fg);
-  border: var(--space-1) solid var(--surface-sunken);
-  border-radius: var(--radius-full);
-  cursor: pointer;
-}
-
-.drum-pad__range::-moz-range-thumb {
-  width: var(--space-5);
-  height: var(--space-5);
-  background-color: var(--accent-fg);
-  border: var(--space-1) solid var(--surface-sunken);
-  border-radius: var(--radius-full);
-  cursor: pointer;
 }
 
 /* ============================================

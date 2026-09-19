@@ -1,0 +1,110 @@
+/**
+ * 通用控件
+ *
+ * 全站跨工具复用的控件规格。与 image-tool.css / audio-tool.css 的分工：
+ * 那两个是**页面骨架**（某一类工具的结构），本文件是**控件本身**
+ * （滑杆、统计数字），凡是用到的工具都该引用同一份。
+ *
+ * 类名用 .app- 前缀，不带工具类型语义。
+ *
+ * 提取的起因：滑杆与统计数字此前各有 3 至 5 份独立实现，几何与配色
+ * 互不相同——同一个交互在不同工具里长得不一样。
+ *
+ * 见 docs/09-tool-page-spec.md §4.2
+ */
+
+/* ============================================
+   滑杆
+
+   规格基准：容器高 28px（触控区），轨道高 4px，滑块 20px 带 3px 描边。
+   描边用卡片色而非底色——滑块压在轨道上时要有一圈「留白」把它托起来。
+   ============================================ */
+.app-range {
+  display: block;
+  width: 100%;
+  height: 28px;
+  margin: 0;
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.app-range::-webkit-slider-runnable-track {
+  height: 4px;
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-full);
+}
+
+.app-range::-moz-range-track {
+  height: 4px;
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-full);
+}
+
+.app-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: -8px;
+  background-color: var(--accent-fg);
+  border: 3px solid var(--surface-card);
+  border-radius: var(--radius-full);
+  box-shadow: var(--elev-card);
+  cursor: pointer;
+}
+
+.app-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background-color: var(--accent-fg);
+  border: 3px solid var(--surface-card);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+}
+
+.app-range:focus-visible {
+  outline: 2px solid var(--accent-fg);
+  outline-offset: 4px;
+  border-radius: var(--radius-md);
+}
+
+.app-range:disabled {
+  opacity: 0.45;
+}
+
+/* ============================================
+   统计数字
+
+   用于「比较次数 / 交换次数 / 节点数」这类只读计数。
+   此前三个算法工具各自实现，连类名都不一致
+   （stat-key/stat-val 与 stat-label/stat-value 混用）。
+   ============================================ */
+.app-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.app-stat {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  min-height: 32px;
+  padding: 0 var(--space-3);
+
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-full);
+}
+
+.app-stat__label {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+.app-stat__value {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}

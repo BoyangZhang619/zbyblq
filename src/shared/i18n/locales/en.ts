@@ -10,7 +10,7 @@ import type { Messages } from './zh-CN'
 
 export const en: Messages = {
   // Brand. Kept identical across locales: it is a wordmark, not a word.
-  'app.brand': '𝒵𝐵𝒴𝐵𝐿𝒬',
+  'app.brand': '𝒁𝑩𝒀𝑩𝑳𝑸',
   'app.greeting': 'Little Nook',
 
   // Bottom navigation

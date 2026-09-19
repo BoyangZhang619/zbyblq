@@ -34,7 +34,7 @@
             <input
               id="drum-pad-bpm"
               v-model.number="bpm"
-              class="drum-pad__range"
+              class="app-range"
               type="range"
               min="60"
               max="180"
@@ -47,7 +47,7 @@
             <input
               id="drum-pad-master"
               v-model.number="master"
-              class="drum-pad__range"
+              class="app-range"
               type="range"
               min="0"
               max="100"
@@ -60,7 +60,7 @@
             <input
               id="drum-pad-kick"
               v-model.number="kickTone"
-              class="drum-pad__range"
+              class="app-range"
               type="range"
               min="30"
               max="90"
@@ -73,7 +73,7 @@
             <input
               id="drum-pad-snare"
               v-model.number="snareNoise"
-              class="drum-pad__range"
+              class="app-range"
               type="range"
               min="0"
               max="100"
@@ -86,7 +86,7 @@
             <input
               id="drum-pad-hat"
               v-model.number="hatBright"
-              class="drum-pad__range"
+              class="app-range"
               type="range"
               min="0"
               max="100"
@@ -99,7 +99,7 @@
             <input
               id="drum-pad-space"
               v-model.number="spaceFx"
-              class="drum-pad__range"
+              class="app-range"
               type="range"
               min="0"
               max="100"

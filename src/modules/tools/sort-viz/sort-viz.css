@@ -1,3 +1,9 @@
+@import '@/shared/ui/controls.css';
+
+/* 统计数字规格统一到共享控件 .app-stat*，
+   此处不再重复定义。 */
+/* 滑杆规格统一到共享控件 .app-range，
+   此处不再重复定义。 */
 /**
  * 排序算法可视化样式
  *
@@ -88,56 +94,6 @@
   color: var(--text-disabled);
 }
 
-/* 滑块：几何沿用图像类工具的骨架，使全站控件手感一致 */
-.sortviz__range {
-  display: block;
-  width: 100%;
-  height: var(--space-6);
-  margin: 0;
-  background: transparent;
-  -webkit-appearance: none;
-  appearance: none;
-}
-
-.sortviz__range::-webkit-slider-runnable-track {
-  height: var(--space-1);
-  background-color: var(--surface-card);
-  border-radius: var(--radius-full);
-}
-
-.sortviz__range::-moz-range-track {
-  height: var(--space-1);
-  background-color: var(--surface-card);
-  border-radius: var(--radius-full);
-}
-
-.sortviz__range::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: var(--space-5);
-  height: var(--space-5);
-  margin-top: calc(var(--space-2) * -1);
-  background-color: var(--accent-fg);
-  border: 3px solid var(--surface-card);
-  border-radius: var(--radius-full);
-  box-shadow: var(--elev-card);
-  cursor: pointer;
-}
-
-.sortviz__range::-moz-range-thumb {
-  width: var(--space-5);
-  height: var(--space-5);
-  background-color: var(--accent-fg);
-  border: 3px solid var(--surface-card);
-  border-radius: var(--radius-full);
-  cursor: pointer;
-}
-
-.sortviz__range:disabled {
-  cursor: not-allowed;
-  opacity: 0.45;
-}
-
 /* ============================================
    操作按钮
    ============================================ */
@@ -198,44 +154,6 @@
   color: var(--state-danger-fg);
   background-color: var(--state-danger-bg);
   border-color: transparent;
-}
-
-/* ============================================
-   计数
-   ============================================ */
-.sortviz__stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  margin-top: var(--space-4);
-}
-
-.sortviz__stat {
-  display: inline-flex;
-  align-items: baseline;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-3);
-  background-color: var(--surface-sunken);
-  border-radius: var(--radius-md);
-}
-
-.sortviz__stat-key {
-  font-size: var(--text-xs);
-  color: var(--text-secondary);
-}
-
-.sortviz__stat-val {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
-  font-size: var(--text-sm);
-  font-weight: var(--weight-medium);
-  color: var(--text-primary);
-  font-variant-numeric: tabular-nums;
-}
-
-.sortviz__stat-val.is-done {
-  color: var(--state-success-fg);
 }
 
 /* ============================================

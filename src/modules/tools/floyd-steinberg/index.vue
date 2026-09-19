@@ -100,7 +100,7 @@
           <input
             id="dither-strength"
             v-model.number="strengthSlider"
-            class="imgtool__range"
+            class="app-range"
             type="range"
             :min="STRENGTH_MIN"
             :max="STRENGTH_MAX"

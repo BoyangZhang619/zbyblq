@@ -1,3 +1,7 @@
+/* 统计数字规格统一到共享控件 .app-stat*，
+   此处不再重复定义。 */
+@import '@/shared/ui/controls.css';
+
 /**
  * 二叉树可视化 样式
  *
@@ -209,42 +213,6 @@
   font-size: var(--text-sm);
   color: var(--text-tertiary);
   text-align: center;
-}
-
-/* ============================================
-   统计
-   ============================================ */
-.btree__stats {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-3);
-  margin: 0;
-  padding: var(--space-4);
-
-  background-color: var(--surface-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-}
-
-.btree__stat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-1);
-}
-
-.btree__stat-label {
-  font-size: var(--text-xs);
-  color: var(--text-tertiary);
-}
-
-.btree__stat-value {
-  margin: 0;
-  font-size: var(--text-xl);
-  font-weight: var(--weight-bold);
-  line-height: var(--leading-xl);
-  color: var(--accent-text);
-  font-variant-numeric: tabular-nums;
 }
 
 @media (min-width: 768px) {

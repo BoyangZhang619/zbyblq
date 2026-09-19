@@ -127,7 +127,7 @@
           <input
             id="pathfind-speed"
             v-model.number="speed"
-            class="pathfind__range"
+            class="app-range"
             type="range"
             :min="SPEED_MIN"
             :max="SPEED_MAX"
@@ -138,18 +138,18 @@
 
         <section class="pathfind__group">
           <h2 class="pathfind__group-title">{{ tt('statsLabel') }}</h2>
-          <ul class="pathfind__stats">
-            <li class="pathfind__stat">
-              <span class="pathfind__stat-label">{{ tt('statVisited') }}</span>
-              <span class="pathfind__stat-value">{{ visitedCount }}</span>
+          <ul class="app-stats">
+            <li class="app-stat">
+              <span class="app-stat__label">{{ tt('statVisited') }}</span>
+              <span class="app-stat__value">{{ visitedCount }}</span>
             </li>
-            <li class="pathfind__stat">
-              <span class="pathfind__stat-label">{{ tt('statPathLength') }}</span>
-              <span class="pathfind__stat-value">{{ pathLength }}</span>
+            <li class="app-stat">
+              <span class="app-stat__label">{{ tt('statPathLength') }}</span>
+              <span class="app-stat__value">{{ pathLength }}</span>
             </li>
-            <li class="pathfind__stat">
-              <span class="pathfind__stat-label">{{ tt('statCost') }}</span>
-              <span class="pathfind__stat-value">{{ pathCost }}</span>
+            <li class="app-stat">
+              <span class="app-stat__label">{{ tt('statCost') }}</span>
+              <span class="app-stat__value">{{ pathCost }}</span>
             </li>
           </ul>
         </section>

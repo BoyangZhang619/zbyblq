@@ -44,12 +44,18 @@ function detect(): Locale {
     // 存储不可用时回退到浏览器语言
   }
 
-  const nav = navigator.language
-  if (nav.startsWith('zh')) return 'zh-CN'
+  /*
+    首次访问的默认语种是英语，而非跟随 navigator.language。
+
+    本项目的主要读者在中文环境，但界面的默认语种选英语是刻意的：
+    英文版更能暴露布局问题（英文文案普遍更长，中文文案容易把
+    溢出与截断掩盖过去），也便于分享给非中文使用者。
+    用户手动切换后会记入 localStorage，不再受此处影响。
+  */
   return 'en'
 }
 
-const locale = ref<Locale>('zh-CN')
+const locale = ref<Locale>('en')
 
 /** 同步 <html lang>，供读屏与浏览器断词使用 */
 function applyToDom(): void {

@@ -9,7 +9,7 @@
 
 export const zhCN = {
   // 品牌
-  'app.brand': '𝒵𝐵𝒴𝐵𝐿𝒬',
+  'app.brand': '𝒁𝑩𝒀𝑩𝑳𝑸',
   'app.greeting': '小筑',
 
   // 底部导航

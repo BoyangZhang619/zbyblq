@@ -90,18 +90,18 @@
 
       <!-- 统计 -->
       <section class="btree__section">
-        <dl class="btree__stats">
-          <div class="btree__stat">
-            <dt class="btree__stat-label">{{ tt('statsNodes') }}</dt>
-            <dd class="btree__stat-value">{{ stats.nodeCount }}</dd>
+        <dl class="app-stats">
+          <div class="app-stat">
+            <dt class="app-stat__label">{{ tt('statsNodes') }}</dt>
+            <dd class="app-stat__value">{{ stats.nodeCount }}</dd>
           </div>
-          <div class="btree__stat">
-            <dt class="btree__stat-label">{{ tt('statsHeight') }}</dt>
-            <dd class="btree__stat-value">{{ stats.height }}</dd>
+          <div class="app-stat">
+            <dt class="app-stat__label">{{ tt('statsHeight') }}</dt>
+            <dd class="app-stat__value">{{ stats.height }}</dd>
           </div>
-          <div class="btree__stat">
-            <dt class="btree__stat-label">{{ tt('statsLeaves') }}</dt>
-            <dd class="btree__stat-value">{{ stats.leafCount }}</dd>
+          <div class="app-stat">
+            <dt class="app-stat__label">{{ tt('statsLeaves') }}</dt>
+            <dd class="app-stat__value">{{ stats.leafCount }}</dd>
           </div>
         </dl>
       </section>

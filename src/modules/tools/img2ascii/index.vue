@@ -66,7 +66,7 @@
           <input
             id="img2ascii-width"
             v-model.number="widthCols"
-            class="imgtool__range"
+            class="app-range"
             type="range"
             :min="WIDTH_MIN"
             :max="WIDTH_MAX"
@@ -83,7 +83,7 @@
           <input
             id="img2ascii-font"
             v-model.number="fontSize"
-            class="imgtool__range"
+            class="app-range"
             type="range"
             :min="FONT_SIZE_MIN"
             :max="FONT_SIZE_MAX"
@@ -121,7 +121,7 @@
           <input
             id="img2ascii-brightness"
             v-model.number="brightness"
-            class="imgtool__range"
+            class="app-range"
             type="range"
             :min="ADJUST_MIN"
             :max="ADJUST_MAX"
@@ -137,7 +137,7 @@
           <input
             id="img2ascii-contrast"
             v-model.number="contrast"
-            class="imgtool__range"
+            class="app-range"
             type="range"
             :min="ADJUST_MIN"
             :max="ADJUST_MAX"

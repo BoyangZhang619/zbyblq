@@ -14,7 +14,7 @@ import SettingsView from '@/modules/profile/views/SettingsView.vue'
 /**
  * 站点标题前缀。使用数学斜体字符而非 emoji，符合全站禁用 emoji 的约束
  */
-const BRAND = '𝒵𝐵𝒴𝐵𝐿𝒬'
+const BRAND = '𝒁𝑩𝒀𝑩𝑳𝑸'
 
 /* ============================================
    工具路由

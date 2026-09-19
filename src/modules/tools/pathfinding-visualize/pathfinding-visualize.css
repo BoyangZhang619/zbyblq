@@ -1,3 +1,9 @@
+@import '@/shared/ui/controls.css';
+
+/* 统计数字规格统一到共享控件 .app-stat*，
+   此处不再重复定义。 */
+/* 滑杆规格统一到共享控件 .app-range，
+   此处不再重复定义。 */
 /**
  * 路径寻找可视化样式
  *
@@ -331,89 +337,6 @@
   color: var(--accent-text);
   background-color: var(--accent-bg);
   border-color: transparent;
-}
-
-/* ============================================
-   滑块
-
-   几何与配色沿用 image-tool.css 的滑块观感。该文件按规范只服务
-   图像类工具，本工具不能复用它的类名，故按同样观感重写一份；
-   若再有第三个工具需要，应上提到 shared/ui/ 成为公共骨架
-   ============================================ */
-.pathfind__range {
-  display: block;
-  width: 100%;
-  height: 28px;
-  margin: 0;
-  background: transparent;
-  -webkit-appearance: none;
-  appearance: none;
-}
-
-.pathfind__range::-webkit-slider-runnable-track {
-  height: 4px;
-  background-color: var(--surface-sunken);
-  border-radius: var(--radius-full);
-}
-
-.pathfind__range::-moz-range-track {
-  height: 4px;
-  background-color: var(--surface-sunken);
-  border-radius: var(--radius-full);
-}
-
-.pathfind__range::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  margin-top: -8px;
-  background-color: var(--accent-fg);
-  border: 3px solid var(--surface-card);
-  border-radius: var(--radius-full);
-  box-shadow: var(--elev-card);
-  cursor: pointer;
-}
-
-.pathfind__range::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  background-color: var(--accent-fg);
-  border: 3px solid var(--surface-card);
-  border-radius: var(--radius-full);
-  cursor: pointer;
-}
-
-/* ============================================
-   统计
-   ============================================ */
-.pathfind__stats {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-2);
-}
-
-.pathfind__stat {
-  min-width: 0;
-  padding: var(--space-2) var(--space-3);
-  background-color: var(--surface-sunken);
-  border-radius: var(--radius-md);
-}
-
-.pathfind__stat-label {
-  display: block;
-  font-size: var(--text-xs);
-  line-height: var(--leading-xs);
-  color: var(--text-tertiary);
-}
-
-.pathfind__stat-value {
-  display: block;
-  margin-top: var(--space-1);
-  font-size: var(--text-md);
-  font-weight: var(--weight-medium);
-  color: var(--text-primary);
-  font-variant-numeric: tabular-nums;
 }
 
 /* ============================================

@@ -53,7 +53,7 @@
               <input
                 :id="inputId(field)"
                 v-model.number="params[field.key]"
-                class="imgtool__range"
+                class="app-range"
                 type="range"
                 :min="PATINA_LIMITS[field.key].min"
                 :max="PATINA_LIMITS[field.key].max"
@@ -75,7 +75,7 @@
               <input
                 :id="inputId(field)"
                 v-model.number="params[field.key]"
-                class="imgtool__range"
+                class="app-range"
                 type="range"
                 :min="PATINA_LIMITS[field.key].min"
                 :max="PATINA_LIMITS[field.key].max"

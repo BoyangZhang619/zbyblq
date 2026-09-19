@@ -1,3 +1,7 @@
+@import '@/shared/ui/controls.css';
+
+/* 滑杆规格统一到共享控件 .app-range，
+   此处不再重复定义。 */
 /**
  * 图像类工具的共用界面骨架
  *
@@ -133,50 +137,6 @@
   justify-content: space-between;
   gap: var(--space-3);
   margin-bottom: var(--space-2);
-}
-
-.imgtool__range {
-  display: block;
-  width: 100%;
-  height: 28px;
-  margin: 0;
-  background: transparent;
-  -webkit-appearance: none;
-  appearance: none;
-}
-
-.imgtool__range::-webkit-slider-runnable-track {
-  height: 4px;
-  background-color: var(--surface-sunken);
-  border-radius: var(--radius-full);
-}
-
-.imgtool__range::-moz-range-track {
-  height: 4px;
-  background-color: var(--surface-sunken);
-  border-radius: var(--radius-full);
-}
-
-.imgtool__range::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  margin-top: -8px;
-  background-color: var(--accent-fg);
-  border: 3px solid var(--surface-card);
-  border-radius: var(--radius-full);
-  box-shadow: var(--elev-card);
-  cursor: pointer;
-}
-
-.imgtool__range::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  background-color: var(--accent-fg);
-  border: 3px solid var(--surface-card);
-  border-radius: var(--radius-full);
-  cursor: pointer;
 }
 
 /* 开关 */

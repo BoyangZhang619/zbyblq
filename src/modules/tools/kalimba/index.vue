@@ -44,7 +44,7 @@
           <input
             :id="`kalimba-${spec.key}`"
             v-model.number="params[spec.key]"
-            class="kalimba__range"
+            class="app-range"
             type="range"
             :min="spec.min"
             :max="spec.max"
